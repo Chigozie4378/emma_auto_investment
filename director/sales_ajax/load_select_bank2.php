@@ -1,5 +1,5 @@
-<select style="width:90px"  name="bank" id="bank">
-    <option value="" disabled selected>Select Bank</option>
+ <select style="width:90px"  name="bank" id="bank" required>
+    <option value="" disabled >Select Bank</option>
     <option value="First Bank">First Bank</option>
     <option value="UBA">UBA</option>
     <option value="Zenith Bank">Zenith Bank</option>

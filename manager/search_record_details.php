@@ -26,6 +26,7 @@ $show_result = mysqli_fetch_array($show);
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
     <link rel="icon" href="../assets/images/logo.jpg" type="image/gif" sizes="20x20">
+
     <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="../assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
@@ -46,7 +47,7 @@ $show_result = mysqli_fetch_array($show);
                 </span>EMMA AUTO AND MULTI-SERVICES COMPANY</h4>
             <p class="text-dark" style="font-size:18px;">Distributor for Chanlin, Shiroro, Unigo, Jeely, Jieng, Endurance, Tako, Donaten, Sinosat,
                 and Sunrain Motorcycle spare parts of all brands of Motorcycles and Tricycle parts all Genuine parts, such as Honda, Bajaj, TVS, Hero and all brands of Motorcycles Engine and Tricycles. <br>
-                <span>Address: No. 37A, Opposite Jesus Life Church, Asubiaro Hospital Junction, Osogbo, Osun State.</span></br> 
+                <span>Address: No. 37A, Opposite Jesus Life Church, Asubiaro Hospital Junction, Osogbo, Osun State.</span></br>   
                 <span style="font-weight: bold">Tel: 08062063060, 08119222292, 07063684266</span>
             </p>
             <span class="bg-danger rounded-pill px-2"">Invoice</span>
@@ -105,7 +106,7 @@ $show_result = mysqli_fetch_array($show);
 
                     <tr>
                         <td><?php echo ++$id ?></td>
-                        <td style="font-weight: bold;"><?php echo $row["quantity"] ?></td>
+                        <td style="font-weight:bold;"><?php echo $row["quantity"] ?></td>
                         <td><?php echo $row["product_name"] ?></td>
                         <td><?php echo $row["model"] ?></td>
                         <td><?php echo $row["manufacturer"] ?></td>
@@ -133,6 +134,12 @@ $show_result = mysqli_fetch_array($show);
                         <td class="d-print-none" style="font-weight: bold;">POS: <input onclick="this.select()" style="width:90px" type="text" id="pos1" required></td>
                         <td> <button type="submit" onclick="updatePayment('<?php $ctr->viewSalesDetail('invoice_no'); ?>',getElementById('transfer1').value,getElementById('bank').value,'<?php $ctr->viewSalesDetail('deposit') ?>','<?php $ctr->viewSalesDetail('total') ?>','<?php echo $ctr->viewSalesDetail('customer_name'); ?>','<?php echo $ctr->viewSalesDetail('address'); ?>','<?php echo date('d-m-Y') ?>','<?php echo $_SESSION['directorfullname']; ?>',getElementById('cash1').value,'<?php echo $ctr->viewSalesDetail('customer_type'); ?>',getElementById('pos1').value)" type="submit" class=" btn btn-sm btn-info d-print-none">Change Payment</button></td>
                     </form>
+                    <?php 
+                    if ($ctr->viewSalesReceipt("old_deposit")!=0){?>
+                        <td style="font-weight: bold;">Old Deposit: # <?php $ctr->viewSalesDetail("old_deposit"); ?></td>
+                   <?php }
+                    ?>
+                    
                     <td style="font-weight: bold;">Cash: # <?php $ctr->viewSalesDetail("cash"); ?></td>
                     <td style="font-weight: bold;">POS:# <?php $ctr->viewSalesDetail("pos"); ?></td>
                     <td style="font-weight: bold;">Transfer:# <?php $ctr->viewSalesDetail("transfer"); ?></td>
@@ -145,11 +152,14 @@ $show_result = mysqli_fetch_array($show);
 
                 if (mysqli_num_rows($show)>0) { ?>
                     <tr>
-                        <td colspan="3"></td>
+                        <td colspan="2"></td>
+                        <td style="font-weight: bold;">Transport #  <?php $ctr->viewSalesDetail("transport"); ?></td>
                         <td style="font-weight: bold;">Old Balance: </td>
-                        <td style="font-weight: bold;"># <?php echo number_format($show_result["balance"] - $ctr->viewSalesReceipt("balance"), 2); ?></td>
+                        <td style="font-weight: bold;"># <?php $old_bal = $show_result["balance"] - $ctr->viewSalesReceipt("balance");
+                                                            echo number_format($old_bal, 2); ?></td>
                         <td style="font-weight: bold;">Total Balance:</td>
                         <td style="font-weight: bold;"># <?php echo number_format($show_result["balance"], 2); ?></td>
+
                     </tr>
                 <?php }
                 ?>
@@ -200,7 +210,7 @@ $show_result = mysqli_fetch_array($show);
         <div class="col-12 text-center">
             <form action="" method="post">
                 <input name="print" type="submit" class="btn btn-primary d-print-none" value="print" onclick="printpage()">
-                <a href="../print/manager/index_s.php?invoice_no=<?php $ctr->viewSalesDetail("invoice_no"); ?>" class="btn btn-success d-print-none">Print Retail</a>
+                <a href="../print/director/index_s.php?invoice_no=<?php $ctr->viewSalesDetail("invoice_no"); ?>" class="btn btn-success d-print-none">Print Retail</a>
                 <a href="sales_history_details.php?invoice_no1=<?php $ctr->viewSalesDetail("invoice_no") ?>" class="btn btn-danger d-print-none">Return All Goods</a>
                 <a href="search_record.php" class="btn btn-info d-print-none">Go Back</a>
 

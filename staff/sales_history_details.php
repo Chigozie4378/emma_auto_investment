@@ -112,7 +112,12 @@ $show_result = mysqli_fetch_array($show);
                     <td style="font-weight: bold;"><?php $ctr->viewSalesDetail("total"); ?></td>
                 </tr>
                 <tr>
-                    <td colspan="2"></td>
+                    <td colspan="1"></td>
+                    <?php 
+                    if ($ctr->viewSalesReceipt("old_deposit")!=0){?>
+                        <td style="font-weight: bold;">Old Deposit: # <?php $ctr->viewSalesDetail("old_deposit"); ?></td>
+                   <?php }
+                    ?>
                     <td style="font-weight: bold;">Cash:<?php $ctr->viewSalesDetail("cash"); ?></td>
 
                     <td style="font-weight: bold;">Transfer:<?php $ctr->viewSalesDetail("transfer"); ?></td>
@@ -124,11 +129,14 @@ $show_result = mysqli_fetch_array($show);
 
                 if (mysqli_num_rows($show)>0) { ?>
                     <tr>
-                        <td colspan="3"></td>
+                        <td colspan="2"></td>
+                        <td style="font-weight: bold;">Transport #  <?php $ctr->viewSalesDetail("transport"); ?></td>
                         <td style="font-weight: bold;">Old Balance: </td>
-                        <td style="font-weight: bold;"># <?php echo number_format($show_result["balance"] - $ctr->viewSalesReceipt("balance"), 2); ?></td>
+                        <td style="font-weight: bold;"># <?php $old_bal = $show_result["balance"] - $ctr->viewSalesReceipt("balance");
+                                                            echo number_format($old_bal, 2); ?></td>
                         <td style="font-weight: bold;">Total Balance:</td>
                         <td style="font-weight: bold;"># <?php echo number_format($show_result["balance"], 2); ?></td>
+
                     </tr>
                 <?php }
                 ?>

@@ -30,7 +30,7 @@
 <!-- Bootstrap 4 -->
 <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-
+<script src="../assets/plugins/chosen/chosen.js"></script>
 <script src="../assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../assets/dist/js/adminlte.js"></script>
@@ -40,6 +40,14 @@
   $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
   });
+</script>
+<script>
+  $(".chosen").chosen();
+</script>
+<script>
+  function printpage() {
+    window.print()
+  }
 </script>
 </body>
 

@@ -14,7 +14,7 @@ $mod->export();
     <div class="container-fluid">
         <div class="card">
             <div class="card-header border-transparent">
-                <h3 class="card-title">Latest Orders</h3>
+                <h3 class="card-title">Latest Transfers</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">

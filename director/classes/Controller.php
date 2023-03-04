@@ -6,6 +6,8 @@
         public $message = '';
         public $passwordErr;
         public $id = 0;
+        public $customer_nameErr = "";
+        public $customer_addressErr = "";
         //=========================== Drop tables ===================================//
         public function wipeTables()
         {
@@ -668,7 +670,8 @@
                 } else {
                     $address = $_POST["address"];
                 }
-
+                $transport = $_POST["transport"];
+                $old_deposit = $_POST['old_deposit'];
                 $invoice_no = $_POST["invoice_no"];
                 $_SESSION["customer_name"] = $customer_name;
                 $_SESSION["address"] = $address;
@@ -686,49 +689,34 @@
 
                 if ($_POST["cash"] == 0 && $_POST["transfer"] == 0 && $_POST["pos"] == 0 && $_POST["balance"] != 0) {
                     $bill_type = "Debit";
-
                 } elseif ($_POST["cash"] == 0 && $_POST["transfer"] != 0 && $_POST["pos"] == 0 && $_POST["balance"] == 0) {
                     $bill_type = "Transfer";
-
                 } elseif ($_POST["cash"] != 0 && $_POST["transfer"] == 0 && $_POST["pos"] == 0 && $_POST["balance"] == 0) {
                     $bill_type = "Cash";
-
                 } elseif ($_POST["cash"] == 0 && $_POST["transfer"] == 0 && $_POST["pos"] != 0 && $_POST["balance"] == 0) {
                     $bill_type = "POS";
-
                 } elseif ($_POST["cash"] != 0 && $_POST["transfer"] != 0 && $_POST["pos"] == 0 && $_POST["balance"] == 0) {
                     $bill_type = "Cash/Transfer";
-
                 } elseif ($_POST["cash"] != 0 && $_POST["transfer"] == 0 && $_POST["pos"] != 0 && $_POST["balance"] == 0) {
                     $bill_type = "Cash/POS";
-
                 } elseif ($_POST["cash"] != 0 && $_POST["transfer"] == 0 && $_POST["pos"] == 0 && $_POST["balance"] != 0) {
                     $bill_type = "Cash/Debit";
-
                 } elseif ($_POST["cash"] != 0 && $_POST["transfer"] != 0 && $_POST["pos"] != 0 && $_POST["balance"] == 0) {
                     $bill_type = "Cash/Transfer/POS";
-
                 } elseif ($_POST["cash"] != 0 && $_POST["transfer"] == 0 && $_POST["pos"] != 0 && $_POST["balance"] != 0) {
                     $bill_type = "Cash/POS/Debit";
-                    
                 } elseif ($_POST["cash"] != 0 && $_POST["transfer"] != 0 && $_POST["pos"] == 0 && $_POST["balance"] != 0) {
                     $bill_type = "Cash/Transfer/Debit";
-                    
                 } elseif ($_POST["cash"] != 0 && $_POST["transfer"] != 0 && $_POST["pos"] != 0 && $_POST["balance"] != 0) {
                     $bill_type = "Cash/Transfer/POS/Debit";
-                    
                 } elseif ($_POST["cash"] == 0 && $_POST["transfer"] != 0 && $_POST["pos"] != 0 && $_POST["balance"] == 0) {
                     $bill_type = "Transfer/POS";
-                    
                 } elseif ($_POST["cash"] == 0 && $_POST["transfer"] != 0 && $_POST["pos"] == 0 && $_POST["balance"] != 0) {
                     $bill_type = "Transfer/Debit";
-                    
                 } elseif ($_POST["cash"] == 0 && $_POST["transfer"] != 0 && $_POST["pos"] != 0 && $_POST["balance"] != 0) {
                     $bill_type = "Transfer/POS/Debit";
-                    
                 } elseif ($_POST["cash"] == 0 && $_POST["transfer"] == 0 && $_POST["pos"] != 0 && $_POST["balance"] != 0) {
                     $bill_type = "POS/Debit";
-                    
                 }
                 $comment = "New Goods Bought";
 
@@ -756,14 +744,22 @@
                 }
 
                 $fetch = $this->checkInvoice_noExist($invoice_no);
-                
+                if ($_POST['old_deposit'] != 0) {
+                    $select = $this->showDeposit($customer_name, $address);
+                    $result = mysqli_fetch_array($select);
+                    $old_invoice = $result["invoice_no"];
+                    $this->deleteSalesDeposit($old_invoice);
+                    $this->deleteSalesDepositDetails($old_invoice);
+                    $this->deleteDeposit($customer_name, $address);
+                    $this->deleteDepositDetails($customer_name, $address);
+                }
                 if (!($err)) {
                     if (mysqli_num_rows($fetch) > 0) {
                         if (!(empty($_POST["bank"]))) {
                             $bank_name = $_POST["bank"];
                             $this->addBank($customer_name, $address, $invoice_no2, $customer_type, $transfer, $bank_name, $status, $staff, $date);
                         }
-                        $this->addSales($customer_name, $address, $invoice_no2, $bill_type, $customer_type, $total, $cash, $transfer,$pos, $deposit, $balance, $staff, $date, $username);
+                        $this->addSales($customer_name, $address, $invoice_no2, $bill_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit,$transport, $balance, $staff, $date, $username);
                         $row = mysqli_num_rows($this->checkDebit($customer_name, $address));
                         $history = mysqli_fetch_array($this->checkDebitHistories($customer_name, $address));
                         $balancedb = $history["total_balance"];
@@ -772,14 +768,16 @@
                         $total_paid = $deposit + $prev_total_paid;
                         $new_balance = $balance + $balancedb;
                         if ($balance != 0) {
-                            if ($row > 0) {
-                                $this->updateDebit($customer_name, $address, $total, $deposit, $balance, $staff, $date);
-                                $this->addtoDebitsHistory($customer_name, $address, $total, $deposit, $total_paid, $balance, $new_balance, $staff, $date, $comment, $invoice_no2);
-                            } else {
-                                $this->addDebits($customer_name, $address, $total, $deposit, $balance, $staff, $date);
-                                $this->deleteDebit();
-                                $this->addDebitsHistory($customer_name, $address, $total, $deposit, $deposit, $balance, $new_balance, $staff, $date, $comment, $invoice_no2);
-                                // $this->deleteDebitHistories();
+                            if ($customer_name != "MR Sir" && $address != "Address") {
+                                if ($row > 0) {
+                                    $this->updateDebit($customer_name, $address, $total, $deposit, $balance, $staff, $date);
+                                    $this->addtoDebitsHistory($customer_name, $address, $total, $deposit, $total_paid, $balance, $new_balance, $staff, $date, $comment, $invoice_no2);
+                                } else {
+                                    $this->addDebits($customer_name, $address, $total, $deposit, $balance, $staff, $date);
+                                    $this->deleteDebit();
+                                    $this->addDebitsHistory($customer_name, $address, $total, $deposit, $deposit, $balance, $new_balance, $staff, $date, $comment, $invoice_no2);
+                                    // $this->deleteDebitHistories();
+                                }
                             }
                         }
                         $id = 1;
@@ -831,7 +829,7 @@
                             $bank_name = $_POST["bank"];
                             $this->addBank($customer_name, $address, $invoice_no, $customer_type, $transfer, $bank_name, $status, $staff, $date);
                         }
-                        $this->addSales($customer_name, $address, $invoice_no, $bill_type, $customer_type, $total, $cash, $transfer,$pos, $deposit, $balance, $staff, $date, $username);
+                        $this->addSales($customer_name, $address, $invoice_no, $bill_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit,$transport, $balance, $staff, $date, $username);
                         $row = mysqli_num_rows($this->checkDebit($customer_name, $address));
                         $history = mysqli_fetch_array($this->checkDebitHistories($customer_name, $address));
                         $balancedb = $history["total_balance"];
@@ -840,14 +838,16 @@
                         $total_paid = $deposit + $prev_total_paid;
                         $new_balance = $balance + $balancedb;
                         if ($balance != 0) {
-                            if ($row > 0) {
-                                $this->updateDebit($customer_name, $address, $total, $deposit, $balance, $staff, $date);
-                                $this->addtoDebitsHistory($customer_name, $address, $total, $deposit, $total_paid, $balance, $new_balance, $staff, $date, $comment, $invoice_no);
-                            } else {
-                                $this->addDebits($customer_name, $address, $total, $deposit, $balance, $staff, $date);
-                                $this->deleteDebit();
-                                $this->addDebitsHistory($customer_name, $address, $total, $deposit, $deposit, $balance, $new_balance, $staff, $date, $comment, $invoice_no);
-                                // $this->deleteDebitHistories();
+                            if ($customer_name != "MR Sir" && $address != "Address") {
+                                if ($row > 0) {
+                                    $this->updateDebit($customer_name, $address, $total, $deposit, $balance, $staff, $date);
+                                    $this->addtoDebitsHistory($customer_name, $address, $total, $deposit, $total_paid, $balance, $new_balance, $staff, $date, $comment, $invoice_no);
+                                } else {
+                                    $this->addDebits($customer_name, $address, $total, $deposit, $balance, $staff, $date);
+                                    $this->deleteDebit();
+                                    $this->addDebitsHistory($customer_name, $address, $total, $deposit, $deposit, $balance, $new_balance, $staff, $date, $comment, $invoice_no);
+                                    // $this->deleteDebitHistories();
+                                }
                             }
                         }
                         $id = 1;
@@ -1321,6 +1321,141 @@
                 } else {
                     $this->message = '<label class="text-danger">Please Select Sql File</label>';
                 }
+            }
+        }
+        public function addDeposit()
+        {
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                if (!empty($_POST["customer_name"] && $_POST["customer_address"])) {
+                    $customer_name = $_POST["customer_name"];
+                    $customer_address = $_POST["customer_address"];
+                    $cash = $_POST["cash"];
+                    $transfer = $_POST["transfer"];
+                    $pos = $_POST["pos"];
+                    $deposit_amount = $_POST["deposit_amount"];
+                    $date = date(" d-m-Y");
+                    $remark = "deposit";
+                    $status = "pending";
+                    $total = 0;
+                    $quantity = 0;
+                    $price = 0;
+                    $amount = 0;
+                    $balance = 0;
+                    $customer_type = "None";
+                    $old_deposit = 'None';
+                    $staff = $_SESSION['directorfullname'];
+                    $username = $_SESSION['directorusername'];
+                    $invoice_no = $_POST["invoice_no"];
+                    $_SESSION["invoice_no_deposit"] = $invoice_no;
+
+
+                    if ($_POST["cash"] == 0 && $_POST["transfer"] != 0 && $_POST["pos"] == 0) {
+                        $bill_type = "Transfer";
+                    } elseif ($_POST["cash"] != 0 && $_POST["transfer"] == 0 && $_POST["pos"] == 0) {
+                        $bill_type = "Cash";
+                    } elseif ($_POST["cash"] == 0 && $_POST["transfer"] == 0 && $_POST["pos"] != 0) {
+                        $bill_type = "POS";
+                    } elseif ($_POST["cash"] != 0 && $_POST["transfer"] != 0 && $_POST["pos"] == 0) {
+                        $bill_type = "Cash/Transfer";
+                    } elseif ($_POST["cash"] != 0 && $_POST["transfer"] == 0 && $_POST["pos"] != 0) {
+                        $bill_type = "Cash/POS";
+                    } elseif ($_POST["cash"] != 0 && $_POST["transfer"] != 0 && $_POST["pos"] != 0) {
+                        $bill_type = "Cash/Transfer/POS";
+                    } elseif ($_POST["cash"] == 0 && $_POST["transfer"] != 0 && $_POST["pos"] != 0) {
+                        $bill_type = "Transfer/POS";
+                    }
+
+                    $bank_name = $_POST["bank"];
+
+                    $fetch_last_invoice_no = $this->checkInvoice();
+                    $get  = mysqli_fetch_array($fetch_last_invoice_no);
+                    $invoice_no_db = $get["invoice_no"];
+                    $add_invoice_no = $invoice_no_db + 1;
+                    $invoice_no3 = ltrim($add_invoice_no, '0');
+                    if (strlen($invoice_no3) == 1) {
+                        $invoice_no2 =  "0000000" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 2) {
+                        $invoice_no2 =  "000000" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 3) {
+                        $invoice_no2 =  "00000" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 4) {
+                        $invoice_no2 =  "0000" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 5) {
+                        $invoice_no2 =  "000" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 6) {
+                        $invoice_no2 =  "00" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 7) {
+                        $invoice_no2 =  "0" . $add_invoice_no;
+                    } else {
+                        $invoice_no2 =  $add_invoice_no;
+                    }
+
+                    $fetch = $this->checkInvoice_noExist($invoice_no);
+                    $transport = 0;
+                    if (mysqli_num_rows($fetch) > 0) {
+                        $this->addBank($customer_name, $customer_address, $invoice_no2, $remark, $transfer, $bank_name, $status, $staff, $date);
+
+                        foreach ($_POST as $key => $value) {
+                            if (strpos($key, 'product-name-input-') !== false) {
+                                $product_name = $value;
+                                $inputIndex = substr($key, -1);
+                                $model_input = $_POST["model-input-$inputIndex"];
+                                $manufacturer_input = $_POST["manufacturer-input-$inputIndex"];
+
+                                $this->addSalesDetails($customer_name, $customer_address, $invoice_no2, $remark, $product_name, $model_input, $manufacturer_input, $quantity, $price, $amount, $staff, $date);
+                                $this->depositAddDetails($customer_name, $customer_address, $invoice_no2, $product_name, $model_input, $manufacturer_input, $date, $staff);
+                            }
+                        }
+                        $this->addSales($customer_name, $customer_address, $invoice_no2, $bill_type, $remark, $total, $cash, $transfer, $pos, $old_deposit, $deposit_amount,$transport,  $balance, $staff, $date, $username);
+                        $this->depositAdd($customer_name, $customer_address, $invoice_no2, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                        echo "<script> window.location = '../print/director/deposit.php' </script>";
+                    } else {
+                        $this->addBank($customer_name, $customer_address, $invoice_no, $remark, $transfer, $bank_name, $status, $staff, $date);
+
+                        foreach ($_POST as $key => $value) {
+                            if (strpos($key, 'product-name-input-') !== false) {
+                                $product_name = $value;
+                                $inputIndex = substr($key, -1);
+                                $model_input = $_POST["model-input-$inputIndex"];
+                                $manufacturer_input = $_POST["manufacturer-input-$inputIndex"];
+
+                                $this->addSalesDetails($customer_name, $customer_address, $invoice_no, $remark, $product_name, $model_input, $manufacturer_input, $quantity, $price, $amount, $staff, $date);
+                                $this->depositAddDetails($customer_name, $customer_address, $invoice_no, $product_name, $model_input, $manufacturer_input, $date, $staff);
+                            }
+                        }
+                        $this->addSales($customer_name, $customer_address, $invoice_no, $bill_type, $remark, $total, $cash, $transfer, $pos, $old_deposit, $deposit_amount,$transport,  $balance, $staff, $date, $username);
+                        $this->depositAdd($customer_name, $customer_address, $invoice_no, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                        echo "<script> window.location = '../print/director/deposit.php' </script>";
+                    }
+                } else {
+                    $this->customer_nameErr = "Please Enter Customer Name";
+                    $this->customer_addressErr = "Please Enter Customer Name";
+                }
+            }
+        }
+        public function viewDepositDetails()
+        {
+            if (isset($_GET['invoice'])) {
+                $invoice = $_GET['invoice'];
+                $customer_name = $_GET['customer_name'];
+                $address = $_GET['address'];
+                return $this->showDepositDetailsEach($invoice,$customer_name,$address);
+                     
+                
+            }
+        }
+        public function viewDeposit($table)
+        {
+            if (isset($_GET['invoice'])) {
+                $invoice = $_GET['invoice'];
+                $customer_name = $_GET['customer_name'];
+                $address = $_GET['address'];
+                $select = $this->showDepositEach($invoice,$customer_name, $address);
+                $row = mysqli_fetch_array($select);
+                return $row["$table"];
+
+                     
+                
             }
         }
     }

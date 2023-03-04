@@ -25,25 +25,15 @@
                               } ?>" href="cartoon.php" role="tab">Cartoon Sales</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/manager/deposit.php') {
+                                echo "active";
+                              } ?>" href="deposit.php" role="tab">Make Deposit</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/manager/sales_history_manager.php') {
                                 echo "active";
                               } ?>" href="sales_history_manager.php" role="tab">Sales History</a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/manager/settle_debit.php') {
-                                echo "active";
-                              } ?>" href="settle_debit.php" role="tab">Settle Debit</a>
-        </li> -->
-        <!-- <li class="nav-item">
-          <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/manager/debit_history.php') {
-                                echo "active";
-                              } ?>" href="debit_history.php" role="tab">View Debit History</a>
-        </li> -->
-        <!-- <li class="nav-item">
-          <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/manager/return_goods.php') {
-                                echo "active";
-                              } ?>" href="return_goods.php" role="tab">Return Goods</a>
-        </li> -->
         <li class="nav-item" style="float:right">
           <a class="nav-link" href="admin_logout.php" role="tab"> Logout <i class="text-warning text-lg fa fa-sign-out-alt"></i></a>
         </li>

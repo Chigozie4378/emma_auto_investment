@@ -22,7 +22,7 @@ $ctr = new Controller();
                 <div class="col-sm-8">
                   <div class="row">
                     <div class="col-md-3">
-                      <select name="title" class="form-control" style="width: 80px;">
+                      <select id="title" name="title" class="form-control" style="width: 80px;">
                         <?php
                         echo $_POST['title'];
                         if (isset($_POST["title"])) { ?>
@@ -385,47 +385,75 @@ $ctr = new Controller();
     xhttp.send();
   }
 
-  function transferCalc(transfer, pos, cash, total) {
+  function transferCalc(transfer, pos, cash, total, old_deposit, transport) {
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("depositBal").innerHTML = this.responseText;
-
-      }
-    };
-    xhttp.open("GET", "sales_ajax/load_deposit.php?cash=" + cash + "&pos=" + pos + "&transfer=" + transfer + "&total=" + total, true);
-    xhttp.send();
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("depositBal").innerHTML = this.responseText;
 
   }
+};
+xhttp.open("GET", "sales_ajax/load_deposit.php?cash=" + cash + "&pos=" + pos + "&transfer=" + transfer + "&total=" + total + "&old_deposit=" + old_deposit+ "&transport=" + transport, true);
+xhttp.send();
 
-  function cashCalc(transfer, pos, cash, total) {
+}
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("depositBal").innerHTML = this.responseText;
+function cashCalc(transfer, pos, cash, total, old_deposit, transport) {
 
-      }
-    };
-    xhttp.open("GET", "sales_ajax/load_deposit.php?cash=" + cash + "&pos=" + pos + "&transfer=" + transfer + "&total=" + total, true);
-    xhttp.send();
-
-  }
-
-  function posCalc(pos, transfer, cash, total) {
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("depositBal").innerHTML = this.responseText;
-
-      }
-    };
-    xhttp.open("GET", "sales_ajax/load_deposit.php?pos=" + pos + "&cash=" + cash + "&transfer=" + transfer + "&total=" + total, true);
-    xhttp.send();
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("depositBal").innerHTML = this.responseText;
 
   }
+};
+xhttp.open("GET", "sales_ajax/load_deposit.php?cash=" + cash + "&pos=" + pos + "&transfer=" + transfer + "&total=" + total + "&old_deposit=" + old_deposit+ "&transport=" + transport, true);
+xhttp.send();
+
+}
+
+function posCalc(pos, transfer, cash, total, old_deposit, transport) {
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("depositBal").innerHTML = this.responseText;
+
+  }
+};
+xhttp.open("GET", "sales_ajax/load_deposit.php?pos=" + pos + "&cash=" + cash + "&transfer=" + transfer + "&total=" + total + "&old_deposit=" + old_deposit+ "&transport=" + transport, true);
+xhttp.send();
+
+}
+
+function transportCalc(transport,pos, transfer, cash, total, old_deposit) {
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("depositBal").innerHTML = this.responseText;
+
+  }
+};
+xhttp.open("GET", "sales_ajax/load_deposit.php?transport=" + transport + "&pos=" + pos + "&cash=" + cash + "&transfer=" + transfer + "&total=" + total + "&old_deposit=" + old_deposit, true);
+xhttp.send();
+
+}
+
+function addTransport() {
+const xhttp = new XMLHttpRequest();
+
+xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("transportDiv").innerHTML =
+      this.responseText;
+  }
+};
+xhttp.open("GET", "sales_ajax/load_transport.php", true);
+xhttp.send();
+
+}
 
   function selectBank() {
     const xhttp = new XMLHttpRequest();
@@ -456,6 +484,33 @@ $ctr = new Controller();
   // Update the page every 10 seconds
   setInterval(updatePage, 300);
 
+
+
+
+  function checkDeposit(value1, value2, value3) {
+    $(document).ready(function() {
+      var title = value1;
+      var customer_name = value2;
+      var customer_address = value3;
+      if (customer_name && customer_address != "") {
+        $.ajax({
+          url: "sales_ajax/check_deposit.php",
+          method: "POST",
+          data: {
+            title: title,
+            customer_name: customer_name,
+            customer_address: customer_address
+          },
+          success: function(data) {
+            $("#deposit_amount").html(data);
+          }
+        });
+      } else {
+        $("#deposit_amount").css("display", "none");
+      }
+    });
+
+  }
 
   loadBillingProduct()
 </script>

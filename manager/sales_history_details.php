@@ -25,11 +25,12 @@ $show_result = mysqli_fetch_array($show);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/gif" sizes="20x20">
 
     <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="../assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="icon" href="../assets/images/logo.jpg" type="image/gif" sizes="20x20">
+
     <title>EMMA AUTO AND MULTI-SERVICES COMPANY</title>
     <style>
         /* th,td{
@@ -79,13 +80,12 @@ $show_result = mysqli_fetch_array($show);
                                         echo $staff[1]; ?></td>
                             </tr>
 
-
                     </table>
 
                 </div>
     </div>
     <div class="row" style="font-size: 18px;">
-        <div class="col-sm-12 fixTableHead">
+        <div class="col-sm-12">
             <h1 id='returnQty'></h1>
             <p id="new_cash"></p>
             <table class="table table-striped table-light table-bordered">
@@ -100,7 +100,7 @@ $show_result = mysqli_fetch_array($show);
                     <th class="d-print-none">Return good</th>
                 </tr>
                 <?php
-
+                $id = 0;
                 $result = $ctr->viewSalesDetails();
                 while ($row = mysqli_fetch_array($result)) { ?>
 
@@ -114,7 +114,7 @@ $show_result = mysqli_fetch_array($show);
                         <td><?php echo $row["amount"] ?></td>
                         <td class="d-print-none">
                             <input name="rQty" id="rQty<?php echo $row['id'] ?>" style="width:40px" type="text" placeholder="<?php echo $row["quantity"] ?>">&nbsp;&nbsp;&nbsp;&nbsp;
-                            <i type="submit" class="fa fa-undo text-danger" onclick="returnEachGoods('<?php echo $row['quantity'] ?>','<?php echo $row['product_name'] ?>','<?php echo $row['model'] ?>','<?php echo $row['manufacturer'] ?>','<?php echo $row['price'] ?>','<?php echo $row['amount'] ?>','<?php $ctr->viewSalesDetail('invoice_no'); ?>','<?php $ctr->viewSalesDetail('total'); ?>',document.getElementById('rQty<?php echo $row['id'] ?>').value,'<?php echo $ctr->viewSalesDetail('customer_name'); ?>','<?php echo $ctr->viewSalesDetail('address'); ?>','<?php echo $ctr->viewSalesDetail('payment_type'); ?>','<?php echo $ctr->viewSalesDetail('cash'); ?>','<?php echo $ctr->viewSalesDetail('transfer'); ?>','<?php echo $ctr->viewSalesDetail('deposit'); ?>','<?php echo $ctr->viewSalesDetail('balance'); ?>','<?php echo date('d-m-Y') ?>','<?php echo $_SESSION['managerfullname']; ?>')"></i>
+                            <i type="submit" class="fa fa-undo text-danger" onclick="returnEachGoods('<?php echo $row['quantity'] ?>','<?php echo $row['product_name'] ?>','<?php echo $row['model'] ?>','<?php echo $row['manufacturer'] ?>','<?php echo $row['price'] ?>','<?php echo $row['amount'] ?>','<?php $ctr->viewSalesDetail('invoice_no'); ?>','<?php $ctr->viewSalesDetail('total'); ?>',document.getElementById('rQty<?php echo $row['id'] ?>').value,'<?php echo $ctr->viewSalesDetail('customer_name'); ?>','<?php echo $ctr->viewSalesDetail('address'); ?>','<?php echo $ctr->viewSalesDetail('payment_type'); ?>','<?php echo $ctr->viewSalesDetail('cash'); ?>','<?php echo $ctr->viewSalesDetail('transfer'); ?>','<?php echo $ctr->viewSalesDetail('deposit'); ?>','<?php echo $ctr->viewSalesDetail('balance'); ?>','<?php echo date('d-m-Y') ?>','<?php echo $_SESSION['directorfullname']; ?>')"></i>
 
                     </tr>
                 <?php
@@ -134,6 +134,13 @@ $show_result = mysqli_fetch_array($show);
                         <td class="d-print-none" style="font-weight: bold;">POS: <input onclick="this.select()" style="width:90px" type="text" id="pos1" required></td>
                         <td> <button type="submit" onclick="updatePayment('<?php $ctr->viewSalesDetail('invoice_no'); ?>',getElementById('transfer1').value,getElementById('bank').value,'<?php $ctr->viewSalesDetail('deposit') ?>','<?php $ctr->viewSalesDetail('total') ?>','<?php echo $ctr->viewSalesDetail('customer_name'); ?>','<?php echo $ctr->viewSalesDetail('address'); ?>','<?php echo date('d-m-Y') ?>','<?php echo $_SESSION['directorfullname']; ?>',getElementById('cash1').value,'<?php echo $ctr->viewSalesDetail('customer_type'); ?>',getElementById('pos1').value)" type="submit" class=" btn btn-sm btn-info d-print-none">Change Payment</button></td>
                     </form>
+                    <?php 
+                    if ($ctr->viewSalesReceipt("old_deposit")!=0){?>
+                        <td style="font-weight: bold;">Old Deposit: # <?php $ctr->viewSalesDetail("old_deposit"); ?></td>
+                   <?php }
+                    ?>
+                    
+                    
                     <td style="font-weight: bold;">Cash: # <?php $ctr->viewSalesDetail("cash"); ?></td>
                     <td style="font-weight: bold;">POS:# <?php $ctr->viewSalesDetail("pos"); ?></td>
                     <td style="font-weight: bold;">Transfer:# <?php $ctr->viewSalesDetail("transfer"); ?></td>
@@ -145,15 +152,23 @@ $show_result = mysqli_fetch_array($show);
                 <?php
 
                 if (mysqli_num_rows($show) > 0) { ?>
-                    <tr>
-                        <td colspan="3"></td>
+                  <tr>
+                        <td colspan="2"></td>
+                        <td style="font-weight: bold;">Transport #  <?php $ctr->viewSalesDetail("transport"); ?></td>
                         <td style="font-weight: bold;">Old Balance: </td>
-                        <td style="font-weight: bold;"># <?php echo number_format($show_result["balance"] - $ctr->viewSalesReceipt("balance"), 2); ?></td>
+                        <td style="font-weight: bold;"># <?php $old_bal = $show_result["balance"] - $ctr->viewSalesReceipt("balance");
+                                                            echo number_format($old_bal, 2); ?></td>
                         <td style="font-weight: bold;">Total Balance:</td>
                         <td style="font-weight: bold;"># <?php echo number_format($show_result["balance"], 2); ?></td>
+
                     </tr>
                 <?php }
                 ?>
+                <!-- <tr>
+                    <td colspan="5"></td>
+                    <td style="font-weight: bold;">Balance:</td>
+                    <td style="font-weight: bold;"><?php $ctr->viewSalesDetail("balance"); ?></td>
+                </tr> -->
             </table>
 
         </div>
@@ -201,7 +216,7 @@ $show_result = mysqli_fetch_array($show);
         <div class="col-12 text-center">
             <form action="" method="post">
                 <input name="print" type="submit" class="btn btn-primary d-print-none" value="print" onclick="printpage()">
-                <a href="../print/manager/index_s.php?invoice_no=<?php $ctr->viewSalesDetail("invoice_no"); ?>" class="btn btn-success d-print-none">Print Retail</a>
+                <a href="../print/director/index_s.php?invoice_no=<?php $ctr->viewSalesDetail("invoice_no"); ?>" class="btn btn-success d-print-none">Print Retail</a>
                 <a href="sales_history_details.php?invoice_no1=<?php $ctr->viewSalesDetail("invoice_no") ?>" class="btn btn-danger d-print-none">Return All Goods</a>
                 <a href="sales_history.php" class="btn btn-info d-print-none">Go Back</a>
 
@@ -259,6 +274,7 @@ $show_result = mysqli_fetch_array($show);
                             balance: balance,
                             date: date,
                             staff: staff
+
                         },
                         success: function(data) {
                             $('#returnQty').html(data);
@@ -270,6 +286,7 @@ $show_result = mysqli_fetch_array($show);
             });
 
         }
+
 
         function updatePayment(value1, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12) {
             $(document).ready(function() {

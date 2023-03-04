@@ -118,13 +118,28 @@
              }             
              $html.='<tr>
                 <td colspan="5" style="text-align: right;"><b>Total Amount: </b></td>
-                <td>'.$result["total"].'</td>
+                <td colspan="2">'.$result["total"].'</td>
             </tr>
+           
             <tr>
+            <td></td>
             <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
             <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
             <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>
-            <td colspan="2" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>
+            
+        </tr>
+        <tr>';
+             if ($result["old_deposit"] == 0){
+                $html.='
+                <td colspan ="4"></td>
+                <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
+             }else{
+                $html.= '
+                <td colspan="4" style="text-align: left;"><b>Old Deposit: '.$result["old_deposit"].'</b></td>
+                <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
+             }
+        $html.='
+        
         </tr>
         </table>
         <br/>

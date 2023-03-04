@@ -124,6 +124,14 @@
                 </p>
              </a>
            </li>
+           <li class="nav-item">
+              <a href="show_deposit.php" class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/manager/show_deposit.php'){ echo "active"; } ?>">
+                <i class="nav-icon fa fa-money-bill"></i>
+                 <p>
+                    View Deposit
+                </p>
+             </a>
+           </li>
            <li class="nav-item has-treeview menu-open">
               <a href="#" class="nav-link <?php if (($_SERVER['PHP_SELF'] == '/emma_auto_investment/manager/return_goods.php') OR ($_SERVER['PHP_SELF'] == '/emma_auto_investment/manager/return_each_goods.php')){ echo "active"; } ?>">
                 <i class="nav-icon fa fa-credit-card"></i>

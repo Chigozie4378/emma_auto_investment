@@ -27,7 +27,7 @@ include "includes/sales/header.php";
                 </span>EMMA AUTO AND MULTI-SERVICES COMPANY</h4>
             <p class="text-dark" style="font-size:18px;">Distributor for Chanlin, Shiroro, Unigo, Jeely, Jieng, Endurance, Tako, Donaten, Sinosat,
                 and Sunrain Motorcycle spare parts of all brands of Motorcycles and Tricycle parts all Genuine parts, such as Honda, Bajaj, TVS, Hero and all brands of Motorcycles Engine and Tricycles. <br>
-                <span>Address: No. 37A, Opposite Jesus Life Church, Asubiaro Hospital Junction, Osogbo, Osun State.</span></br> 
+                <span>Address: No. 37A, Opposite Jesus Life Church, Asubiaro Hospital Junction, Osogbo, Osun State.</span></br>
                 <span style="font-weight: bold">Tel: 08062063060, 08119222292, 07063684266</span>
             </p>
             <span class="bg-danger rounded-pill px-2"">Invoice</span>
@@ -98,7 +98,13 @@ include "includes/sales/header.php";
 
                 ?>
                 <tr>
-                    <td colspan="2"></td>
+                    <td colspan="1"></td>
+                    <?php
+                    if ($result["old_deposit"] != 0) { ?>
+                        <td style="font-weight: bold;">Old Deposit:# <?php echo number_format($result["old_deposit"], 2); ?></td>
+                    <?php }
+                    ?>
+
                     <td style="font-weight: bold;">Cash:# <?php echo number_format($result["cash"], 2); ?></td>
                     <td style="font-weight: bold;">Transfer:# <?php echo number_format($result["transfer"], 2); ?></td>
                     <td style="font-weight: bold;">POS:# <?php echo number_format($result["pos"], 2); ?></td>
@@ -107,21 +113,18 @@ include "includes/sales/header.php";
                 </tr>
                 <?php
 
-                if ($result["balance"] != 0 OR mysqli_num_rows($show)>0) { ?>
+                if ($result["balance"] != 0 or mysqli_num_rows($show) > 0) { ?>
                     <tr>
-                        <td colspan="3"></td>
+                        <td colspan="2"></td>
+                        <td style="font-weight: bold;">Transport # <?php echo number_format($result["transport"], 2); ?></td>
                         <td style="font-weight: bold;">Old Balance: </td>
                         <td style="font-weight: bold;"># <?php echo number_format($show_result["balance"] - $result["balance"], 2); ?></td>
                         <td style="font-weight: bold;">Total Balance:</td>
                         <td style="font-weight: bold;"># <?php echo number_format($show_result["balance"], 2); ?></td>
+
                     </tr>
                 <?php }
                 ?>
-                <!-- <tr>
-                    <td colspan="5"></td>
-                    <td style="font-weight: bold;">Balance:</td>
-                    <td style="font-weight: bold;"># <?php echo number_format($result["balance"], 2); ?></td>
-                </tr> -->
             </table>
 
         </div>

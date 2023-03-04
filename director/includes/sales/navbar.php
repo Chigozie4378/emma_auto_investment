@@ -25,6 +25,11 @@
                               } ?>" href="cartoon.php" role="tab">Cartoon Sales</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/deposit.php') {
+                                echo "active";
+                              } ?>" href="deposit.php" role="tab">Make Deposit</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/sales_history_director.php') {
                                 echo "active";
                               } ?>" href="sales_history_director.php" role="tab">Sales History</a>

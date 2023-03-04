@@ -545,9 +545,9 @@ class Model extends DB
     {
         mysqli_query($this->connect(), "INSERT INTO bank VALUES(null,'$customer_name', '$address', '$invoice_no','$customer_type','$transfer','$bank_name', '$status','$staff', '$date')");
     }
-    public function addSales($customer_name, $address, $invoice_no, $bill_type, $customer_type, $total, $cash, $transfer,$pos, $deposit, $balance, $staff, $date, $username)
+     public function addSales($customer_name, $address, $invoice_no, $bill_type, $customer_type, $total, $cash, $transfer,$pos,$old_deposit, $deposit, $transport, $balance, $staff, $date, $username)
     {
-        mysqli_query($this->connect(), "INSERT INTO sales VALUES(null,'$customer_name', '$address', '$invoice_no', '$bill_type','$customer_type', '$total','$cash','$transfer','$pos','$deposit', '$balance','$staff', '$date', '$username','')");
+        mysqli_query($this->connect(), "INSERT INTO sales VALUES(null,'$customer_name', '$address', '$invoice_no', '$bill_type','$customer_type', '$total','$cash','$transfer','$pos','$old_deposit','$deposit', '$transport', '$balance','$staff', '$date', '$username','')");
     }
     public function addSalesDetails($customer_name, $address, $invoice_no, $customer_type, $productname_session, $model_session, $manufacturer_session, $quantity_session, $price_session, $amount, $staff, $date)
     {
@@ -965,5 +965,60 @@ class Model extends DB
     {
         $select = mysqli_query($this->connect(), "SELECT * FROM sales WHERE invoice_no = '$invoice_no'");
         return $select; 
+    }
+    
+    // Deposit Section
+    public function depositAdd($customer_name, $customer_address,$invoice_no,$bill_type,$cash,$transfer,$pos,$deposit_amount,$date,$staff){
+        mysqli_query($this->connect(), "INSERT INTO deposit (customer_name, customer_address,invoice_no,payment_type,cash,transfer,pos, deposit_amount,date,staff) VALUES ('$customer_name', '$customer_address','$invoice_no','$bill_type','$cash','$transfer','$pos','$deposit_amount','$date','$staff')");
+
+    }
+    public function depositAddDetails($customer_name, $customer_address,$invoice_no,$product_name,$model_input,$manufacturer_input,$date, $staff){
+        mysqli_query($this->connect(), "INSERT INTO deposit_details (customer_name, customer_address,invoice_no, product_name, model, manufacturer,date,staff) VALUES ('$customer_name', '$customer_address','$invoice_no','$product_name', '$model_input', '$manufacturer_input','$date','$staff')");
+
+    }
+    public function showDepositInvoice($invoice_no)
+    {
+        return mysqli_query($this->connect(), "SELECT * FROM deposit WHERE invoice_no = '$invoice_no'");
+    }
+    public function showDepositDetailsInvoice($invoice_no)
+    {
+        return mysqli_query($this->connect(), "SELECT * FROM deposit_details WHERE invoice_no = '$invoice_no'");
+    }
+    public function showAllDeposit()
+    {
+        return mysqli_query($this->connect(), "SELECT * FROM deposit ORDER BY id DESC");
+    }
+    
+    public function showDeposit($customer_name, $customer_address)
+    {
+        return mysqli_query($this->connect(), "SELECT * FROM deposit WHERE customer_name = '$customer_name' AND customer_address = '$customer_address'");
+    }
+    public function showDepositDetailsEach($invoice_no,$customer_name, $customer_address)
+    {
+        return mysqli_query($this->connect(), "SELECT * FROM deposit_details WHERE invoice_no = '$invoice_no' AND customer_name = '$customer_name' AND customer_address = '$customer_address'");
+    }
+    public function showDepositEach($invoice_no,$customer_name, $customer_address)
+    {
+        return mysqli_query($this->connect(), "SELECT * FROM deposit WHERE invoice_no = '$invoice_no' AND customer_name = '$customer_name' AND customer_address = '$customer_address'");
+    }
+    public function showDepositDetails($customer_name, $customer_address)
+    {
+        return mysqli_query($this->connect(), "SELECT * FROM deposit_details WHERE customer_name = '$customer_name' AND customer_address = '$customer_address'");
+    }
+    public function deleteDeposit($customer_name,$address){
+        return mysqli_query($this->connect(), "DELETE FROM deposit WHERE customer_name = '$customer_name' AND customer_address = '$address'");
+    }
+    public function deleteDepositDetails($customer_name,$address){
+        return mysqli_query($this->connect(), "DELETE FROM deposit_details WHERE customer_name = '$customer_name' AND customer_address = '$address'");
+    }
+    public function deleteSalesDeposit($invoice_no)
+    {
+        $delete = mysqli_query($this->connect(), "DELETE FROM sales WHERE invoice_no = '$invoice_no'");
+        return $delete;
+    }
+    public function deleteSalesDepositDetails($invoice_no)
+    {
+        $delete = mysqli_query($this->connect(), "DELETE FROM sales_details WHERE invoice_no = '$invoice_no'");
+        return $delete;
     }
 }

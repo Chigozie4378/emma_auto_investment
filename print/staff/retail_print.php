@@ -99,36 +99,50 @@ if (isset($_SESSION["invoice"])){
         </table>
         <br/>
         <table class="table">
-            <tr>
-                <th class="qty">Qty</th>
-                <th class="goods" colspan="3">Description of Goods</th>
-                <th class="rate">Rate</th>
-                <th class="amount">Amount</th>
-            </tr>';
-            $select = $mod->showInvoiceSalesDetails($_SESSION['invoice']);
-                        while($row = mysqli_fetch_array($select)){
-                            
-                     
-                        $html.=
+        <tr>
+            <th class="qty">Qty</th>
+            <th class="goods" colspan="4">Description of Goods</th>
+            <th class="rate">Rate</th>
+            <th class="amount">Amount</th>
+        </tr>';
+        $select = $mod->showInvoiceSalesDetails($_SESSION['invoice']);
+                    while($row = mysqli_fetch_array($select)){
                         
-                '<tr>
-                <td class="qty">'.$row['quantity'].'</td>
-                <td class="goods"  colspan="3">'.$row['product_name']." ".$row['model']." ".$row['manufacturer'].'</td>
-                <td class="rate">'.$row['price'].'</td>
-                <td class="amount">'.$row['amount'].'</td>
-            </tr>';
-             }             
-             $html.='<tr>
-                <td colspan="5" style="text-align: right;"><b>Total Amount: </b></td>
-                <td>'.$result["total"].'</td>
-            </tr>
-            <tr>
-                <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
-                <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
-                <td colspan="2" style="text-align: left; font-family:Gill Sans, Gill Sans MT, Calibri, Trebuchet MS, sans-serif;"><b>POS: '.$result["pos"].'</b></td>
-                <td colspan="2" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>
-            </tr>
-        </table>
+                 
+                    $html.=
+                    
+            '<tr>
+            <td class="qty">'.$row['quantity'].'</td>
+            <td class="goods"  colspan="4">'.$row['product_name']." ".$row['model']." ".$row['manufacturer'].'</td>
+            <td class="rate">'.$row['price'].'</td>
+            <td class="amount">'.$row['amount'].'</td>
+        </tr>';
+         }             
+         $html.='<tr>
+            <td colspan="5" style="text-align: right;"><b>Total Amount: </b></td>
+            <td colspan="2">'.$result["total"].'</td>
+        </tr>
+        <tr>
+        <td></td>
+        <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
+        <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
+        <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>
+        
+    </tr>
+    <tr>';
+         if ($result["old_deposit"] == 0){
+            $html.='
+            <td colspan ="4"></td>
+            <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
+         }else{
+            $html.= '
+            <td colspan="4" style="text-align: left;"><b>Old Deposit: '.$result["old_deposit"].'</b></td>
+            <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
+         }
+    $html.='
+    
+    </tr>
+    </table>
         <br/>
         <span style="font-size:10px;font-weight:bold;">Customer Sign. ____________&nbsp;&nbsp;Cashier Sign. ____________ </span>
         <p style="text-align:center;font-size:10px;font-weight:bold;">You Must Be Born Again!</p>

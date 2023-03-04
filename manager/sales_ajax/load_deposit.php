@@ -3,8 +3,10 @@ $total  = (int)$_GET["total"];
 $cash = (int)$_GET["cash"];
 $transfer = (int)$_GET["transfer"];
 $pos = (int)$_GET["pos"];
-$deposit = $cash + $transfer +$pos;
-$balance = $total - $deposit;
+$old_deposit = (int)$_GET["old_deposit"];
+$transport = (int)$_GET["transport"];
+$deposit = $cash + $transfer +$pos +$old_deposit;
+$balance = $total - $deposit +$transport;
 
 ?>
 <tr>
