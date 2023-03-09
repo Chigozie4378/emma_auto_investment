@@ -119,7 +119,11 @@ $sum_debit = mysqli_fetch_array($select);
                                                 <?php echo $row['transfer'] ?>
                                             </td>
                                             <td style="text-transform:uppercase">
-                                                <?php echo $row['pos'] ?>
+                                                <?php echo $row['pos'];
+                                                if ($row["pos"] != 0) {
+                                                    $select_pos = mysqli_fetch_array($mod->showPos($row['customer_name'], $row['address'], $row['invoice_no']));
+                                                    echo " (" . $select_pos["pos_type"] . ")";
+                                                } ?>
                                             </td>
                                             <td style="text-transform:uppercase">
                                                 <?php echo $row['deposit'] ?>

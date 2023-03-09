@@ -140,7 +140,7 @@ $show_result = mysqli_fetch_array($show);
                     ?>
                     
                     <td style="font-weight: bold;">Cash: # <?php $ctr->viewSalesDetail("cash"); ?></td>
-                    <td style="font-weight: bold;">POS:# <?php $ctr->viewSalesDetail("pos"); ?></td>
+                    <td style="font-weight: bold;">POS:# <?php $ctr->viewSalesDetail("pos"); if ($ctr->viewSalesReceipt("pos") !=0){ echo " (".$ctr->viewPosType("pos_type").")";} ?></td>
                     <td style="font-weight: bold;">Transfer:# <?php $ctr->viewSalesDetail("transfer"); ?></td>
 
                     <td style="font-weight: bold;">Total Paid:</td>
@@ -190,7 +190,7 @@ $show_result = mysqli_fetch_array($show);
 
             <div class="form-inline" style="float: right;">
                 <label for="pwd">Supplied By:</label>
-                <input type="text" class="form-control" id="pwd">
+                <input type="text" class="form-control" id="pwd" value="MR/MISS <?php echo $ctr->supplyCheck('supplied_by')?>" readonly>
 
             </div>
         </div>
@@ -200,7 +200,7 @@ $show_result = mysqli_fetch_array($show);
 
             <div class="form-inline" style="float: right;">
                 <label for="pwd">Checked By:</label>
-                <input type="text" class="form-control" id="pwd">
+                <input type="text" class="form-control" id="pwd" value="MR/MISS <?php echo $ctr->supplyCheck('checked_by')?>" readonly>
 
             </div>
         </div>

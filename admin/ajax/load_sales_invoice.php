@@ -11,7 +11,7 @@ $result4 = mysqli_fetch_array($mod->showRecordDebit($date));
 // $select = $mod->showRecord($date);
 ?>
 <table class="table table-hover">
- 
+
     <thead>
 
         <tr>
@@ -49,8 +49,8 @@ $result4 = mysqli_fetch_array($mod->showRecordDebit($date));
                         <?php echo $row['address'] ?>
                     </td>
                     <td style="text-transform:uppercase">
-                     <?php echo $row['invoice_no'] ?>
-                     </td>
+                        <?php echo $row['invoice_no'] ?>
+                    </td>
                     <td style="text-transform:uppercase">
                         <?php echo $row['payment_type'] ?>
                     </td>
@@ -67,7 +67,11 @@ $result4 = mysqli_fetch_array($mod->showRecordDebit($date));
                         <?php echo $row['transfer'] ?>
                     </td>
                     <td style="text-transform:uppercase">
-                        <?php echo $row['pos'] ?>
+                        <?php echo $row['pos'];
+                        if ($row["pos"] != 0) {
+                            $select_pos = mysqli_fetch_array($mod->showPos($row['customer_name'], $row['address'], $row['invoice_no']));
+                            echo " (" . $select_pos["pos_type"] . ")";
+                        } ?>
                     </td>
                     <td style="text-transform:uppercase">
                         <?php echo $row['deposit'] ?>

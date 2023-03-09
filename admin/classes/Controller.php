@@ -42,23 +42,23 @@
         {
             if (isset($_GET['invoice'])) {
                 $invoice = $_GET['invoice'];
-                $customer_name=$_GET['customer_name'];
-                $address=$_GET['address'];
+                $customer_name = $_GET['customer_name'];
+                $address = $_GET['address'];
                 if ($_GET['invoice']) {
-                    $row = mysqli_fetch_array($this->showInvoiceSales1($invoice,$customer_name,$address));
+                    $row = mysqli_fetch_array($this->showInvoiceSales1($invoice, $customer_name, $address));
                     echo $row["$tablename"];
                 }
             }
         }
-        
+
         public function viewSalesReceipt($tablename)
         {
             if (isset($_GET['invoice'])) {
                 $invoice = $_GET['invoice'];
-                $customer_name=$_GET['customer_name'];
-                $address=$_GET['address'];
+                $customer_name = $_GET['customer_name'];
+                $address = $_GET['address'];
                 if ($_GET['invoice']) {
-                    $row = mysqli_fetch_array($this->showInvoiceSales1($invoice,$customer_name,$address));
+                    $row = mysqli_fetch_array($this->showInvoiceSales1($invoice, $customer_name, $address));
                     return $row["$tablename"];
                 }
             }
@@ -67,14 +67,14 @@
         {
             if (isset($_GET['invoice'])) {
                 $invoice = $_GET['invoice'];
-                $customer_name=$_GET['customer_name'];
-                $address=$_GET['address'];
+                $customer_name = $_GET['customer_name'];
+                $address = $_GET['address'];
                 if ($_GET['invoice']) {
-                    return $row = $this->showInvoiceSalesDetails1($invoice,$customer_name,$address);
+                    return $row = $this->showInvoiceSalesDetails1($invoice, $customer_name, $address);
                 }
             }
         }
-    
+
         public function viewSalesDetailDebit()
         {
             if (isset($_GET['invoice'])) {
@@ -83,8 +83,19 @@
                 return $this->showDebitInvoice($customer_name, $address);
             }
         }
-        
 
+        public function viewPosType($tablename)
+        {
+            if (isset($_GET['invoice'])) {
+                $invoice = $_GET['invoice'];
+                $customer_name = $_GET['customer_name'];
+                $address = $_GET['address'];
+                if ($_GET['invoice']) {
+                    $row = mysqli_fetch_array($this->showPos($customer_name, $address, $invoice));
+                    return $row["$tablename"];
+                }
+            }
+        }
 
         public function addNewCustomer()
         {
@@ -255,6 +266,18 @@
                 $this->deleteTransfer($invoice_no);
                 // new Redirect("confirm_transfer.php");
 
+            }
+        }
+        public function supplyCheck($tablename)
+        {
+            if (isset($_GET['invoice'])) {
+                $invoice = $_GET['invoice'];
+                $customer_name = $_GET['customer_name'];
+                $address = $_GET['address'];
+                if ($_GET['invoice']) {
+                    $row = mysqli_fetch_array($this->showSupplyCheck($invoice, $customer_name, $address));
+                    return $row["$tablename"];
+                }
             }
         }
     }

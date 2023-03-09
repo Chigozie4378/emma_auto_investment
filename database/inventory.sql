@@ -12,7 +12,7 @@ CREATE TABLE `bank` (
   `staff` varchar(255) NOT NULL,
   `date` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1071 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1073 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO bank VALUES("1011","MR Sir","Address","00002124","retail","0","First Bank","pending","RAPHEAL MR"," 07-02-2023");
 INSERT INTO bank VALUES("1012","MR Sir","Address","00002128","retail","15500","POS","pending","RAPHEAL MR"," 08-02-2023");
@@ -60,6 +60,20 @@ INSERT INTO bank VALUES("1066","Mr ktyyy","khugf","00002199","deposit","0","","p
 INSERT INTO bank VALUES("1067","Mr Goke","Ikirun","00002205","deposit","60000","Zenith Bank","pending","ADESOJI STEPHEN"," 01-03-2023");
 INSERT INTO bank VALUES("1068","Mr David","Ilesha","00002206","deposit","0","","pending","RAPHEAL MR"," 01-03-2023");
 INSERT INTO bank VALUES("1070","Mr Alloy","Ilesha","00002213","deposit","100000","First Bank","pending","ADESOJI STEPHEN"," 01-03-2023");
+INSERT INTO bank VALUES("1071","MR Tola","Ilesha","00002219","wholesale","8000","First Bank","pending","ADESOJI STEPHEN"," 01-03-2023");
+
+
+
+
+
+CREATE TABLE `bulk_sms` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 
 
@@ -82,9 +96,10 @@ CREATE TABLE `customer` (
   `address` varchar(255) NOT NULL,
   `phone_no` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO customer VALUES("1","MRS AFUNWA","MODAKEKE","08169677559");
+INSERT INTO customer VALUES("1","MRS AFUNWA","MODAKEKE","+2348169677559");
+INSERT INTO customer VALUES("2","MR Sunday","Osogbo","+2347035483213");
 
 
 
@@ -100,7 +115,7 @@ CREATE TABLE `debit` (
   `staff_name` varchar(255) NOT NULL,
   `date` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO debit VALUES("1","MR ALFA ABIOLA","ILESHA","3508540","3008560","499980","EZEH EMMANUEL","18-01-2023");
 INSERT INTO debit VALUES("6","MRS AFUNWA","MODAKEKE","1759725","2032330","1070340","ADESOJI STEPHEN"," 07-01-2023");
@@ -211,6 +226,17 @@ INSERT INTO debit VALUES("202","MR AKOREDE","OSOGBO","12300","24600","-12300","E
 INSERT INTO debit VALUES("203","MR Sir g","OSOGBO","1850","1000","850","EZEH EMMANUEL"," 15-02-2023");
 INSERT INTO debit VALUES("204","MRS AYO","IFON OSUN","7380","0","7380","EZEH EMMANUEL"," 17-02-2023");
 INSERT INTO debit VALUES("205","MR Sir","Address","1850","0","1850","ADESOJI STEPHEN"," 01-03-2023");
+INSERT INTO debit VALUES("206","MR David","Ilesha","47700","0","48000","RAPHEAL MR"," 01-03-2023");
+INSERT INTO debit VALUES("207","MR James","Ilesha","48500","0","48800","ADESOJI STEPHEN"," 01-03-2023");
+INSERT INTO debit VALUES("208","MR James","Oke Oniti","12300","0","12500","RAPHEAL MR"," 01-03-2023");
+INSERT INTO debit VALUES("209","MR Tola","Ilesha","20300","8000","13100","ADESOJI STEPHEN"," 01-03-2023");
+INSERT INTO debit VALUES("210","MR David","Osogbo","12300","0","12300","EZEH EMMANUEL"," 01-03-2023");
+INSERT INTO debit VALUES("211","MR afa","Osogbo","11900","0","11900","RAPHEAL MR"," 01-03-2023");
+INSERT INTO debit VALUES("212","MR dele","Osogbo","8500","0","8500","RAPHEAL MR"," 01-03-2023");
+INSERT INTO debit VALUES("213","MR peter","Osogbo","1680","0","1680","RAPHEAL MR"," 01-03-2023");
+INSERT INTO debit VALUES("214","MR john","Osogbo","24500","0","24500","RAPHEAL MR"," 01-03-2023");
+INSERT INTO debit VALUES("215","MR Daniel","Osogbo","15000","10000","5000","RAPHEAL MR"," 04-03-2023");
+INSERT INTO debit VALUES("216","MR Daniel","ghfdhd","34000","0","34000","RAPHEAL MR"," 04-03-2023");
 
 
 
@@ -230,7 +256,7 @@ CREATE TABLE `debit_histories` (
   `comments` varchar(255) NOT NULL,
   `invoice_no` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=761 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=773 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO debit_histories VALUES("1","MR ALFA ABIOLA","ILESHA","728880","0","0","728880","728880","RAPHEAL MR"," 06-12-2022","New Goods Bought","");
 INSERT INTO debit_histories VALUES("2","MR ABIDEEN","ILOBU","77720","0","0","77720","77720","RAPHEAL MR"," 06-12-2022","New Goods Bought","");
@@ -926,6 +952,18 @@ INSERT INTO debit_histories VALUES("757","MR AKOREDE","OSOGBO","0","12300","2460
 INSERT INTO debit_histories VALUES("758","MR Sir g","OSOGBO","1850","1000","1000","850","850","EZEH EMMANUEL"," 15-02-2023","New Goods Bought","00002159");
 INSERT INTO debit_histories VALUES("759","MRS AYO","IFON OSUN","7380","0","0","7380","7380","EZEH EMMANUEL"," 17-02-2023","New Goods Bought","00002160");
 INSERT INTO debit_histories VALUES("760","MR Sir","Address","1850","0","0","1850","1850","ADESOJI STEPHEN"," 01-03-2023","New Goods Bought","00002210");
+INSERT INTO debit_histories VALUES("761","MR David","Ilesha","47700","0","0","48000","48000","RAPHEAL MR"," 01-03-2023","New Goods Bought","00002214");
+INSERT INTO debit_histories VALUES("762","MR James","Ilesha","48500","0","0","48800","48800","ADESOJI STEPHEN"," 01-03-2023","New Goods Bought","00002215");
+INSERT INTO debit_histories VALUES("763","MR James","Oke Oniti","12300","0","0","12500","12500","RAPHEAL MR"," 01-03-2023","New Goods Bought","00002216");
+INSERT INTO debit_histories VALUES("764","MR Tola","Ilesha","12300","0","0","12600","12600","EZEH EMMANUEL"," 01-03-2023","New Goods Bought","00002217");
+INSERT INTO debit_histories VALUES("765","MR David","Osogbo","12300","0","0","12300","12300","EZEH EMMANUEL"," 01-03-2023","New Goods Bought","00002218");
+INSERT INTO debit_histories VALUES("766","MR Tola","Ilesha","8000","8000","8000","500","13100","ADESOJI STEPHEN"," 01-03-2023","New Goods Bought","00002219");
+INSERT INTO debit_histories VALUES("767","MR afa","Osogbo","11900","0","0","11900","11900","RAPHEAL MR"," 01-03-2023","New Goods Bought","00002220");
+INSERT INTO debit_histories VALUES("768","MR dele","Osogbo","8500","0","0","8500","8500","RAPHEAL MR"," 01-03-2023","New Goods Bought","00002221");
+INSERT INTO debit_histories VALUES("769","MR peter","Osogbo","1680","0","0","1680","1680","RAPHEAL MR"," 01-03-2023","New Goods Bought","00002222");
+INSERT INTO debit_histories VALUES("770","MR john","Osogbo","24500","0","0","24500","24500","RAPHEAL MR"," 01-03-2023","New Goods Bought","00002223");
+INSERT INTO debit_histories VALUES("771","MR Daniel","Osogbo","15000","10000","10000","5000","5000","RAPHEAL MR"," 04-03-2023","New Goods Bought","00002225");
+INSERT INTO debit_histories VALUES("772","MR Daniel","ghfdhd","34000","0","0","34000","34000","RAPHEAL MR"," 04-03-2023","New Goods Bought","00002226");
 
 
 
@@ -996,6 +1034,54 @@ INSERT INTO deposit_details VALUES("41","Mr ktyyy","khugf","00002199","","","","
 INSERT INTO deposit_details VALUES("43","Mr David","Ilesha","00002206","","",""," 01-03-2023","RAPHEAL MR");
 INSERT INTO deposit_details VALUES("44","Mr Tunji","Ilesha","00002212","","",""," 01-03-2023","RAPHEAL MR");
 INSERT INTO deposit_details VALUES("45","Mr Alloy","Ilesha","00002213","","",""," 01-03-2023","ADESOJI STEPHEN");
+
+
+
+
+
+CREATE TABLE `pos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_name` varchar(255) NOT NULL,
+  `customer_address` varchar(255) NOT NULL,
+  `invoice_no` varchar(255) NOT NULL,
+  `pos_type` varchar(122) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO pos VALUES("1","MR Sir","Address","00002227","");
+INSERT INTO pos VALUES("2","MR Sir","Address","00002228","Monie Point");
+INSERT INTO pos VALUES("3","MR Tola","Osogbo","00002229","Opay");
+INSERT INTO pos VALUES("4","MR David","Osogbo","00002230","");
+INSERT INTO pos VALUES("5","MR Sir","Address","00002231","Opay");
+INSERT INTO pos VALUES("6","MR Sir","Address","00002232","Opay");
+INSERT INTO pos VALUES("7","MR Sir","Address","00002233","Opay");
+INSERT INTO pos VALUES("8","MR Sir","Address","00002234","");
+INSERT INTO pos VALUES("9","MR Sir","Address","00002235","Opay");
+INSERT INTO pos VALUES("10","MR James","Osogbo","00002236","Opay");
+INSERT INTO pos VALUES("11","MR Sir","Address","00002237","Opay");
+INSERT INTO pos VALUES("12","MR Sir","Address","00002238","Opay");
+INSERT INTO pos VALUES("13","MR Sir","Address","00002239","Opay");
+INSERT INTO pos VALUES("14","MR Sir","Address","00002240","Opay");
+INSERT INTO pos VALUES("15","MR Sir","Address","00002241","Monie Point");
+INSERT INTO pos VALUES("16","MR Sir","Address","00002242","Opay");
+INSERT INTO pos VALUES("17","MR Sir","Address","00002243","Monie Point");
+INSERT INTO pos VALUES("18","MR Sir","Address","00002244","Opay");
+INSERT INTO pos VALUES("19","MR Sir","Address","00002245","Opay");
+INSERT INTO pos VALUES("20","MR Sir","Address","00002246","Opay");
+INSERT INTO pos VALUES("21","MR Sir","Address","00002247","Monie Point");
+INSERT INTO pos VALUES("22","MR Sir","Address","00002248","");
+INSERT INTO pos VALUES("23","MR Daniel","Osogbo","00002249","");
+INSERT INTO pos VALUES("24","MR dele","Osogbo","00002250","");
+INSERT INTO pos VALUES("25","MR David","Osogbo","00002251","");
+INSERT INTO pos VALUES("26","MR David","Osogbo","00002252","");
+INSERT INTO pos VALUES("27","MR David","Osogbo","00002253","");
+INSERT INTO pos VALUES("28","MR Sir","Address","00002254","");
+INSERT INTO pos VALUES("29","MR Sir","Address","00002255","");
+INSERT INTO pos VALUES("30","MR Sir","Address","00002256","");
+INSERT INTO pos VALUES("31","MR Sir","Address","00002257","");
+INSERT INTO pos VALUES("32","MR Sir","Address","00002258","Monie Point");
+INSERT INTO pos VALUES("33","MR Sir","Address","00002259","Opay");
+INSERT INTO pos VALUES("34","MR Hammed","Osogbo","00002260","Opay");
 
 
 
@@ -1698,7 +1784,7 @@ INSERT INTO product VALUES("669","V BOOT JC","SHIRORO","AX100","48","3455","3480
 INSERT INTO product VALUES("670","FOOTREST RUBBER","SHIRORO","AX100","970","975","985","1100");
 INSERT INTO product VALUES("671","SIDE COVER JC","SHIRORO","AX100","949","3985","4000","4200");
 INSERT INTO product VALUES("672","TANK JC","SHIRORO","AX100","30","14100","14150","14700");
-INSERT INTO product VALUES("673","AIR FILTER RUBBER","SHIRORO","AX100","994","410","420","500");
+INSERT INTO product VALUES("673","AIR FILTER RUBBER","SHIRORO","AX100","969","410","420","500");
 INSERT INTO product VALUES("674","REAR HUB COVER","SHIRORO","AX100","982","3170","3200","3500");
 INSERT INTO product VALUES("675","MIRROR","SHIRORO","AX100","988","1290","1320","1500");
 INSERT INTO product VALUES("676","PISTON AND RINGS STD+","SHIRORO","AX100","983","1900","1920","2000");
@@ -1743,12 +1829,12 @@ INSERT INTO product VALUES("714","CLUTCH FIBER O/M","SHIRORO","BX100","141","990
 INSERT INTO product VALUES("715","COMPLETE HEADLIGHT","SHIRORO","BX100","1","4120","4150","4500");
 INSERT INTO product VALUES("716","POINTER","SHIRORO","BX100","998","650","660","750");
 INSERT INTO product VALUES("717","REAR LIGHT","SHIRORO","BX100","961","1610","1650","1800");
-INSERT INTO product VALUES("718","SHOE BRAKE","SHIRORO","BX100","1432","1220","1230","1300");
-INSERT INTO product VALUES("719","CHAIN AND SPROCKET","SHIRORO","BX100","1838","4850","4900","5200");
+INSERT INTO product VALUES("718","SHOE BRAKE","SHIRORO","BX100","1392","1220","1230","1300");
+INSERT INTO product VALUES("719","CHAIN AND SPROCKET","SHIRORO","BX100","1817","4850","4900","5200");
 INSERT INTO product VALUES("720","CLUTCH MOON","SHIRORO","BX100","855","1685","1700","1800");
 INSERT INTO product VALUES("721","STARTING COIL","SHIRORO","BX100","1514","980","1000","1100");
 INSERT INTO product VALUES("722","ENGINE VALVE","SHIRORO","BX100","0","1100","1120","1200");
-INSERT INTO product VALUES("723","CRANKSHAFT","SHIRORO","BX100","191","10590","10650","11100");
+INSERT INTO product VALUES("723","CRANKSHAFT","SHIRORO","BX100","189","10590","10650","11100");
 INSERT INTO product VALUES("724","PISTON AND RINGS STD+","SHIRORO","BX100","1720","1540","1550","1650");
 INSERT INTO product VALUES("725","PISTON AND RINGS STD++","SHIRORO","BX100","1370","1540","1550","1650");
 INSERT INTO product VALUES("726","CONNECTING ROD","SHIRORO","BX100","383","2440","2450","2700");
@@ -1802,12 +1888,12 @@ INSERT INTO product VALUES("773","SIDE COVER","SHIRORO","BX100","55","3655","368
 INSERT INTO product VALUES("774","CHAIN ADJUSTER SET","SHIRORO","BX100","783","330","340","400");
 INSERT INTO product VALUES("775","THORTLE CABLE","SHIRORO","BX100","1468","720","730","800");
 INSERT INTO product VALUES("776","BRAKE CABLE","SHIRORO","BX100","856","585","600","650");
-INSERT INTO product VALUES("777","CLUTCH CABLE","SHIRORO","BX100","1325","490","500","600");
+INSERT INTO product VALUES("777","CLUTCH CABLE","SHIRORO","BX100","1324","490","500","600");
 INSERT INTO product VALUES("778","CLUTCH IRON FIBER","SHIRORO","BX100","927","480","490","600");
 INSERT INTO product VALUES("779","HANDLE BAR SHORT","SHIRORO","BX100","997","1900","1930","2100");
 INSERT INTO product VALUES("780","SWITCH KEY N/M","SHIRORO","BX100","132","2280","2300","2500");
 INSERT INTO product VALUES("781","ROCKER ARM","SHIRORO","BX100","489","2185","2200","2500");
-INSERT INTO product VALUES("782","CAMSHAFT","SHIRORO","BX100","40","1855","1880","2100");
+INSERT INTO product VALUES("782","CAMSHAFT","SHIRORO","BX100","39","1855","1880","2100");
 INSERT INTO product VALUES("783","OIL PUMP","SHIRORO","BX100","173","1470","1490","1600");
 INSERT INTO product VALUES("784","FRONT ABSORBER","SHIRORO","BX100","28","20590","20650","22000");
 INSERT INTO product VALUES("785","CYLINDER","SHIRORO","BX100","1000","27350","27450","28500");
@@ -1822,7 +1908,7 @@ INSERT INTO product VALUES("793","ONLY CLUTCH HOUSING WITH SMALL TEETH","SHIRORO
 INSERT INTO product VALUES("794","FRONT SPROCKET","SHIRORO","BX100","454","310","330","400");
 INSERT INTO product VALUES("795","DAMPER RUBBER","SHIRORO","BX100","0","770","780","850");
 INSERT INTO product VALUES("796","ONLY MAGNET","SHIRORO","BX100","0","5670","5700","6000");
-INSERT INTO product VALUES("797","BEARING 6004","SHIRORO","BX100","255","380","390","500");
+INSERT INTO product VALUES("797","BEARING 6004","SHIRORO","BX100","254","380","390","500");
 INSERT INTO product VALUES("798","HEADLIGHT SOCKET","SHIRORO","BX100","858","530","550","600");
 INSERT INTO product VALUES("799","FRONT SPROCKET COVER","SHIRORO","BX100","999","2000","2050","2300");
 INSERT INTO product VALUES("800","MAGNET OIL SEAL","SHIRORO","BX100","956","90","95","150");
@@ -1862,7 +1948,7 @@ INSERT INTO product VALUES("833","GEAR 2 ROD N/M","SHIRORO","BX100","993","1670"
 INSERT INTO product VALUES("834","GEAR 2 ROD WITH TEETH O/M","SHIRORO","BX100","121","1895","1910","2100");
 INSERT INTO product VALUES("835","CHAIN ADJUSTER BIG HOLE","SHIRORO","BX100","377","130","140","200");
 INSERT INTO product VALUES("836","THORTLE PIPE","SHIRORO","BX100","2","410","420","500");
-INSERT INTO product VALUES("837","AXLE BOLT","SHIRORO","BX100","839","360","370","500");
+INSERT INTO product VALUES("837","AXLE BOLT","SHIRORO","BX100","838","360","370","500");
 INSERT INTO product VALUES("838","CLUTCH WINKER PIPE","SHIRORO","BX100","999","410","420","500");
 INSERT INTO product VALUES("839","HEADLIGHT GLASS","SHIRORO","BX100","474","710","720","850");
 INSERT INTO product VALUES("840","SILENCER PACKING","SHIRORO","BX100","2000","85","95","150");
@@ -2103,7 +2189,7 @@ INSERT INTO product VALUES("1077","BEARING 6301","DONNATEN","AX100","950","250",
 INSERT INTO product VALUES("1078","BEARING 6001","DONNATEN","BX100","1000","200","200","250");
 INSERT INTO product VALUES("1079","CHAIN AND SPROCKET","DONNATEN","BX100","995","4800","4800","4900");
 INSERT INTO product VALUES("1080","TIMMY CHAIN","DONNATEN","BX100","1000","450","450","500");
-INSERT INTO product VALUES("1081","SHOE BRAKE DOUBLE PLUS","DONNATEN","BX100","961","1600","1600","1800");
+INSERT INTO product VALUES("1081","SHOE BRAKE DOUBLE PLUS","DONNATEN","BX100","956","1600","1600","1800");
 INSERT INTO product VALUES("1082","REAR ABSORBER","DONNATEN","BX100","999","9000","9000","9500");
 INSERT INTO product VALUES("1083","VALVE OIL SEAL","DONNATEN","BX100","1000","200","200","250");
 INSERT INTO product VALUES("1084","NECK BEARING","DONNATEN","BX100","1000","600","600","800");
@@ -2320,11 +2406,11 @@ INSERT INTO product VALUES("1294","FUEL HOSE","JEELY","AX100","1000","90","100",
 INSERT INTO product VALUES("1295","LEFT WINKER HJ","JEELY","AX100","1000","1980","2000","2300");
 INSERT INTO product VALUES("1296","TYRE 300-17 DEEP TEETH","JEELY","AX100","1000","11900","12050","13000");
 INSERT INTO product VALUES("1297","REAR FENDER","JEELY","AX100","998","1430","1450","1600");
-INSERT INTO product VALUES("1298","AIR FILTER RUBBER","JEELY","AX100","999","410","450","550");
+INSERT INTO product VALUES("1298","AIR FILTER RUBBER","JEELY","AX100","998","410","450","550");
 INSERT INTO product VALUES("1299","ROTTARY VALVE","JEELY","AX100","978","820","850","950");
 INSERT INTO product VALUES("1300","FRONT HUB","JEELY","AX100","1000","6200","6250","6500");
 INSERT INTO product VALUES("1301","FUEL TAP JC","JEELY","AX100","989","1100","1150","1300");
-INSERT INTO product VALUES("1302","ABSORBER SPRING","JEELY","AX100","995","520","550","650");
+INSERT INTO product VALUES("1302","ABSORBER SPRING","JEELY","AX100","985","520","550","650");
 INSERT INTO product VALUES("1303","PLUG","JEELY","AX100","1000","370","400","450");
 INSERT INTO product VALUES("1304","BEARING 6301","JEELY","AX100","1000","340","350","450");
 INSERT INTO product VALUES("1305","THORTLE CABLE","JEELY","AX100","990","515","520","550");
@@ -3056,7 +3142,7 @@ INSERT INTO product VALUES("2030","MOBILE OIL","MOBILE","NIL","264","2500","2500
 INSERT INTO product VALUES("2031","CLIMAX OIL","CLIMAX","NIL","300","1700","1700","1700");
 INSERT INTO product VALUES("2032","TRUST OIL HD40 ASS","TRUST","NIL","298","1800","1800","1800");
 INSERT INTO product VALUES("2033","TRUST OIL 6000 YELLOW","TRUST","NIL","296","1600","1600","1600");
-INSERT INTO product VALUES("2034","2T SUPER","2T SUPER","NIL","297","1700","1700","1700");
+INSERT INTO product VALUES("2034","2T SUPER","2T SUPER","NIL","250","1700","1700","1700");
 INSERT INTO product VALUES("2035","MAROL SUPER MOYEL OIL","MOYE","NIL","292","1700","1700","1700");
 INSERT INTO product VALUES("2036","ENGINE BLOCK","UNIGO","AX100","29","11300","11350","12000");
 INSERT INTO product VALUES("2037","PISTON AND RINGS STD","UNIGO","AX100","1000","1550","1570","1650");
@@ -3293,7 +3379,7 @@ INSERT INTO product VALUES("2267","TIMMY CHAIN","GENUINE","BX100","997","1570","
 INSERT INTO product VALUES("2268","SHOW OIL GLASS N/M","GENUINE","BX100","1000","510","510","600");
 INSERT INTO product VALUES("2269","FRAME COIL","GENUINE","BX100","1000","2200","2200","2500");
 INSERT INTO product VALUES("2270","COIL PULSAR","GENUINE","BX100","1000","1500","1500","1700");
-INSERT INTO product VALUES("2271","AIR FILTER FOAM","GENUINE","BX100","990","1250","1250","1400");
+INSERT INTO product VALUES("2271","AIR FILTER FOAM","GENUINE","BX100","989","1250","1250","1400");
 INSERT INTO product VALUES("2272","SHOE BRAKE","GENUINE","BX100","1000","2100","2100","2500");
 INSERT INTO product VALUES("2273","SPEED READER","GENUINE","BX100","969","250","250","400");
 INSERT INTO product VALUES("2274","BATTERY YB2.5","GENUINE","BX100","1000","11300","11300","11500");
@@ -3440,7 +3526,7 @@ INSERT INTO product VALUES("2423","FRONT SPROCKET ROD/23221-KYY-900","HONDA","CB
 INSERT INTO product VALUES("2424","BRAKE ROD/43451-KYY-900","HONDA","CB125","1000","950","950","1000");
 INSERT INTO product VALUES("2425","OUTER KICK/28300-KYY-900","HONDA","CB125","1000","3500","3500","4000");
 INSERT INTO product VALUES("2426","DAMPER RUBBER/06410-KRF-850","HONDA","CB110","1000","1500","1500","1800");
-INSERT INTO product VALUES("2427","AIR FILTER FOAM/17205-KYY-970","HONDA","CB125","1000","1500","1500","1800");
+INSERT INTO product VALUES("2427","AIR FILTER FOAM/17205-KYY-970","HONDA","CB125","989","1500","1500","1800");
 INSERT INTO product VALUES("2428","LEFT WINKER/35200-KYY-970","HONDA","CB125","1000","4800","4800","5400");
 INSERT INTO product VALUES("2429","FULL STAND SPRING/50505-KPN-A00","HONDA","CB125","999","750","750","900");
 INSERT INTO product VALUES("2430","REAR LIGHT BRAKE SWITCH/35350-KYY-971","HONDA","CB125","1000","850","850","1000");
@@ -3525,7 +3611,7 @@ INSERT INTO product VALUES("2508","DISC ROLLER/23121-K08-900","HONDA","CB110","1
 INSERT INTO product VALUES("2509","FRAME COIL/30510-K08-901","HONDA","CB110","995","2200","2200","3000");
 INSERT INTO product VALUES("2510","HEADLIGHT SOCKET/33130-K08-A41","HONDA","CB110","1000","1900","1900","2500");
 INSERT INTO product VALUES("2511","REAR LIGHT COVER/33702-KCSW-70","HONDA","CB125","1000","1250","1250","1500");
-INSERT INTO product VALUES("2512","CHAIN ADJUSTER/40543-K08-900","HONDA","CB110","1000","950","950","1200");
+INSERT INTO product VALUES("2512","CHAIN ADJUSTER/40543-K08-900","HONDA","CB110","980","950","950","1200");
 INSERT INTO product VALUES("2513","REAR HUB COVER/43100-KYY-900ZB","HONDA","CB125","1000","7000","7000","8000");
 INSERT INTO product VALUES("2514","BRAKE PEDAL/46500-KYY-900","HONDA","CB125","1000","3200","3200","3700");
 INSERT INTO product VALUES("2515","BRAKE RETURN SPRING/46510-KSP-900","HONDA","CB125","996","420","420","500");
@@ -3698,7 +3784,7 @@ INSERT INTO product VALUES("2681","REAR HUB 42635KYY900ZA","honda","CB125","199"
 INSERT INTO product VALUES("2682","TYRE 275-17 BACK","CC SUPER","NILL","996","6200","6200","7000");
 INSERT INTO product VALUES("2683","SET SPROCKET","ORIGINAL","NEO-TVS","80","3200","3500","4000");
 INSERT INTO product VALUES("2684","REAR FOOTREST RUBBER ","DONATEN","CD110","990","1000","1000","1500");
-INSERT INTO product VALUES("2685","ALLOY 275-17","TACO","BX100","98","26000","27000","30000");
+INSERT INTO product VALUES("2685","ALLOY 275-17","TACO","BX100","96","26000","27000","30000");
 INSERT INTO product VALUES("2686","ONLY CHAIN","SUN RAIN","BX100","267","2350","2400","2600");
 INSERT INTO product VALUES("2687","TYRE 275-17","SUN RAIN","NIL","953","6800","6800","7500");
 INSERT INTO product VALUES("2688","COMPLETE FRONT ABSORBER","ENDURANCE","BX100","999","33500","33500","37000");
@@ -3718,7 +3804,7 @@ INSERT INTO product VALUES("2701","PLUG","SUN RAIN","AX100","997","260","260","3
 INSERT INTO product VALUES("2702","CHAIN AND SPROCKET N/M","JEELY","BX100","92","4900","4950","5200");
 INSERT INTO product VALUES("2703","CLUTCH LEVER ","HERO","HERO100/HERO125","1000","900","900","1000");
 INSERT INTO product VALUES("2704","COMPLETE MAGNET","TOKUBO","AX100","99","4800","5000","5500");
-INSERT INTO product VALUES("2705","ALLOY 300-17 42650K08N20","HONDA","CB110","15","33000","34000","35000");
+INSERT INTO product VALUES("2705","ALLOY 300-17 42650K08N20","HONDA","CB110","14","33000","34000","35000");
 INSERT INTO product VALUES("2706","COMPLETE COIL","BOLOUS","HJ-EXPRESS","0","10000","11000","12000");
 INSERT INTO product VALUES("2707","OIL COVER RUBBER ORDINARY","LAGOS","NILL","972","150","150","200");
 INSERT INTO product VALUES("2708","REAR SPROCKET ","DONATEN","CB110","995","1800","1800","2000");
@@ -4916,45 +5002,93 @@ CREATE TABLE `sales` (
   `pos` varchar(250) NOT NULL,
   `old_deposit` varchar(250) NOT NULL,
   `deposit` varchar(255) NOT NULL,
+  `transport` varchar(250) NOT NULL,
   `balance` varchar(255) NOT NULL,
   `staff_name` varchar(255) NOT NULL,
   `date` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `bank` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2737 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2784 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO sales VALUES("2698","MR Daniel","Osogbo","00002175","Cash","retail","8500","3500","0","0","5000","8500","0","EZEH EMMANUEL"," 24-02-2023","emma","");
-INSERT INTO sales VALUES("2699","MR Sir","Address","00002176","Cash","retail","1100","1100","0","0","0","1100","0","EZEH EMMANUEL"," 24-02-2023","emma","");
-INSERT INTO sales VALUES("2701","MR dele","Osogbo","00002178","Cash","retail","15000","12000","0","0","3000","15000","0","EZEH EMMANUEL"," 24-02-2023","emma","");
-INSERT INTO sales VALUES("2703","MR James","Osogbo","00002180","Cash","retail","31100","21100","0","0","10000","31100","0","EZEH EMMANUEL"," 24-02-2023","emma","");
-INSERT INTO sales VALUES("2704","Mr Tola","Osogbo","00002181","Cash","deposit","0","5000","0","0","None","5000","0","EZEH EMMANUEL"," 24-02-2023","emma","");
-INSERT INTO sales VALUES("2706","Mr d","s","00002183","Cash","deposit","0","500","0","0","None","500","0","EZEH EMMANUEL"," 24-02-2023","emma","");
-INSERT INTO sales VALUES("2707","Mr ","s","00002184","Cash","deposit","0","500","0","0","None","500","0","EZEH EMMANUEL"," 24-02-2023","emma","");
-INSERT INTO sales VALUES("2708","Mr afa","sffdf","00002185","Cash","deposit","0","5000","0","0","None","5000","0","EZEH EMMANUEL"," 24-02-2023","emma","");
-INSERT INTO sales VALUES("2709","Mr fbhdsd","ghfdhd","00002186","Cash","deposit","0","2000","0","0","None","2000","0","EZEH EMMANUEL"," 24-02-2023","emma","");
-INSERT INTO sales VALUES("2710","Mr David","Oke Oniti","00002187","Cash","deposit","0","4500","0","0","None","4500","0","EZEH EMMANUEL"," 24-02-2023","emma","");
-INSERT INTO sales VALUES("2711","Mr Gbenga","Osogbo","00002188","Cash","deposit","0","10000","0","0","None","10000","0","EZEH EMMANUEL"," 24-02-2023","emma","");
-INSERT INTO sales VALUES("2714","MR Kehinde","Ayetoro","00002191","Transfer","wholesale","111140","0","61140","0","50000","111140","0","EZEH EMMANUEL"," 01-03-2023","emma","");
-INSERT INTO sales VALUES("2715","MR Sir","Address","00002192","Cash","retail","12500","12500","0","0","0","12500","0","EZEH EMMANUEL"," 01-03-2023","emma","");
-INSERT INTO sales VALUES("2716","Mr Lekan","Osogbo","00002193","Cash","deposit","0","5000","0","0","None","5000","0","ADESOJI STEPHEN"," 01-03-2023","steve","");
-INSERT INTO sales VALUES("2717","Mr James","Osogbo","00002194","POS","deposit","0","0","0","4000","None","4000","0","EZEH EMMANUEL"," 01-03-2023","emma","");
-INSERT INTO sales VALUES("2718","Mr Tunde","Ikirun","00002195","POS","deposit","0","0","0","6000","None","6000","0","EZEH EMMANUEL"," 01-03-2023","emma","");
-INSERT INTO sales VALUES("2720","Mr h","j","00002197","Cash","deposit","0","5000","0","0","None","5000","0","EZEH EMMANUEL"," 01-03-2023","emma","");
-INSERT INTO sales VALUES("2722","Mr ktyyy","khugf","00002199","Cash","deposit","0","7000","0","0","None","7000","0","RAPHEAL MR"," 01-03-2023","rapheal","");
-INSERT INTO sales VALUES("2723","MR Taiwo","Osogbo","00002200","Cash","wholesale","61500","57500","0","0","4000","61500","0","EZEH EMMANUEL"," 01-03-2023","emma","");
-INSERT INTO sales VALUES("2724","MR Sir","Address","00002201","Cash","retail","1300","1300","0","0","0","1300","0","RAPHEAL MR"," 01-03-2023","rapheal","");
-INSERT INTO sales VALUES("2725","MR dele","Osogbo","00002202","Cash","retail","5200","700","0","0","4500","5200","0","RAPHEAL MR"," 01-03-2023","rapheal","");
-INSERT INTO sales VALUES("2726","MR dele","Osogbo","00002203","Cash","wholesale","9800","5300","0","0","4500","9800","0","RAPHEAL MR"," 01-03-2023","rapheal","");
-INSERT INTO sales VALUES("2727","MR dele","Osogbo","00002204","Cash","wholesale","15700","11200","0","0","4500","15700","0","EZEH EMMANUEL"," 01-03-2023","emma","");
-INSERT INTO sales VALUES("2729","Mr David","Ilesha","00002206","Cash","deposit","0","25000","0","0","None","25000","0","RAPHEAL MR"," 01-03-2023","rapheal","");
-INSERT INTO sales VALUES("2730","MR Goke","Ikirun","00002207","Cash","wholesale","67650","7650","0","0","60000","67650","0","RAPHEAL MR"," 01-03-2023","rapheal","");
-INSERT INTO sales VALUES("2731","MR ibg","bg","00002208","Cash","retail","8500","2500","0","0","6000","8500","0","ADESOJI STEPHEN"," 01-03-2023","steve","");
-INSERT INTO sales VALUES("2732","MR Sir","Address","00002209","Cash","retail","11100","11100","0","0","0","11100","0","ADESOJI STEPHEN"," 01-03-2023","steve","");
-INSERT INTO sales VALUES("2733","MR Sir","Address","00002210","Cash/Debit","retail","1850","1850","0","0","","0","1850","ADESOJI STEPHEN"," 01-03-2023","steve","");
-INSERT INTO sales VALUES("2734","MR Fatai","Osogbo","00002211","Cash","retail","5200","700","0","0","4500","5200","0","RAPHEAL MR"," 01-03-2023","rapheal","");
-INSERT INTO sales VALUES("2735","Mr Tunji","Ilesha","00002212","Transfer","deposit","0","0","50000","0","None","50000","0","RAPHEAL MR"," 01-03-2023","rapheal"," Zenith Bank");
-INSERT INTO sales VALUES("2736","Mr Alloy","Ilesha","00002213","Transfer","deposit","0","0","100000","0","None","100000","0","ADESOJI STEPHEN"," 01-03-2023","steve","");
+INSERT INTO sales VALUES("2698","MR Daniel","Osogbo","00002175","Cash","retail","8500","3500","0","0","5000","8500","","0","EZEH EMMANUEL"," 24-02-2023","emma","");
+INSERT INTO sales VALUES("2699","MR Sir","Address","00002176","Cash","retail","1100","1100","0","0","0","1100","","0","EZEH EMMANUEL"," 24-02-2023","emma","");
+INSERT INTO sales VALUES("2701","MR dele","Osogbo","00002178","Cash","retail","15000","12000","0","0","3000","15000","","0","EZEH EMMANUEL"," 24-02-2023","emma","");
+INSERT INTO sales VALUES("2703","MR James","Osogbo","00002180","Cash","retail","31100","21100","0","0","10000","31100","","0","EZEH EMMANUEL"," 24-02-2023","emma","");
+INSERT INTO sales VALUES("2704","Mr Tola","Osogbo","00002181","Cash","deposit","0","5000","0","0","None","5000","","0","EZEH EMMANUEL"," 24-02-2023","emma","");
+INSERT INTO sales VALUES("2706","Mr d","s","00002183","Cash","deposit","0","500","0","0","None","500","","0","EZEH EMMANUEL"," 24-02-2023","emma","");
+INSERT INTO sales VALUES("2707","Mr ","s","00002184","Cash","deposit","0","500","0","0","None","500","","0","EZEH EMMANUEL"," 24-02-2023","emma","");
+INSERT INTO sales VALUES("2708","Mr afa","sffdf","00002185","Cash","deposit","0","5000","0","0","None","5000","","0","EZEH EMMANUEL"," 24-02-2023","emma","");
+INSERT INTO sales VALUES("2709","Mr fbhdsd","ghfdhd","00002186","Cash","deposit","0","2000","0","0","None","2000","","0","EZEH EMMANUEL"," 24-02-2023","emma","");
+INSERT INTO sales VALUES("2710","Mr David","Oke Oniti","00002187","Cash","deposit","0","4500","0","0","None","4500","","0","EZEH EMMANUEL"," 24-02-2023","emma","");
+INSERT INTO sales VALUES("2711","Mr Gbenga","Osogbo","00002188","Cash","deposit","0","10000","0","0","None","10000","","0","EZEH EMMANUEL"," 24-02-2023","emma","");
+INSERT INTO sales VALUES("2714","MR Kehinde","Ayetoro","00002191","Transfer","wholesale","111140","0","61140","0","50000","111140","","0","EZEH EMMANUEL"," 01-03-2023","emma","");
+INSERT INTO sales VALUES("2715","MR Sir","Address","00002192","Cash","retail","12500","12500","0","0","0","12500","","0","EZEH EMMANUEL"," 01-03-2023","emma","");
+INSERT INTO sales VALUES("2716","Mr Lekan","Osogbo","00002193","Cash","deposit","0","5000","0","0","None","5000","","0","ADESOJI STEPHEN"," 01-03-2023","steve","");
+INSERT INTO sales VALUES("2717","Mr James","Osogbo","00002194","POS","deposit","0","0","0","4000","None","4000","","0","EZEH EMMANUEL"," 01-03-2023","emma","");
+INSERT INTO sales VALUES("2718","Mr Tunde","Ikirun","00002195","POS","deposit","0","0","0","6000","None","6000","","0","EZEH EMMANUEL"," 01-03-2023","emma","");
+INSERT INTO sales VALUES("2720","Mr h","j","00002197","Cash","deposit","0","5000","0","0","None","5000","","0","EZEH EMMANUEL"," 01-03-2023","emma","");
+INSERT INTO sales VALUES("2722","Mr ktyyy","khugf","00002199","Cash","deposit","0","7000","0","0","None","7000","","0","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2723","MR Taiwo","Osogbo","00002200","Cash","wholesale","61500","57500","0","0","4000","61500","","0","EZEH EMMANUEL"," 01-03-2023","emma","");
+INSERT INTO sales VALUES("2724","MR Sir","Address","00002201","Cash","retail","1300","1300","0","0","0","1300","","0","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2725","MR dele","Osogbo","00002202","Cash","retail","5200","700","0","0","4500","5200","","0","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2726","MR dele","Osogbo","00002203","Cash","wholesale","9800","5300","0","0","4500","9800","","0","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2727","MR dele","Osogbo","00002204","Cash","wholesale","15700","11200","0","0","4500","15700","","0","EZEH EMMANUEL"," 01-03-2023","emma","");
+INSERT INTO sales VALUES("2729","Mr David","Ilesha","00002206","Cash","deposit","0","25000","0","0","None","25000","","0","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2730","MR Goke","Ikirun","00002207","Cash","wholesale","67650","7650","0","0","60000","67650","","0","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2731","MR ibg","bg","00002208","Cash","retail","8500","2500","0","0","6000","8500","","0","ADESOJI STEPHEN"," 01-03-2023","steve","");
+INSERT INTO sales VALUES("2732","MR Sir","Address","00002209","Cash","retail","11100","11100","0","0","0","11100","","0","ADESOJI STEPHEN"," 01-03-2023","steve","");
+INSERT INTO sales VALUES("2733","MR Sir","Address","00002210","Cash/Debit","retail","1850","1850","0","0","","0","","1850","ADESOJI STEPHEN"," 01-03-2023","steve","");
+INSERT INTO sales VALUES("2734","MR Fatai","Osogbo","00002211","Cash","retail","5200","700","0","0","4500","5200","","0","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2735","Mr Tunji","Ilesha","00002212","Transfer","deposit","0","0","50000","0","None","50000","","0","RAPHEAL MR"," 01-03-2023","rapheal"," Zenith Bank");
+INSERT INTO sales VALUES("2736","Mr Alloy","Ilesha","00002213","Transfer","deposit","0","0","100000","0","None","100000","","0","ADESOJI STEPHEN"," 01-03-2023","steve","");
+INSERT INTO sales VALUES("2737","MR David","Ilesha","00002214","Debit","wholesale","47700","0","0","0","0","0","300","48000","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2738","MR James","Ilesha","00002215","Debit","wholesale","48500","0","0","0","0","0","300","48800","ADESOJI STEPHEN"," 01-03-2023","steve","");
+INSERT INTO sales VALUES("2739","MR James","Oke Oniti","00002216","Debit","wholesale","12300","0","0","0","0","0","200","12500","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2740","MR Tola","Ilesha","00002217","Debit","wholesale","12300","0","0","0","0","0","300","12600","EZEH EMMANUEL"," 01-03-2023","emma","");
+INSERT INTO sales VALUES("2741","MR David","Osogbo","00002218","Debit","wholesale","12300","0","0","0","0","0","0","12300","EZEH EMMANUEL"," 01-03-2023","emma","");
+INSERT INTO sales VALUES("2742","MR Tola","Ilesha","00002219","Transfer/Debit","wholesale","8000","0","8000","0","0","8000","500","500","ADESOJI STEPHEN"," 01-03-2023","steve","");
+INSERT INTO sales VALUES("2743","MR afa","Osogbo","00002220","Cash/Debit","wholesale","11900","11900","0","0","","0","0","11900","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2744","MR dele","Osogbo","00002221","Cash/Debit","wholesale","8500","8500","0","0","","0","0","8500","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2745","MR peter","Osogbo","00002222","Debit","wholesale","1680","0","0","0","","0","0","1680","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2746","MR john","Osogbo","00002223","Debit","wholesale","24500","0","0","0","0","0","0","24500","RAPHEAL MR"," 01-03-2023","rapheal","");
+INSERT INTO sales VALUES("2747","MR Sir","Address","00002224","Cash","retail","500","500","0","0","0","500","0","0","RAPHEAL MR"," 04-03-2023","rapheal","");
+INSERT INTO sales VALUES("2748","MR Daniel","Osogbo","00002225","Cash/Debit","wholesale","15000","10000","0","0","0","10000","0","5000","RAPHEAL MR"," 04-03-2023","rapheal","");
+INSERT INTO sales VALUES("2749","MR Daniel","ghfdhd","00002226","Debit","wholesale","34000","0","0","0","0","0","0","34000","RAPHEAL MR"," 04-03-2023","rapheal","");
+INSERT INTO sales VALUES("2750","MR Sir","Address","00002227","POS","retail","550","0","0","Opay","0","550","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2751","MR Sir","Address","00002228","POS","retail","30000","0","0","30000","0","30000","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2752","MR Tola","Osogbo","00002229","POS","wholesale","12300","0","0","12300","0","12300","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2753","MR David","Osogbo","00002230","Cash","wholesale","8500","8500","0","0","0","8500","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2754","MR Sir","Address","00002231","POS","retail","30000","0","0","30000","0","30000","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2755","MR Sir","Address","00002232","POS/Debit","retail","1700","0","0","170","0","170","0","1530","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2756","MR Sir","Address","00002233","POS","retail","1700","0","0","1700","0","1700","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2757","MR Sir","Address","00002234","Cash","retail","1700","1700","0","0","0","1700","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2758","MR Sir","Address","00002235","POS","retail","1700","0","0","1700","0","1700","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2759","MR James","Osogbo","00002236","POS","wholesale","2750","0","0","2750","0","2750","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2760","MR Sir","Address","00002237","POS","retail","1700","0","0","1700","0","1700","0","0","RAPHEAL MR"," 04-03-2023","rapheal","");
+INSERT INTO sales VALUES("2761","MR Sir","Address","00002238","POS","retail","1400","0","0","1400","0","1400","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2762","MR Sir","Address","00002239","POS","retail","1700","0","0","1700","0","1700","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2763","MR Sir","Address","00002240","POS","retail","1700","0","0","1700","0","1700","0","0","RAPHEAL MR"," 04-03-2023","rapheal","");
+INSERT INTO sales VALUES("2764","MR Sir","Address","00002241","POS","retail","1700","0","0","1700","0","1700","0","0","RAPHEAL MR"," 04-03-2023","rapheal","");
+INSERT INTO sales VALUES("2765","MR Sir","Address","00002242","POS","retail","1700","0","0","1700","0","1700","0","0","RAPHEAL MR"," 04-03-2023","rapheal","");
+INSERT INTO sales VALUES("2766","MR Sir","Address","00002243","POS","retail","1700","0","0","1700","0","1700","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2767","MR Sir","Address","00002244","POS","retail","1700","0","0","1700","0","1700","0","0","RAPHEAL MR"," 04-03-2023","rapheal","");
+INSERT INTO sales VALUES("2768","MR Sir","Address","00002245","POS","retail","1700","0","0","1700","0","1700","0","0","RAPHEAL MR"," 04-03-2023","rapheal","");
+INSERT INTO sales VALUES("2769","MR Sir","Address","00002246","POS","retail","1700","0","0","1700","0","1700","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2770","MR Sir","Address","00002247","POS","retail","1700","0","0","1700","0","1700","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2771","MR Sir","Address","00002248","Cash","retail","500","500","0","0","0","500","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2772","MR Daniel","Osogbo","00002249","Cash","wholesale","2750","2750","0","0","0","2750","0","0","RAPHEAL MR"," 04-03-2023","rapheal","");
+INSERT INTO sales VALUES("2773","MR dele","Osogbo","00002250","Cash","wholesale","17000","17000","0","0","0","17000","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2774","MR David","Osogbo","00002251","Cash","wholesale","4200","4200","0","0","0","4200","0","0","RAPHEAL MR"," 04-03-2023","rapheal","");
+INSERT INTO sales VALUES("2775","MR David","Osogbo","00002252","Cash","wholesale","1700","1700","0","0","0","1700","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2776","MR David","Osogbo","00002253","Cash","wholesale","8500","8500","0","0","0","8500","0","0","EZEH EMMANUEL"," 04-03-2023","emma","");
+INSERT INTO sales VALUES("2777","MR Sir","Address","00002254","","retail","0","0","0","0","0","0","0","0","RAPHEAL MR"," 08-03-2023","rapheal","");
+INSERT INTO sales VALUES("2778","MR Sir","Address","00002255","","retail","0","0","0","0","0","0","0","0","EZEH EMMANUEL"," 08-03-2023","emma","");
+INSERT INTO sales VALUES("2779","MR Sir","Address","00002256","","retail","0","0","0","0","0","0","0","0","EZEH EMMANUEL"," 08-03-2023","emma","");
+INSERT INTO sales VALUES("2780","MR Sir","Address","00002257","","retail","0","0","0","0","0","0","0","0","EZEH EMMANUEL"," 08-03-2023","emma","");
+INSERT INTO sales VALUES("2781","MR Sir","Address","00002258","Cash/POS","retail","11100","100","0","11000","0","11100","0","0","EZEH EMMANUEL"," 09-03-2023","emma","");
+INSERT INTO sales VALUES("2782","MR Sir","Address","00002259","Cash/POS","retail","1800","800","0","1000","0","1800","0","0","EZEH EMMANUEL"," 09-03-2023","emma","");
+INSERT INTO sales VALUES("2783","MR Hammed","Osogbo","00002260","Transfer/POS","retail","19500","0","9500","10000","0","19500","0","0","EZEH EMMANUEL"," 09-03-2023","emma"," First Bank");
 
 
 
@@ -4975,7 +5109,7 @@ CREATE TABLE `sales_details` (
   `staff_name` varchar(255) NOT NULL,
   `date` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19935 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19984 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO sales_details VALUES("1","MR LATEEF","OKE ONITEA","86275341","wholesale","CLUTCH MOON","BX100","SHIRORO","1","1700","1700","OKONKWO CHIDIEBERE"," 06-12-2022");
 INSERT INTO sales_details VALUES("2","MR LATEEF","OKE ONITEA","86275341","wholesale","CLUTCH FIBER N/M","BX100","SHIRORO","1","1000","1000","OKONKWO CHIDIEBERE"," 06-12-2022");
@@ -24184,6 +24318,72 @@ INSERT INTO sales_details VALUES("19931","MR Sir","Address","00002210","retail",
 INSERT INTO sales_details VALUES("19932","MR Fatai","Osogbo","00002211","retail","CHAIN AND SPROCKET","BX100","CHANLIN","1","5200","5200","RAPHEAL MR"," 01-03-2023");
 INSERT INTO sales_details VALUES("19933","Mr Tunji","Ilesha","00002212","deposit","","","","0","0","0","RAPHEAL MR"," 01-03-2023");
 INSERT INTO sales_details VALUES("19934","Mr Alloy","Ilesha","00002213","deposit","","","","0","0","0","ADESOJI STEPHEN"," 01-03-2023");
+INSERT INTO sales_details VALUES("19935","MR David","Ilesha","00002214","wholesale","AIR FILTER RUBBER","AX100","SHIRORO","10","420","4200","RAPHEAL MR"," 01-03-2023");
+INSERT INTO sales_details VALUES("19936","MR David","Ilesha","00002214","wholesale","CHAIN ADJUSTER/40543-K08-900","CB110","HONDA","20","950","19000","RAPHEAL MR"," 01-03-2023");
+INSERT INTO sales_details VALUES("19937","MR David","Ilesha","00002214","wholesale","CHAIN AND SPROCKET","BX100","SHIRORO","5","4900","24500","RAPHEAL MR"," 01-03-2023");
+INSERT INTO sales_details VALUES("19938","MR James","Ilesha","00002215","wholesale","CHAIN AND SPROCKET","BX100","SHIRORO","10","4850","48500","ADESOJI STEPHEN"," 01-03-2023");
+INSERT INTO sales_details VALUES("19939","MR James","Oke Oniti","00002216","wholesale","SHOE BRAKE","BX100","SHIRORO","10","1230","12300","RAPHEAL MR"," 01-03-2023");
+INSERT INTO sales_details VALUES("19940","MR Tola","Ilesha","00002217","wholesale","SHOE BRAKE","BX100","SHIRORO","10","1230","12300","EZEH EMMANUEL"," 01-03-2023");
+INSERT INTO sales_details VALUES("19941","MR David","Osogbo","00002218","wholesale","SHOE BRAKE","BX100","SHIRORO","10","1230","12300","EZEH EMMANUEL"," 01-03-2023");
+INSERT INTO sales_details VALUES("19942","MR Tola","Ilesha","00002219","wholesale","SHOE BRAKE DOUBLE PLUS","BX100","DONNATEN","5","1600","8000","ADESOJI STEPHEN"," 01-03-2023");
+INSERT INTO sales_details VALUES("19943","MR afa","Osogbo","00002220","wholesale","2T SUPER","NIL","2T SUPER","7","1700","11900","RAPHEAL MR"," 01-03-2023");
+INSERT INTO sales_details VALUES("19944","MR dele","Osogbo","00002221","wholesale","2T SUPER","NIL","2T SUPER","5","1700","8500","RAPHEAL MR"," 01-03-2023");
+INSERT INTO sales_details VALUES("19945","MR peter","Osogbo","00002222","wholesale","AIR FILTER RUBBER","AX100","SHIRORO","4","420","1680","RAPHEAL MR"," 01-03-2023");
+INSERT INTO sales_details VALUES("19946","MR john","Osogbo","00002223","wholesale","CHAIN AND SPROCKET","BX100","SHIRORO","5","4900","24500","RAPHEAL MR"," 01-03-2023");
+INSERT INTO sales_details VALUES("19947","MR Sir","Address","00002224","retail","AXLE BOLT","BX100","SHIRORO","1","500","500","RAPHEAL MR"," 04-03-2023");
+INSERT INTO sales_details VALUES("19948","MR Daniel","Osogbo","00002225","wholesale","AIR FILTER FOAM/17205-KYY-970","CB125","HONDA","10","1500","15000","RAPHEAL MR"," 04-03-2023");
+INSERT INTO sales_details VALUES("19949","MR Daniel","ghfdhd","00002226","wholesale","ALLOY 300-17 42650K08N20","CB110","HONDA","1","34000","34000","RAPHEAL MR"," 04-03-2023");
+INSERT INTO sales_details VALUES("19950","MR Sir","Address","00002227","retail","AIR FILTER RUBBER","AX100","JEELY","1","550","550","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19951","MR Sir","Address","00002228","retail","ALLOY 275-17","BX100","TACO","1","30000","30000","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19952","MR Tola","Osogbo","00002229","wholesale","SHOE BRAKE","BX100","SHIRORO","10","1230","12300","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19953","MR David","Osogbo","00002230","wholesale","2T SUPER","NIL","2T SUPER","5","1700","8500","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19954","MR Sir","Address","00002231","retail","ALLOY 275-17","BX100","TACO","1","30000","30000","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19955","MR Sir","Address","00002232","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19956","MR Sir","Address","00002233","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19957","MR Sir","Address","00002234","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19958","MR Sir","Address","00002235","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19959","MR James","Osogbo","00002236","wholesale","ABSORBER SPRING","AX100","JEELY","5","550","2750","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19960","MR Sir","Address","00002237","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","RAPHEAL MR"," 04-03-2023");
+INSERT INTO sales_details VALUES("19961","MR Sir","Address","00002238","retail","AIR FILTER FOAM","BX100","GENUINE","1","1400","1400","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19962","MR Sir","Address","00002239","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19963","MR Sir","Address","00002240","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","RAPHEAL MR"," 04-03-2023");
+INSERT INTO sales_details VALUES("19964","MR Sir","Address","00002241","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","RAPHEAL MR"," 04-03-2023");
+INSERT INTO sales_details VALUES("19965","MR Sir","Address","00002242","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","RAPHEAL MR"," 04-03-2023");
+INSERT INTO sales_details VALUES("19966","MR Sir","Address","00002243","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19967","MR Sir","Address","00002244","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","RAPHEAL MR"," 04-03-2023");
+INSERT INTO sales_details VALUES("19968","MR Sir","Address","00002245","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","RAPHEAL MR"," 04-03-2023");
+INSERT INTO sales_details VALUES("19969","MR Sir","Address","00002246","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19970","MR Sir","Address","00002247","retail","2T SUPER","NIL","2T SUPER","1","1700","1700","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19971","MR Sir","Address","00002248","retail","AIR FILTER RUBBER","AX100","SHIRORO","1","500","500","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19972","MR Daniel","Osogbo","00002249","wholesale","ABSORBER SPRING","AX100","JEELY","5","550","2750","RAPHEAL MR"," 04-03-2023");
+INSERT INTO sales_details VALUES("19973","MR dele","Osogbo","00002250","wholesale","2T SUPER","NIL","2T SUPER","10","1700","17000","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19974","MR David","Osogbo","00002251","wholesale","AIR FILTER RUBBER","AX100","SHIRORO","10","420","4200","RAPHEAL MR"," 04-03-2023");
+INSERT INTO sales_details VALUES("19975","MR David","Osogbo","00002252","wholesale","2T SUPER","NIL","2T SUPER","1","1700","1700","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19976","MR David","Osogbo","00002253","wholesale","2T SUPER","NIL","2T SUPER","5","1700","8500","EZEH EMMANUEL"," 04-03-2023");
+INSERT INTO sales_details VALUES("19977","MR Sir","Address","00002258","retail","CRANKSHAFT","BX100","SHIRORO","1","11100","11100","EZEH EMMANUEL"," 09-03-2023");
+INSERT INTO sales_details VALUES("19978","MR Sir","Address","00002259","retail","AIR FILTER FOAM/17205-KYY-970","CB125","HONDA","1","1800","1800","EZEH EMMANUEL"," 09-03-2023");
+INSERT INTO sales_details VALUES("19979","MR Hammed","Osogbo","00002260","retail","CAMSHAFT","BX100","SHIRORO","1","2100","2100","EZEH EMMANUEL"," 09-03-2023");
+INSERT INTO sales_details VALUES("19980","MR Hammed","Osogbo","00002260","retail","CLUTCH CABLE","BX100","SHIRORO","1","600","600","EZEH EMMANUEL"," 09-03-2023");
+INSERT INTO sales_details VALUES("19981","MR Hammed","Osogbo","00002260","retail","CRANKSHAFT","BX100","SHIRORO","1","11100","11100","EZEH EMMANUEL"," 09-03-2023");
+INSERT INTO sales_details VALUES("19982","MR Hammed","Osogbo","00002260","retail","BEARING 6004","BX100","SHIRORO","1","500","500","EZEH EMMANUEL"," 09-03-2023");
+INSERT INTO sales_details VALUES("19983","MR Hammed","Osogbo","00002260","retail","CHAIN AND SPROCKET","BX100","SHIRORO","1","5200","5200","EZEH EMMANUEL"," 09-03-2023");
+
+
+
+
+
+CREATE TABLE `supply_check` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_name` varchar(255) NOT NULL,
+  `customer_address` varchar(255) NOT NULL,
+  `invoice_no` varchar(255) NOT NULL,
+  `supplied_by` varchar(255) NOT NULL,
+  `checked_by` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO supply_check VALUES("1","","","","STEPHEN","");
+INSERT INTO supply_check VALUES("2","MR David","Osogbo","00002253","STEPHEN","");
 
 
 

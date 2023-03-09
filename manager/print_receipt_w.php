@@ -6,16 +6,18 @@ include "core/init.php";
 $mod = new Model;
 ?>
 <?php
-if (isset($_POST["print"])) {
-    Session::unset("invoice");
-    Session::unset("customer_name");
-    Session::unset("address");
-    header("location:wholesales.php");
-}
+
 $show = $mod->showDebitInvoice($_SESSION["customer_name"], $_SESSION["address"]);
 $show_result = mysqli_fetch_array($show);
 $select = $mod->showInvoiceSales($_SESSION["invoice"]);
 $result = mysqli_fetch_array($select);
+if (isset($_POST["print"])) {
+    Session::unset("invoice");
+    Session::unset("customer_name");
+    Session::unset("address");
+    $mod->checkSupply($result["customer_name"],$result["address"],$result["invoice_no"],$_POST["supplied_by"],$_POST["checked_by"]);
+    header("location:wholesales.php");
+}
 include "includes/sales/header.php";
 ?>
 
@@ -27,7 +29,7 @@ include "includes/sales/header.php";
                 </span>EMMA AUTO AND MULTI-SERVICES COMPANY</h4>
             <p class="text-dark" style="font-size:18px;">Distributor for Chanlin, Shiroro, Unigo, Jeely, Jieng, Endurance, Tako, Donaten, Sinosat,
                 and Sunrain Motorcycle spare parts of all brands of Motorcycles and Tricycle parts all Genuine parts, such as Honda, Bajaj, TVS, Hero and all brands of Motorcycles Engine and Tricycles. <br>
-                <span>Address: No. 37A, Opposite Jesus Life Church, Asubiaro Hospital Junction, Osogbo, Osun State.</span></br> 
+                <span>Address: No. 37A, Opposite Jesus Life Church, Asubiaro Hospital Junction, Osogbo, Osun State.</span></br>
                 <span style="font-weight: bold">Tel: 08062063060, 08119222292, 07063684266</span>
             </p>
             <span class="bg-danger rounded-pill px-2"">Invoice</span>
@@ -100,20 +102,25 @@ include "includes/sales/header.php";
                 <tr>
                     <td colspan="1"></td>
                     <?php
-                    if ($result["old_deposit"] !=0){?>
+                    if ($result["old_deposit"] != 0) { ?>
                         <td style="font-weight: bold;">Old Deposit:# <?php echo number_format($result["old_deposit"], 2); ?></td>
                     <?php }
                     ?>
-                    
+
                     <td style="font-weight: bold;">Cash:# <?php echo number_format($result["cash"], 2); ?></td>
                     <td style="font-weight: bold;">Transfer:# <?php echo number_format($result["transfer"], 2); ?></td>
-                    <td style="font-weight: bold;">POS:# <?php echo number_format($result["pos"], 2); ?></td>
+                    <td style="font-weight: bold;">POS:# <?php echo number_format($result["pos"], 2);
+                                                            if ($result["pos"] != 0) {
+                                                                $select_pos = mysqli_fetch_array($mod->showPos($_SESSION["customer_name"], $_SESSION["address"], $_SESSION["invoice"]));
+                                                                echo " (" . $select_pos["pos_type"] . ")";
+                                                            }
+                                                            ?></td>
                     <td style="font-weight: bold;">Total Payment:</td>
                     <td style="font-weight: bold;"><?php echo number_format($result["deposit"], 2); ?></td>
                 </tr>
                 <?php
 
-                if ($result["balance"] != 0 OR mysqli_num_rows($show)>0) { ?>
+                if ($result["balance"] != 0 or mysqli_num_rows($show) > 0) { ?>
                     <tr>
                         <td colspan="2"></td>
                         <td style="font-weight: bold;">Transport # <?php echo number_format($result["transport"], 2); ?></td>
@@ -155,12 +162,22 @@ include "includes/sales/header.php";
     </div>
     <div class="row mt-2">
         <div class="offset-md-6 col-md-6">
-
-            <div class="form-inline" style="float: right;">
-                <label for="pwd">Supplied By:</label>
-                <input type="text" class="form-control" id="pwd">
-
-            </div>
+            <form action="" method="post">
+                <div class="form-inline" style="float: right;">
+                    <label for="pwd">Supplied By:</label>
+                    <select class="form-control" name="supplied_by" style="width:210px" onchange="selectProduct(this.value)">
+                        <option value=""></option>
+                        <?php
+                        $select = $mod->showUser();
+                        while ($row = mysqli_fetch_array($select)) { ?>
+                            <option value="<?php echo $row['lastname'] ?>">
+                                <?php echo 'MR/MISS ' . $row['lastname'] ?>
+                            </option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </div>
         </div>
     </div>
     <div class="row mt-2">
@@ -168,7 +185,7 @@ include "includes/sales/header.php";
 
             <div class="form-inline" style="float: right;">
                 <label for="pwd">Checked By:</label>
-                <input type="text" class="form-control" id="pwd">
+                <input type="text" name="checked_by" class="form-control" id="pwd">
 
             </div>
         </div>
@@ -179,8 +196,8 @@ include "includes/sales/header.php";
     </div>
     <div class="row">
         <div class="col-md-12 text-center">
-            <form action="" method="post">
-                <input onclick="window.print()" name="print" type="submit" class="toggle btn btn-primary d-print-none" value="print">
+
+            <input onclick="window.print()" name="print" type="submit" class="toggle btn btn-primary d-print-none" value="print">
             </form>
 
 

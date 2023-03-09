@@ -141,7 +141,7 @@ $show_result = mysqli_fetch_array($show);
                     ?>
                     
                     <td style="font-weight: bold;">Cash: # <?php $ctr->viewSalesDetail("cash"); ?></td>
-                    <td style="font-weight: bold;">POS:# <?php $ctr->viewSalesDetail("pos"); ?></td>
+                    <td style="font-weight: bold;">POS:# <?php $ctr->viewSalesDetail("pos"); if ($ctr->viewSalesReceipt("pos") !=0){ echo " (".$ctr->viewPosType("pos_type").")";} ?></td>
                     <td style="font-weight: bold;">Transfer:# <?php $ctr->viewSalesDetail("transfer"); ?></td>
 
                     <td style="font-weight: bold;">Total Paid:</td>
@@ -191,7 +191,7 @@ $show_result = mysqli_fetch_array($show);
 
             <div class="form-inline" style="float: right;">
                 <label for="pwd">Supplied By:</label>
-                <input type="text" class="form-control" id="pwd">
+                <input type="text" class="form-control" id="pwd" value="MR/MISS <?php echo $ctr->supplyCheck('supplied_by')?>" readonly>
 
             </div>
         </div>
@@ -201,7 +201,7 @@ $show_result = mysqli_fetch_array($show);
 
             <div class="form-inline" style="float: right;">
                 <label for="pwd">Checked By:</label>
-                <input type="text" class="form-control" id="pwd">
+                <input type="text" class="form-control" id="pwd" value="MR/MISS <?php echo $ctr->supplyCheck('checked_by')?>" readonly>
 
             </div>
         </div>
@@ -210,7 +210,7 @@ $show_result = mysqli_fetch_array($show);
         <div class="col-12 text-center">
             <form action="" method="post">
                 <input name="print" type="submit" class="btn btn-primary d-print-none" value="print" onclick="printpage()">
-                <a href="../print/director/index_s.php?invoice_no=<?php $ctr->viewSalesDetail("invoice_no"); ?>" class="btn btn-success d-print-none">Print Retail</a>
+                <a href="../print/manager/index_s.php?invoice_no=<?php $ctr->viewSalesDetail("invoice_no"); ?>" class="btn btn-success d-print-none">Print Retail</a>
                 <a href="sales_history_details.php?invoice_no1=<?php $ctr->viewSalesDetail("invoice_no") ?>" class="btn btn-danger d-print-none">Return All Goods</a>
                 <a href="search_record.php" class="btn btn-info d-print-none">Go Back</a>
 

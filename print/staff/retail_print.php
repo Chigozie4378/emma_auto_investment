@@ -4,7 +4,8 @@ if (isset($_SESSION["invoice"])){
 
     include "../../staff/core/init.php";
     $mod = new Model;
-    
+    $select_pos = $mod->showPosInvoice($_SESSION["invoice"]);
+    $result_pos = mysqli_fetch_array($select_pos);
     $select = $mod->showInvoiceSales($_SESSION["invoice"]);
     $result = mysqli_fetch_array($select);
     $staff = explode(" ",$result["staff_name"]);
@@ -122,12 +123,22 @@ if (isset($_SESSION["invoice"])){
             <td colspan="5" style="text-align: right;"><b>Total Amount: </b></td>
             <td colspan="2">'.$result["total"].'</td>
         </tr>
-        <tr>
-        <td></td>
+        <tr>';
+         if ($result["pos"] == 0){
+            $html.='
+            <td></td>
         <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
         <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
-        <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>
-        
+        <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>';
+         }else{
+            $html.= '
+            <td></td>
+            <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
+            <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
+            <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"]." (".$result_pos["pos_type"].")".'</b></td>';
+         }
+    $html.='
+    
     </tr>
     <tr>';
          if ($result["old_deposit"] == 0){

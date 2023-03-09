@@ -3,7 +3,7 @@ include "../core/init.php";
 $productname = $_POST['productname'];
 ?>  
 <!--=========== ajax select base on product name to model ==============-->
-        <select class="form-control" name="model" id="model" onchange = "selectModel(this.value,'<?php echo $productname?>')">
+        <select class="form-control"  name="model" id="model" onchange = "selectModel(this.value,'<?php echo $productname?>')">
         <option> select model  </option>
             <?php 
             $mod = new Model();

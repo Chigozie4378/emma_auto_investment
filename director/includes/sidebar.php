@@ -26,7 +26,7 @@
                with font-awesome or any other icon font library -->
             <li class="nav-item">
               <a href="dashboard.php" class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/dashboard.php'){ echo "active"; } ?> ">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="nav-icon fa fa-dashboard"></i>
                  <p>
                     Dashboard
                 </p>
@@ -203,10 +203,26 @@
                 </p>
              </a>
            </li>
+           <li class="nav-item">
+              <a href="add_new_customer.php" class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/add_new_customer.php'){ echo "active"; } ?>">
+                <i class="nav-icon fas fa-users"></i>
+                 <p>
+                 Add New Customer
+                </p>
+             </a>
+           </li>
+           <li class="nav-item">
+              <a href="bulk_sms.php" class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/bulk_sms.php'){ echo "active"; } ?>">
+              <i class="nav-icon fa fa-envelopes-bulk"></i>
+                 <p>
+                 Send Bulk SMS
+                </p>
+             </a>
+           </li>
             <li class="nav-item">
               <a href="import.php" class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/import.php'){ echo "active"; } ?>">
                
-                <i class="fa fa-file-import"></i>
+                <i class="nav-icon fa fa-file-import"></i>
                  <p>
                     Import
                 </p>
@@ -246,14 +262,7 @@
            </li> -->
            
           
-           <li class="nav-item">
-              <a href="add_new_customer.php" class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/add_new_customer.php'){ echo "active"; } ?>">
-                <i class="nav-icon fas fa-users"></i>
-                 <p>
-                 Add New Customer
-                </p>
-             </a>
-           </li>
+           
            
             
            

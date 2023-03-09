@@ -11,12 +11,12 @@ $result4 = mysqli_fetch_array($mod->showRecordDebit($date));
 $result5 = mysqli_fetch_array($mod->showRecordPos($date));
 // $select = $mod->showRecord($date);
 ?>
- <table class="table table-hover">
- <div class="row d-print-none" style="font-weight:bolder">
-        <div class="col-3">Total Sales:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result1["sumTotal"],2)?>"></div>
-        <div class="col-3">Total Cash:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result2["cash"],2)?>"></div>
-        <div class="col-3">Total Transfer:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="Transfer: <?php echo number_format($result3["transfer"],2)?> || POS: <?php echo number_format($result5["pos"],2)?>"></div>
-        <div class="col-3">Total Debit:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result4["balance"],2)?>"></div>
+<table class="table table-hover">
+    <div class="row d-print-none" style="font-weight:bolder">
+        <div class="col-3">Total Sales:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result1["sumTotal"], 2) ?>"></div>
+        <div class="col-3">Total Cash:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result2["cash"], 2) ?>"></div>
+        <div class="col-3">Total Transfer:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="Transfer: <?php echo number_format($result3["transfer"], 2) ?> || POS: <?php echo number_format($result5["pos"], 2) ?>"></div>
+        <div class="col-3">Total Debit:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result4["balance"], 2) ?>"></div>
 
     </div>
     <thead>
@@ -56,8 +56,8 @@ $result5 = mysqli_fetch_array($mod->showRecordPos($date));
                         <?php echo $row['address'] ?>
                     </td>
                     <td style="text-transform:uppercase">
-                    <?php echo $row['invoice_no'] ?>
-                     </td>
+                        <?php echo $row['invoice_no'] ?>
+                    </td>
                     <td style="text-transform:uppercase">
                         <?php echo $row['payment_type'] ?>
                     </td>
@@ -74,7 +74,11 @@ $result5 = mysqli_fetch_array($mod->showRecordPos($date));
                         <?php echo $row['transfer'] ?>
                     </td>
                     <td style="text-transform:uppercase">
-                        <?php echo $row['pos'] ?>
+                        <?php echo $row['pos'];
+                        if ($row["pos"] != 0) {
+                            $select_pos = mysqli_fetch_array($mod->showPos($row['customer_name'], $row['address'], $row['invoice_no']));
+                            echo " (" . $select_pos["pos_type"] . ")";
+                        } ?>
                     </td>
                     <td style="text-transform:uppercase">
                         <?php echo $row['deposit'] ?>
@@ -100,12 +104,12 @@ $result5 = mysqli_fetch_array($mod->showRecordPos($date));
     </tbody>
 </table>
 <div class="row d-print-none" style="font-weight:bolder">
-        <div class="col-3">Total Sales:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result1["sumTotal"],2)?>"></div>
-        <div class="col-3">Total Cash:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result2["cash"],2)?>"></div>
-        <div class="col-3">Total Transfer:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="Transfer: <?php echo number_format($result3["transfer"],2)?> || POS: <?php echo number_format($result5["pos"],2)?>"></div>
-        <div class="col-3">Total Debit:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result4["balance"],2)?>"></div>
+    <div class="col-3">Total Sales:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result1["sumTotal"], 2) ?>"></div>
+    <div class="col-3">Total Cash:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result2["cash"], 2) ?>"></div>
+    <div class="col-3">Total Transfer:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="Transfer: <?php echo number_format($result3["transfer"], 2) ?> || POS: <?php echo number_format($result5["pos"], 2) ?>"></div>
+    <div class="col-3">Total Debit:&nbsp; <input class="form-control" style="font-weight:bolder" type="text" value="<?php echo number_format($result4["balance"], 2) ?>"></div>
 
-    </div>
+</div>
 <p></p>
 <div class="text-center">
     <form action="" method="post">

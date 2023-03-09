@@ -4,7 +4,8 @@ if (isset($_SESSION["invoice"])){
 
     include "../../director/core/init.php";
     $mod = new Model;
-    
+    $select_pos = $mod->showPosInvoice($_SESSION["invoice"]);
+    $result_pos = mysqli_fetch_array($select_pos);
     $select = $mod->showInvoiceSales($_SESSION["invoice"]);
     $result = mysqli_fetch_array($select);
     $staff = explode(" ",$result["staff_name"]);
@@ -69,7 +70,7 @@ if (isset($_SESSION["invoice"])){
     <body>
         <h6 style="text-align: center;">EMMA AUTO AND MULTI-SERVICES COMPANY</h6>
         <p style="text-align: center;font-size:8px;font-weight:bold;">Distributor for Chanlin, Shiroro, Unigo, Jeely, Jieng, Endurance, Tako, Donaten, Sinosat, Sunrain Motorcycle spare parts of all brands of Motorcycles and Tricycle parts all Genuine parts, such as Honda, Bajaj, TVS, Hero and all brands of Motorcycles Engine and Tricycles.  <br>
-        <span>Address: No. 37A, Opposite Jesus Life Church, Asubiaro Hospital Junction, Osogbo, Osun State.</span></br>
+        <span>Address: No. 37A, Opposite Jesus Life Church, Asubiaro Hospital Junction, Osogbo, Osun State.</span></br>  
         <b>Tel: 08062063060, 08119222292, 07063684266</b> </p>
         <div style="text-align:center;border-radius: 50%;"><span
                 style="font-size:13px;border: 1px solid;text-align:center; padding: 5px;background-color:rgb(0, 0, 0); color: white;">Invoice</span>
@@ -99,50 +100,60 @@ if (isset($_SESSION["invoice"])){
         </table>
         <br/>
         <table class="table">
-            <tr>
-                <th class="qty">Qty</th>
-                <th class="goods" colspan="4">Description of Goods</th>
-                <th class="rate">Rate</th>
-                <th class="amount">Amount</th>
-            </tr>';
-            $select = $mod->showInvoiceSalesDetails($_SESSION['invoice']);
-                        while($row = mysqli_fetch_array($select)){
-                            
-                     
-                        $html.=
+        <tr>
+            <th class="qty">Qty</th>
+            <th class="goods" colspan="4">Description of Goods</th>
+            <th class="rate">Rate</th>
+            <th class="amount">Amount</th>
+        </tr>';
+        $select = $mod->showInvoiceSalesDetails($_SESSION['invoice']);
+                    while($row = mysqli_fetch_array($select)){
                         
-                '<tr>
-                <td class="qty">'.$row['quantity'].'</td>
-                <td class="goods"  colspan="4">'.$row['product_name']." ".$row['model']." ".$row['manufacturer'].'</td>
-                <td class="rate">'.$row['price'].'</td>
-                <td class="amount">'.$row['amount'].'</td>
-            </tr>';
-             }             
-             $html.='<tr>
-                <td colspan="5" style="text-align: right;"><b>Total Amount: </b></td>
-                <td colspan="2">'.$result["total"].'</td>
-            </tr>
-            <tr>
-            <td></td>
-            <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
-            <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
-            <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>
-            
+                 
+                    $html.=
+                    
+            '<tr>
+            <td class="qty">'.$row['quantity'].'</td>
+            <td class="goods"  colspan="4">'.$row['product_name']." ".$row['model']." ".$row['manufacturer'].'</td>
+            <td class="rate">'.$row['price'].'</td>
+            <td class="amount">'.$row['amount'].'</td>
+        </tr>';
+         }             
+         $html.='<tr>
+            <td colspan="5" style="text-align: right;"><b>Total Amount: </b></td>
+            <td colspan="2">'.$result["total"].'</td>
         </tr>
         <tr>';
-             if ($result["old_deposit"] == 0){
-                $html.='
-                <td colspan ="4"></td>
-                <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
-             }else{
-                $html.= '
-                <td colspan="4" style="text-align: left;"><b>Old Deposit: '.$result["old_deposit"].'</b></td>
-                <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
-             }
-        $html.='
-        
-        </tr>
-        </table>
+        if ($result["pos"] == 0){
+           $html.='
+           <td></td>
+       <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
+       <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
+       <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>';
+        }else{
+           $html.= '
+           <td></td>
+           <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
+           <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
+           <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"]." (".$result_pos["pos_type"].")".'</b></td>';
+        }
+   $html.='
+   
+   </tr>
+    <tr>';
+         if ($result["old_deposit"] == 0){
+            $html.='
+            <td colspan ="4"></td>
+            <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
+         }else{
+            $html.= '
+            <td colspan="4" style="text-align: left;"><b>Old Deposit: '.$result["old_deposit"].'</b></td>
+            <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
+         }
+    $html.='
+    
+    </tr>
+    </table>
         <br/>
         <span style="font-size:10px;font-weight:bold;">Customer Sign. ____________&nbsp;&nbsp;Cashier Sign. ____________ </span>
         <p style="text-align:center;font-size:10px;font-weight:bold;">You Must Be Born Again!</p>
@@ -155,9 +166,13 @@ if (isset($_SESSION["invoice"])){
     $mpdf->WriteHTML($html);
     $mpdf->Output();
     unset($_SESSION["invoice"]);
+    unset($_SESSION["customer_name"]);
+    unset($_SESSION["address"]);
 }else{
     header("location:../../director/retail.php");
 }
 
 
 ?>
+
+

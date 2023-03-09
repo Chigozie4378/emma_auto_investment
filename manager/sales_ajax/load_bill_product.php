@@ -101,8 +101,8 @@ session_start();
         <tr>
             <td colspan="4"></td>
             <td>POS</td>
-            <td colspan="2" style="width:15%;text-align:center"><input class="form-control" style="width:100%;box-sizing:border-box" onkeyup="posCalc(this.value,document.getElementById('transfer').value,document.getElementById('cash').value,document.getElementById('tot').value,document.getElementById('old_deposit').value,document.getElementById('transport').value)" onclick="this.select()" type="number" name="pos" id="pos" value="0" required></td>
-            <td style="width:20%;text-align:center"></td>
+            <td colspan="2" style="width:15%;text-align:center"><input onkeydown="selectPos()" class="form-control" style="width:100%;box-sizing:border-box" onkeyup="posCalc(this.value,document.getElementById('transfer').value,document.getElementById('cash').value,document.getElementById('tot').value,document.getElementById('old_deposit').value,document.getElementById('transport').value)" onclick="this.select()" type="number" name="pos" id="pos" value="0" required></td>
+            <td id="select_pos" style="width:20%;text-align:center"></td>
         </tr>
         <tr id="transportDiv">
             <td style="display: none;" colspan="1"></td>

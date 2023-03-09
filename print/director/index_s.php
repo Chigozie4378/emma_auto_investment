@@ -122,13 +122,26 @@
                 <td colspan="2">'.$result["total"].'</td>
             </tr>
            
-            <tr>
-            <td></td>
-            <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
-            <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
-            <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>
-            
-        </tr>
+            <tr>';
+            $select_pos = $mod->showPosInvoice($_GET["invoice_no"]);
+                $result_pos = mysqli_fetch_array($select_pos);
+            if ($result["pos"] == 0){
+                
+               $html.='
+               <td></td>
+           <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
+           <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
+           <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>';
+            }else{
+               $html.= '
+               <td></td>
+               <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
+               <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
+               <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"]." (".$result_pos["pos_type"].")".'</b></td>';
+            }
+       $html.='
+       
+       </tr>
         <tr>';
              if ($result["old_deposit"] == 0){
                 $html.='

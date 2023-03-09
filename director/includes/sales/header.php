@@ -27,10 +27,6 @@
       top: 0;
       background-color:white;
     }
-    table {
-      /* border-collapse: collapse;        
-      width: 100%; */
-    }
 </style>
 </head>
 

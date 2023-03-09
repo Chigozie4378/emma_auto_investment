@@ -580,6 +580,11 @@ class Model extends DB
         $select = mysqli_query($this->connect(), "SELECT * FROM sales WHERE date LIKE '%$date%' ORDER BY id DESC");
         return $select;
     }
+    public function showPos($customer_name, $address, $invoice)
+    {
+        $select = mysqli_query($this->connect(), "SELECT * FROM pos WHERE customer_name = '$customer_name' AND customer_address='$address' AND invoice_no = '$invoice'");
+        return $select;
+    }
 
 
 
@@ -882,5 +887,10 @@ class Model extends DB
         $handle = fopen("../database/inventory.sql", "w+");
         fwrite($handle, $return);
         fclose($handle);
+    }
+
+    public function showSupplyCheck($invoice_no, $customer_name, $customer_address)
+    {
+        return mysqli_query($this->connect(), "SELECT * FROM supply_check WHERE invoice_no = '$invoice_no' AND customer_name = '$customer_name' AND customer_address = '$customer_address'");
     }
 }

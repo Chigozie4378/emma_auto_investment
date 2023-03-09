@@ -6,16 +6,18 @@ include "core/init.php";
 $mod = new Model;
 ?>
 <?php
-if (isset($_POST["print"])) {
-    Session::unset("invoice");
-    Session::unset("customer_name");
-    Session::unset("address");
-    header("location:wholesales.php");
-}
+
 $show = $mod->showDebitInvoice($_SESSION["customer_name"], $_SESSION["address"]);
 $show_result = mysqli_fetch_array($show);
 $select = $mod->showInvoiceSales($_SESSION["invoice"]);
 $result = mysqli_fetch_array($select);
+if (isset($_POST["print"])) {
+    Session::unset("invoice");
+    Session::unset("customer_name");
+    Session::unset("address");
+    $mod->checkSupply($result["customer_name"],$result["address"],$result["invoice_no"],$_POST["supplied_by"],$_POST["checked_by"]);
+    header("location:wholesales.php");
+}
 include "includes/sales/header.php";
 ?>
 
@@ -107,7 +109,12 @@ include "includes/sales/header.php";
 
                     <td style="font-weight: bold;">Cash:# <?php echo number_format($result["cash"], 2); ?></td>
                     <td style="font-weight: bold;">Transfer:# <?php echo number_format($result["transfer"], 2); ?></td>
-                    <td style="font-weight: bold;">POS:# <?php echo number_format($result["pos"], 2); ?></td>
+                    <td style="font-weight: bold;">POS:# <?php echo number_format($result["pos"], 2); 
+                    if ($result["pos"] !=0){
+                        $select_pos = mysqli_fetch_array($mod->showPos($_SESSION["customer_name"], $_SESSION["address"],$_SESSION["invoice"]));
+                        echo " (".$select_pos["pos_type"].")";
+                    }
+                    ?></td>
                     <td style="font-weight: bold;">Total Payment:</td>
                     <td style="font-weight: bold;"><?php echo number_format($result["deposit"], 2); ?></td>
                 </tr>
@@ -150,11 +157,21 @@ include "includes/sales/header.php";
     </div>
     <div class="row mt-2">
         <div class="offset-md-6 col-md-6">
-
+        <form action="" method="post">
             <div class="form-inline" style="float: right;">
                 <label for="pwd">Supplied By:</label>
-                <input type="text" class="form-control" id="pwd">
-
+                <select class="form-control" name="supplied_by" style="width:210px" onchange="selectProduct(this.value)" >
+                    <option value=""></option>
+                    <?php
+                    $select = $mod->showUser();
+                    while ($row = mysqli_fetch_array($select)) { ?>
+                      <option value="<?php echo $row['lastname'] ?>">
+                        <?php echo 'MR/MISS '. $row['lastname'] ?>
+                      </option>
+                    <?php
+                    }
+                    ?>
+                  </select>
             </div>
         </div>
     </div>
@@ -163,7 +180,7 @@ include "includes/sales/header.php";
 
             <div class="form-inline" style="float: right;">
                 <label for="pwd">Checked By:</label>
-                <input type="text" class="form-control" id="pwd">
+                <input type="text" name="checked_by" class="form-control" id="pwd">
 
             </div>
         </div>
@@ -174,7 +191,7 @@ include "includes/sales/header.php";
     </div>
     <div class="row">
         <div class="col-md-12 text-center">
-            <form action="" method="post">
+            
                 <input onclick="window.print()" name="print" type="submit" class="toggle btn btn-primary d-print-none" value="print">
             </form>
 
@@ -191,7 +208,10 @@ include "includes/sales/header.php";
     <script src="bootsrap/jquery.js"></script>
     <script src="bootsrap/popper.js"></script>
     <script src="bootsrap/bootstrap.min.js"></script>
-
+    <script>
+  $(".chosen").chosen();
+</script>
+<script src="../assets/plugins/chosen/chosen.js"></script>
 
 </body>
 

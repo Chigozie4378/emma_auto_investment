@@ -155,7 +155,7 @@ $ctr = new Controller();
                   <input type="text" class="form-control" id="total" value="0" readonly>
                 </div>
               </div>
-              <div class="text-center pt-1"> <input type="submit" class="btn btn-light" value="Add" onclick="addIntoCart()">
+              <div class="text-center pt-1"> <input type="button" class="btn btn-light" value="Add" onclick="addIntoCart()">
               </div>
 
             </div>
@@ -315,6 +315,7 @@ $ctr = new Controller();
           },
           success: function(data) {
             loadBillingProduct();
+            remove();
           }
         });
       } else {
@@ -467,7 +468,18 @@ $ctr = new Controller();
     xhttp.open("GET", "sales_ajax/load_select_bank.php", true);
     xhttp.send();
   }
+  function selectPos() {
+    const xhttp = new XMLHttpRequest();
 
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("select_pos").innerHTML =
+          this.responseText;
+      }
+    };
+    xhttp.open("GET", "sales_ajax/load_pos.php", true);
+    xhttp.send();
+  }
   function updatePage() {
     const xhttp = new XMLHttpRequest();
 
@@ -510,6 +522,13 @@ $ctr = new Controller();
   }
 
   loadBillingProduct()
+  function remove() {
+    document.getElementById('model').value = '';
+    document.getElementById('manufacturer').value = '';
+    document.getElementById('price').value = '';
+    document.getElementById('qty').value = '';
+    document.getElementById('total').value = '';
+  }
 </script>
 <!--end-main-container-part-->
 <?php

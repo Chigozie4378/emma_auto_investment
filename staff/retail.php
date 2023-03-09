@@ -168,14 +168,14 @@ $ctr->customerDelete();
                   <input type="text" class="form-control" id="total" value="0" readonly>
                 </div>
               </div>
-              <div class="text-center pt-1"> <input type="button" class="btn btn-light" value="Add" onclick="addIntoCart()">
+              <div class="text-center pt-1"> <input type="button"  class="btn btn-light" value="Add" onclick="addIntoCart()">
               </div>
 
             </div>
           </div>
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8" style='width: autopx;
-              height: 100vh;
+              height: 75vh;
               overflow: scroll;'>
           <div class="card card-primary">
             <div class="card-body">
@@ -302,6 +302,7 @@ $ctr->customerDelete();
           },
           success: function(data) {
             loadBillingProduct();
+            remove();
           }
         });
       } else {
@@ -344,6 +345,7 @@ $ctr->customerDelete();
           },
           success: function(data) {
             loadBillingProduct();
+            
           }
         });
       } else {
@@ -454,7 +456,18 @@ $ctr->customerDelete();
     xhttp.open("GET", "ajax/load_select_bank.php", true);
     xhttp.send();
   }
+  function selectPos() {
+    const xhttp = new XMLHttpRequest();
 
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("select_pos").innerHTML =
+          this.responseText;
+      }
+    };
+    xhttp.open("GET", "ajax/load_pos.php", true);
+    xhttp.send();
+  }
   function updatePage() {
     const xhttp = new XMLHttpRequest();
 
@@ -498,152 +511,15 @@ $ctr->customerDelete();
 
   loadBillingProduct()
 
-  // function quantity(qty) {
+  function remove() {
+    document.getElementById('model').value = '';
+    document.getElementById('manufacturer').value = '';
+    document.getElementById('price').value = '';
+    document.getElementById('qty').value = '';
+    document.getElementById('total').value = '';
+  }
 
-  //   document.getElementById("total").value = eval(document.getElementById("qty").value) * eval(document.getElementById("price").value)
-  // }
-
-  // // add into cart
-  // function addIntoCart() {
-  //   $(document).ready(function () {
-  //     var productname = document.getElementById("productname").value;
-  //     var model = document.getElementById("model").value;
-  //     var manufacturer = document.getElementById("manufacturer").value;
-  //     var quantity = document.getElementById("qty").value;
-  //     var price = document.getElementById("price").value;
-  //     var total = document.getElementById("total").value;
-  //     var product_id = document.getElementById("product_id").value;
-  //     var qty_db = document.getElementById("qty_db").value;
-  //     if (manufacturer && model && productname && quantity && price && total && product_id && qty_db != "") {
-  //       $.ajax({
-  //         url: "ajax/load_cart.php",
-  //         method: "POST",
-  //         data: {
-  //           manufacturer: manufacturer,
-  //           model: model,
-  //           productname: productname,
-  //           quantity: quantity,
-  //           price: price,
-  //           total: total,
-  //           product_id: product_id,
-  //           qty_db: qty_db
-  //         },
-  //         success: function (data) {
-  //           loadBillingProduct();
-  //         }
-  //       });
-  //     } else {
-  //       loadBillingProduct();
-  //     }
-  //   });
-  // }
-
-  // //load billing product
-  // function loadBillingProduct() {
-  //   var xhttp = new XMLHttpRequest();
-  //   xhttp.onreadystatechange = function () {
-  //     if (this.readyState == 4 && this.status == 200) {
-  //       document.getElementById("load_billing").innerHTML = this.responseText;
-  //     }
-  //   };
-  //   xhttp.open("POST", "ajax/load_billing_product_retail.php", true);
-  //   xhttp.send();
-  // }
-
-  // //JQuery Ajax for update cart Qty
-  // function updateQty(value1, value2, value3, value4, value5, value6) {
-  //   $(document).ready(function () {
-  //     var quantity = value1;
-  //     var productname = value2;
-  //     var model = value3;
-  //     var manufacturer = value4;
-  //     var price = value5;
-  //     var amount = value6;
-  //     if (quantity && productname && model && manufacturer && price != "") {
-  //       $.ajax({
-  //         url: "ajax/update_quantity.php",
-  //         method: "POST",
-  //         data: {
-  //           quantity: quantity,
-  //           productname: productname,
-  //           model: model,
-  //           manufacturer: manufacturer,
-  //           price: price,
-  //           amount: amount
-  //         },
-  //         success: function (data) {
-  //           loadBillingProduct();
-  //         }
-  //       });
-  //     } else {
-  //       loadBillingProduct();
-  //     }
-  //   });
-
-  // }
-
-  // function deleteItem(id) {
-
-  //   var xhttp = new XMLHttpRequest();
-  //   xhttp.onreadystatechange = function () {
-  //     if (this.readyState == 4 && this.status == 200) {
-  //       if (this.respondText == "") {
-
-  //         loadBillingProduct();
-  //       } else {
-
-  //         loadBillingProduct();
-  //       }
-  //     }
-  //   };
-
-  //   xhttp.open("GET", "ajax/delete_item.php?id=" + id, true);
-  //   xhttp.send();
-  // }
-
-  // function transferCalc(transfer, cash) {
-
-  //   var xhttp = new XMLHttpRequest();
-  //   xhttp.onreadystatechange = function () {
-  //     if (this.readyState == 4 && this.status == 200) {
-  //       document.getElementById("paid").innerHTML = this.responseText;
-
-  //     }
-  //   };
-  //   xhttp.open("GET", "ajax/load_deposit_retail.php?cash=" + cash + "&transfer=" + transfer, true);
-  //   xhttp.send();
-
-  // }
-
-  // function cashCalc(transfer, cash) {
-
-  //   var xhttp = new XMLHttpRequest();
-  //   xhttp.onreadystatechange = function () {
-  //     if (this.readyState == 4 && this.status == 200) {
-  //       document.getElementById("paid").innerHTML = this.responseText;
-
-  //     }
-  //   };
-  //   xhttp.open("GET", "ajax/load_deposit_retail.php?cash=" + cash + "&transfer=" + transfer, true);
-  //   xhttp.send();
-
-  // }
-
-  // function balanceCalc(total, deposit) {
-
-  //   var xhttp = new XMLHttpRequest();
-  //   xhttp.onreadystatechange = function () {
-  //     if (this.readyState == 4 && this.status == 200) {
-  //       document.getElementById("balance").value = this.responseText;
-  //     }
-  //   };
-  //   xhttp.open("GET", "ajax/load_balance.php?deposit=" + deposit + "&total=" + total, true);
-  //   xhttp.send();
-
-  // }
-
-
-  // loadBillingProduct()
+  
 </script>
 <!--end-main-container-part-->
 <?php
