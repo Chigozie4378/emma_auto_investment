@@ -64,6 +64,7 @@ $ctr->addNewUser();
                     <option value="admin">Admin</option>
                     <option value="manager">Manager</option>
                     <option value="director">Director</option>
+                    <option value="others">Others</option>
                   </select>
                 </div>
               </div>

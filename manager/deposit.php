@@ -40,25 +40,38 @@ $ctr->addDeposit();
                             <input type="text" id="customer_address" name="customer_address" class="form-control" required autocomplete="off">
                             <span class="text-danger"><?php echo $ctr->customer_addressErr ?></span>
                         </div>
-                        <input type="hidden" name="invoice_no" value="<?php $ctr->random() ?>" >
+                        <input type="hidden" name="invoice_no" value="<?php $ctr->random() ?>">
                     </div>
-                    
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>Product Name</h5>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Model</h5>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Manufacturer</h5>
+                    </div>
                 </div>
             </div>
 
 
             <div class="add-items-section"></div>
             <div class="deposit-section float-right" style="display: none;">
+            <input class="form-control" style="width:100%;box-sizing:border-box; display:none;" name="pos_charges" id="pos_charges" value="0" required>
                 <label for="cash">Cash</label>
-                <input class="form-control" style="width:100%;box-sizing:border-box" onkeyup="cashCalc(this.value,document.getElementById('pos').value,document.getElementById('transfer').value)" onclick="this.select()" type="number" name="cash" id="cash" value="0" required>
+                <input class="form-control" style="width:100%;box-sizing:border-box" onkeyup="cashCalc(this.value,document.getElementById('pos').value,document.getElementById('transfer').value,document.getElementById('pos_charges').value)" onclick="this.select()" type="number" name="cash" id="cash" value="0" required>
                 <p></p>
                 <label for="transfer">Transfer</label>
-                <input onkeydown="selectBank()" class="form-control" style="width:100%;box-sizing:border-box" onkeyup="transferCalc(this.value,document.getElementById('pos').value,document.getElementById('cash').value)" onclick="this.select()" type="number" name="transfer" id="transfer" value="0" required>
+                <input onkeydown="selectBank()" class="form-control" style="width:100%;box-sizing:border-box" onkeyup="transferCalc(this.value,document.getElementById('pos').value,document.getElementById('cash').value,document.getElementById('pos_charges').value)" onclick="this.select()" type="number" name="transfer" id="transfer" value="0" required>
                 <span id="select_bank"></span>
                 <p></p>
                 <label for="pos">POS</label>
-                <input class="form-control" style="width:100%;box-sizing:border-box" onkeyup="posCalc(this.value,document.getElementById('transfer').value,document.getElementById('cash').value)" onclick="this.select()" type="number" name="pos" id="pos" value="0" required>
-
+                <input class="form-control" onkeydown="selectPos()" style="width:100%;box-sizing:border-box" onkeyup="posCalc(this.value,document.getElementById('transfer').value,document.getElementById('cash').value,document.getElementById('pos_charges').value)" onclick="this.select()" type="number" name="pos" id="pos" value="0" required>
+                <span id="select_pos"></span>
+                <p></p>
                 <label for="amount">Deposit Amount</label>
                 <div id="deposit">
                     <input type="number" name="deposit_amount" id="deposit_amount" class="form-control" readonly>
@@ -72,7 +85,7 @@ $ctr->addDeposit();
 
 </section>
 <script>
-    function transferCalc(transfer, pos, cash) {
+    function transferCalc(transfer, pos, cash, pos_charges) {
 
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -81,12 +94,12 @@ $ctr->addDeposit();
 
             }
         };
-        xhttp.open("GET", "sales_ajax/load_deposit2.php?cash=" + cash + "&pos=" + pos + "&transfer=" + transfer, true);
+        xhttp.open("GET", "sales_ajax/load_deposit2.php?cash=" + cash + "&pos=" + pos + "&transfer=" + transfer + "&pos_charges=" + pos_charges, true);
         xhttp.send();
 
     }
 
-    function cashCalc(transfer, pos, cash) {
+    function cashCalc(transfer, pos, cash, pos_charges) {
 
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -95,12 +108,12 @@ $ctr->addDeposit();
 
             }
         };
-        xhttp.open("GET", "sales_ajax/load_deposit2.php?cash=" + cash + "&pos=" + pos + "&transfer=" + transfer, true);
+        xhttp.open("GET", "sales_ajax/load_deposit2.php?cash=" + cash + "&pos=" + pos + "&transfer=" + transfer + "&pos_charges=" + pos_charges, true);
         xhttp.send();
 
     }
 
-    function posCalc(pos, transfer, cash) {
+    function posCalc(pos, transfer, cash, pos_charges) {
 
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -109,9 +122,36 @@ $ctr->addDeposit();
 
             }
         };
-        xhttp.open("GET", "sales_ajax/load_deposit2.php?pos=" + pos + "&cash=" + cash + "&transfer=" + transfer, true);
+        xhttp.open("GET", "sales_ajax/load_deposit2.php?pos=" + pos + "&cash=" + cash + "&transfer=" + transfer + "&pos_charges=" + pos_charges, true);
         xhttp.send();
 
+    }
+
+    function addCharges(pos_charges, pos, transfer, cash) {
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("deposit").innerHTML = this.responseText;
+
+            }
+        };
+        xhttp.open("GET", "sales_ajax/load_deposit2.php?pos_charges=" + pos_charges + "&pos=" + pos + "&cash=" + cash + "&transfer=" + transfer, true);
+        xhttp.send();
+
+    }
+
+    function selectPos() {
+        const xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("select_pos").innerHTML =
+                    this.responseText;
+            }
+        };
+        xhttp.open("GET", "sales_ajax/load_pos2.php", true);
+        xhttp.send();
     }
 
 
@@ -128,56 +168,54 @@ $ctr->addDeposit();
         xhttp.send();
     }
 
-      //JQuery Ajax for productname
-  function selectProduct(value,index) {
-    $(document).ready(function() {
-      var productname = value;
-      var no = index;
-      if (productname != "") {
-        $.ajax({
-          url: "sales_ajax/load_model2.php",
-          method: "POST",
-          data: {
-            productname: productname,
-            index:no,
-          },
-          success: function(data) {
-            $("#modeldev"+index).html(data);
-          }
+    //JQuery Ajax for productname
+    function selectProduct(value, index) {
+        $(document).ready(function() {
+            var productname = value;
+            var no = index;
+            if (productname != "") {
+                $.ajax({
+                    url: "sales_ajax/load_model2.php",
+                    method: "POST",
+                    data: {
+                        productname: productname,
+                        index: no,
+                    },
+                    success: function(data) {
+                        $("#modeldev" + index).html(data);
+                    }
+                });
+            } else {
+                $("#modeldev").css("display", "none");
+            }
         });
-      } else {
-        $("#modeldev").css("display", "none");
-      }
-    });
 
-  }
+    }
 
-  //JQuery Ajax for model
-  function selectModel(value1, value2,index) {
-    $(document).ready(function() {
-      var model = value1;
-      var productname = value2;
-      var no = index;
-      if (model && productname != "") {
-        $.ajax({
-          url: "sales_ajax/load_manufacturer.php",
-          method: "POST",
-          data: {
-            model: model,
-            productname: productname,
-            index:no,
-          },
-          success: function(data) {
-            $("#manufacturerdev"+index).html(data);
-          }
+    //JQuery Ajax for model
+    function selectModel(value1, value2, index) {
+        $(document).ready(function() {
+            var model = value1;
+            var productname = value2;
+            var no = index;
+            if (model && productname != "") {
+                $.ajax({
+                    url: "sales_ajax/load_manufacturer.php",
+                    method: "POST",
+                    data: {
+                        model: model,
+                        productname: productname,
+                        index: no,
+                    },
+                    success: function(data) {
+                        $("#manufacturerdev" + index).html(data);
+                    }
+                });
+            } else {
+                $("#manufacturerdev").css("display", "none");
+            }
         });
-      } else {
-        $("#manufacturerdev").css("display", "none");
-      }
-    });
-  }
-
-
+    }
 </script>
 <script>
     // Add another input on button click

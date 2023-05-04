@@ -68,7 +68,7 @@ session_start();
 
         <tr>
             <td colspan="2"><label for="check">Check Deposit </label> <input type="checkbox" name="" id="check" onpointerout="cashCalc(this.value,document.getElementById('pos').value,document.getElementById('transfer').value,document.getElementById('tot').value,document.getElementById('old_deposit').value)" onclick="checkDeposit(document.getElementById('title').value,document.getElementById('customer_name').value,document.getElementById('address').value)"></td>
-            <td colspan="2"><label for="check">Add Transport </label> <input type="checkbox" name="" id="transport" onclick="addTransport()"></td>
+            <td colspan="2"><label for="check">Add Transport </label> <input type="checkbox" name="" id="add_transport" onclick="addTransport()"></td>
             <td colspan="2">
                 <p style="float:right;font-weight:bold">Total Amount: # </p>
             </td>
@@ -77,32 +77,38 @@ session_start();
             </td>
             <input type="hidden" name="tot" id="tot" value="<?php echo $total ?>">
             <td></td>
+            <input type="hidden" name="pos_charges" id="pos_charges" value="0">
         </tr>
         <tr id="deposit_amount">
             <td style="display: none;" colspan="1"></td>
             <td style="display: none;">Deposit Amount</td>
             <td style="width:15%;text-align:center;display: none;"><input class="form-control" style="width:100%;box-sizing:border-box" name="old_deposit" id="old_deposit" value="0" required></td>
+            <td style="width:15%;text-align:center;display: none;"><input class="form-control" style="width:100%;box-sizing:border-box" name="pos_charges" id="pos_charges" value="0" required></td>
+            
 
         </tr>
-        
+
 
         <tr>
             <td colspan="4"></td>
             <td>Cash</td>
-            <td colspan="2" style="width:15%;text-align:center"><input class="form-control" style="width:100%;box-sizing:border-box" onkeyup="cashCalc(this.value,document.getElementById('pos').value,document.getElementById('transfer').value,document.getElementById('tot').value,document.getElementById('old_deposit').value,document.getElementById('transport').value)" onclick="this.select()" type="number" name="cash" id="cash" value="0" required></td>
+            <td colspan="2" style="width:15%;text-align:center"><input class="form-control" style="width:100%;box-sizing:border-box" onkeyup="cashCalc(this.value,document.getElementById('pos').value,document.getElementById('transfer').value,document.getElementById('tot').value,document.getElementById('old_deposit').value,document.getElementById('transport').value,document.getElementById('pos_charges').value)" onclick="this.select()" type="number" name="cash" id="cash" value="0" required></td>
             <td></td>
         </tr>
         <tr>
             <td colspan="4"></td>
             <td>Transfer</td>
-            <td colspan="2" style="width:15%;text-align:center"><input onkeydown="selectBank()" class="form-control" style="width:100%;box-sizing:border-box" onkeyup="transferCalc(this.value,document.getElementById('pos').value,document.getElementById('cash').value,document.getElementById('tot').value,document.getElementById('old_deposit').value,document.getElementById('transport').value)" onclick="this.select()" type="number" name="transfer" id="transfer" value="0" required></td>
+            <td colspan="2" style="width:15%;text-align:center"><input onkeydown="selectBank()" class="form-control" style="width:100%;box-sizing:border-box" onkeyup="transferCalc(this.value,document.getElementById('pos').value,document.getElementById('cash').value,document.getElementById('tot').value,document.getElementById('old_deposit').value,document.getElementById('transport').value,document.getElementById('pos_charges').value)" onclick="this.select()" type="number" name="transfer" id="transfer" value="0" required></td>
             <td id="select_bank" style="width:20%;text-align:center"></td>
         </tr>
         <tr>
             <td colspan="4"></td>
             <td>POS</td>
-            <td colspan="2" style="width:15%;text-align:center"><input onkeydown="selectPos()" class="form-control" style="width:100%;box-sizing:border-box" onkeyup="posCalc(this.value,document.getElementById('transfer').value,document.getElementById('cash').value,document.getElementById('tot').value,document.getElementById('old_deposit').value,document.getElementById('transport').value)" onclick="this.select()" type="number" name="pos" id="pos" value="0" required></td>
+            <td colspan="2" style="width:15%;text-align:center"><input onkeydown="selectPos()" class="form-control" style="width:100%;box-sizing:border-box" onkeyup="posCalc(this.value,document.getElementById('transfer').value,document.getElementById('cash').value,document.getElementById('tot').value,document.getElementById('old_deposit').value,document.getElementById('transport').value,document.getElementById('pos_charges').value)" onclick="this.select()" type="number" name="pos" id="pos" value="0" required></td>
             <td id="select_pos" style="width:20%;text-align:center"></td>
+            <!-- <td id="pos_charges">
+            
+            </td> -->
         </tr>
         <tr id="transportDiv">
             <td style="display: none;" colspan="1"></td>

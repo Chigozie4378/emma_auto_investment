@@ -108,10 +108,13 @@ $ctr->viewDepositDetails();
                     ?>
                     <tr>
                         <td style="font-weight: bold;">Cash: # <?php echo $ctr->viewDeposit("cash"); ?></td>
-                        <td style="font-weight: bold;">POS:# <?php echo $ctr->viewDeposit("pos"); ?></td>
+                        
                         <td style="font-weight: bold;">Transfer:# <?php echo $ctr->viewDeposit("transfer"); ?></td>
-
-                        <td style="font-weight: bold;">Deposit Amount:# <?php echo $ctr->viewDeposit("deposit_amount"); ?></td>
+                        <td style="font-weight: bold;">POS:# <?php echo $ctr->viewDeposit("pos"); if ($ctr->viewDeposit("pos") !=0){ echo " (".$ctr->viewPosType("pos_type").")";?></td>
+                        <td style="font-weight: bold;">POS Charges :# <?php echo $ctr->viewPosType("pos_charges");
+                     }  ?>
+                     </td>
+                        <td style="font-weight: bold;">Deposit Amount:# <?php echo (int)$ctr->viewDeposit("deposit_amount")+(int)$ctr->viewPosType("pos_charges"); ?></td>
                     </tr>
 
                 </table>
@@ -141,7 +144,7 @@ $ctr->viewDepositDetails();
             <div class="col-12 text-center">
                 <form action="" method="post">
                     <input name="print" type="submit" class="btn btn-primary d-print-none" value="print" onclick="printpage()">
-                    <a href="../print/director/deposit_s.php?invoice_no=<?php $ctr->viewDeposit("invoice_no"); ?>" class="btn btn-success d-print-none">Print Retail</a>
+                    <a href="../print/director/deposit_s.php?invoice_no=<?php echo $ctr->viewDeposit("invoice_no"); ?>" class="btn btn-success d-print-none">Print Retail</a>
                     <a href="show_deposit.php" class="btn btn-info d-print-none">Go Back</a>
 
                 </form>

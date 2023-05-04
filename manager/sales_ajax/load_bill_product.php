@@ -68,7 +68,7 @@ session_start();
 
 <tr>
             <td colspan="2"><label for="check">Check Deposit </label> <input type="checkbox" name="" id="check" onpointerout="cashCalc(this.value,document.getElementById('pos').value,document.getElementById('transfer').value,document.getElementById('tot').value,document.getElementById('old_deposit').value)" onclick="checkDeposit(document.getElementById('title').value,document.getElementById('customer_name').value,document.getElementById('address').value)"></td>
-            <td colspan="2"><label for="check">Add Transport </label> <input type="checkbox" name="" id="transport" onclick="addTransport()"></td>
+            <td colspan="2"><label for="check">Add Transport </label> <input type="checkbox" name="" id="add_transport" onclick="addTransport()"></td>
             <td colspan="2">
                 <p style="float:right;font-weight:bold">Total Amount: # </p>
             </td>
@@ -77,11 +77,14 @@ session_start();
             </td>
             <input type="hidden" name="tot" id="tot" value="<?php echo $total ?>">
             <td></td>
+            <input type="hidden" name="pos_charges" id="pos_charges" value="0">
+
         </tr>
         <tr id="deposit_amount">
             <td style="display: none;" colspan="1"></td>
             <td style="display: none;">Deposit Amount</td>
             <td style="width:15%;text-align:center;display: none;"><input class="form-control" style="width:100%;box-sizing:border-box" name="old_deposit" id="old_deposit" value="0" required></td>
+            <td style="width:15%;text-align:center;display: none;"><input class="form-control" style="width:100%;box-sizing:border-box" name="pos_charges" id="pos_charges" value="0" required></td>
 
         </tr>
         

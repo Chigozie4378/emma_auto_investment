@@ -16,6 +16,8 @@ class Model extends DB
         mysqli_query($this->connect(), "TRUNCATE TABLE return_goods_details");
         mysqli_query($this->connect(), "TRUNCATE TABLE sales");
         mysqli_query($this->connect(), "TRUNCATE TABLE sales_details");
+        mysqli_query($this->connect(), "TRUNCATE TABLE deposit");
+        mysqli_query($this->connect(), "TRUNCATE TABLE deposit_details");
         mysqli_query($this->connect(), "TRUNCATE TABLE company");
 
         mysqli_query($this->connect(), "TRUNCATE TABLE purchase");
@@ -26,6 +28,7 @@ class Model extends DB
     public function wipeProduct()
     {
         mysqli_query($this->connect(), "TRUNCATE TABLE product");
+        
     }
     public function wipeUser()
     {
@@ -51,6 +54,11 @@ class Model extends DB
     public function showUser()
     {
         $select = mysqli_query($this->connect(), "SELECT * FROM registered");
+        return $select;
+    }
+    public function showUserSupply()
+    {
+        $select = mysqli_query($this->connect(), "SELECT * FROM registered where role='others'");
         return $select;
     }
     public function showUserBlock($username)
@@ -586,9 +594,9 @@ class Model extends DB
     {
         mysqli_query($this->connect(), "INSERT INTO sales VALUES(null,'$customer_name', '$address', '$invoice_no', '$bill_type','$customer_type', '$total','$cash','$transfer','$pos','$old_deposit','$deposit', '$transport', '$balance','$staff', '$date', '$username','')");
     }
-    public function addPos($customer_name, $address, $invoice_no2, $pos_type)
+    public function addPos($customer_name, $address, $invoice_no2, $pos_type,$pos_charges)
     {
-        mysqli_query($this->connect(), "INSERT INTO pos VALUES(null,'$customer_name', '$address', '$invoice_no2', '$pos_type')");
+        mysqli_query($this->connect(), "INSERT INTO pos VALUES(null,'$customer_name', '$address', '$invoice_no2', '$pos_type','$pos_charges')");
     }
     public function addSalesDetails($customer_name, $address, $invoice_no, $customer_type, $productname_session, $model_session, $manufacturer_session, $quantity_session, $price_session, $amount, $staff, $date)
     {
@@ -646,7 +654,7 @@ class Model extends DB
     public function showInvoiceDirector()
     {
         $date = date("d-m-Y");
-        $select = mysqli_query($this->connect(), "SELECT * FROM sales WHERE staff_name = '" . $_SESSION['directorfullname'] . "' AND date LIKE '%$date%' ");
+        $select = mysqli_query($this->connect(), "SELECT * FROM sales WHERE staff_name = '" . $_SESSION['directorfullname'] . "' AND date LIKE '%$date%' ORDER BY id DESC");
         return $select;
     }
     public function showInvoiceDate()
@@ -1098,5 +1106,9 @@ class Model extends DB
     }
     public function storeSMS($title,$message){
         mysqli_query($this->connect(), "INSERT INTO bulk_sms VALUES(null,'$title', '$message')");
+    }
+    public function showCode($code)
+    {
+        return mysqli_query($this->connect(), "SELECT * FROM code WHERE code = '$code'");
     }
 }

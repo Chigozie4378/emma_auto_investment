@@ -27,6 +27,7 @@ $ctr = new Controller();
                     <form action="" method="post" class="form-horizontal">
                         <div class="card-body">
                             <input type="hidden" class="form-control" name="id" value="<?php $ctr->debitEdit('id') ?>" />
+                            <input type="hidden" class="form-control" name="invoice_no" value="<?php $ctr->random() ?>" readonly>
                             <div class="form-group">
                                 <label class="control-label">Customer Name :</label>
                                 <div class="controls">
@@ -57,11 +58,18 @@ $ctr = new Controller();
                                     <input type="text" class="form-control" name="balance" value="<?php echo $ctr->debitEdit('balance') ?>" readonly />
                                 </div>
                             </div>
+                            
                             <div class="form-group">
                                 <label class="control-label">Pay :</label>
                                 <div class="controls">
                                     <input type="number" class="form-control" name="pay" />
                                 </div>
+                            </div>
+                            <div class="form-inline">
+                                <label class="control-label">Choose Payment method :</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input style="width:20px" type="radio" class="form-control" name="payment_type" value="cash"/>&nbsp;&nbsp;<label for="">Cash</label>&nbsp;&nbsp;&nbsp;
+                                   <input style="width:20px" type="radio" class="form-control" name="payment_type" value="not_cash"/> &nbsp;&nbsp;<label for="">Non Cash</label>
+                                
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Date :</label>

@@ -168,7 +168,7 @@ $show_result = mysqli_fetch_array($show);
 
             <div class="form-inline" style="float: right;">
                 <label for="pwd">Supplied By:</label>
-                <input type="text" class="form-control" id="pwd" value="MR/MISS <?php echo $ctr->supplyCheck('supplied_by') ?>" readonly>
+                <input type="text" class="form-control" id="pwd" value=" <?php echo $ctr->supplyCheck('supplied_by') ?>" readonly>
 
             </div>
         </div>
@@ -178,7 +178,7 @@ $show_result = mysqli_fetch_array($show);
 
             <div class="form-inline" style="float: right;">
                 <label for="pwd">Checked By:</label>
-                <input type="text" class="form-control" id="pwd" value="MR/MISS <?php echo $ctr->supplyCheck('checked_by') ?>" readonly>
+                <input type="text" class="form-control" id="pwd" value=" <?php echo $ctr->supplyCheck('checked_by') ?>" readonly>
 
             </div>
         </div>

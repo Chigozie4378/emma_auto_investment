@@ -795,7 +795,7 @@ class Model extends DB
     }
     public function addIntoDebitDetails($customer_name, $address, $total, $deposit, $total_deposit, $balance, $total_bal, $staff, $date, $comment)
     {
-        mysqli_query($this->connect(), "INSERT INTO debit_histories VALUES(null,'$customer_name', '$address', '$total','$deposit','$total_deposit', '$balance','$total_bal', '$staff', '$date','$comment')");
+        mysqli_query($this->connect(), "INSERT INTO debit_histories VALUES(null,'$customer_name', '$address', '$total','$deposit','$total_deposit', '$balance','$total_bal', '$staff', '$date','$comment','')");
     }
     public function showDebit()
     {

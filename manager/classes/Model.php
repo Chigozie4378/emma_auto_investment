@@ -42,6 +42,11 @@ class Model extends DB
         $select = mysqli_query($this->connect(), "SELECT * FROM registered");
         return $select;
     }
+    public function showUserSupply()
+    {
+        $select = mysqli_query($this->connect(), "SELECT * FROM registered where role='others'");
+        return $select;
+    }
     public function displayPassport()
     {
         $username = $_SESSION["managerusername"];
@@ -549,9 +554,9 @@ class Model extends DB
     {
         mysqli_query($this->connect(), "INSERT INTO sales VALUES(null,'$customer_name', '$address', '$invoice_no', '$bill_type','$customer_type', '$total','$cash','$transfer','$pos','$old_deposit','$deposit', '$transport', '$balance','$staff', '$date', '$username','')");
     }
-    public function addPos($customer_name, $address, $invoice_no2, $pos_type)
+    public function addPos($customer_name, $address, $invoice_no2, $pos_type,$pos_charges)
     {
-        mysqli_query($this->connect(), "INSERT INTO pos VALUES(null,'$customer_name', '$address', '$invoice_no2', '$pos_type')");
+        mysqli_query($this->connect(), "INSERT INTO pos VALUES(null,'$customer_name', '$address', '$invoice_no2', '$pos_type','$pos_charges')");
     }
     
     public function addSalesDetails($customer_name, $address, $invoice_no, $customer_type, $productname_session, $model_session, $manufacturer_session, $quantity_session, $price_session, $amount, $staff, $date)
@@ -610,7 +615,7 @@ class Model extends DB
     public function showInvoiceManager()
     {
         $date = date("d-m-Y");
-        $select = mysqli_query($this->connect(), "SELECT * FROM sales WHERE staff_name = '" . $_SESSION['managerfullname'] . "' AND date LIKE '%$date%' ");
+        $select = mysqli_query($this->connect(), "SELECT * FROM sales WHERE staff_name = '" . $_SESSION['managerfullname'] . "' AND date LIKE '%$date%' ORDER BY id DESC");
         return $select;
     }
     public function showInvoiceDate()
@@ -1043,5 +1048,14 @@ class Model extends DB
     public function showSupplyCheck($invoice_no, $customer_name, $customer_address)
     {
         return mysqli_query($this->connect(), "SELECT * FROM supply_check WHERE invoice_no = '$invoice_no' AND customer_name = '$customer_name' AND customer_address = '$customer_address'");
+    }
+
+    public function addCode($code){
+        mysqli_query($this->connect(), "INSERT INTO code VALUES(null,'$code')");
+
+    }
+    public function showCode($code)
+    {
+        return mysqli_query($this->connect(), "SELECT * FROM code WHERE code = '$code'");
     }
 }

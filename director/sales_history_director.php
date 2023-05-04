@@ -10,6 +10,7 @@ $ctr = new Controller();
 include "includes/sales/header.php";
 include "includes/sales/head.php";
 include "includes/sales/navbar.php";
+
 ?>
 
 

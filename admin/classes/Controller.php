@@ -214,9 +214,11 @@
                 if (mysqli_num_rows($select1) > 0) {
                     $this->updateFromDebitBook($total, $deposit, $balance, $customer_name, $address);
                     $this->addIntoDebitDetails($customer_name, $address, $total, $deposit, $total_deposit, $balance, $total_bal, $staff, $date, $comment);
+                    $this->deleteDebit();
                 } else {
                     $this->addDebits($customer_name, $address, $total, $deposit, $balance, $staff, $date);
                     $this->addIntoDebitDetails($customer_name, $address, $total, $deposit, $deposit2, $balance, $balance2, $staff, $date, $comment);
+                    $this->deleteDebit();
                 }
                 Session::unset("customer_name");
                 Session::unset("address");

@@ -96,6 +96,8 @@ if (isset($_SESSION["invoice_no_deposit"])){
                 
                 <th class="goods" colspan="6">Description of Goods</th>
             </tr>';
+            $select_pos = $mod->showPosInvoice($_SESSION["invoice_no_deposit"]);
+            $result_pos = mysqli_fetch_array($select_pos);
             $select = $mod->showDepositDetailsInvoice($_SESSION['invoice_no_deposit']);
                         while($row = mysqli_fetch_array($select)){
                             
@@ -103,7 +105,7 @@ if (isset($_SESSION["invoice_no_deposit"])){
                         $html.=
                         
                 '<tr>
-                <td class="goods"  colspan="6">Deposit of '.$row['product_name']." ".$row['model']." ".$row['manufacturer'].'</td>
+                <td class="goods"  colspan="7">Deposit of '.$row['product_name']." ".$row['model']." ".$row['manufacturer'].'</td>
             </tr>';
              }             
              $html.='
@@ -111,12 +113,14 @@ if (isset($_SESSION["invoice_no_deposit"])){
             <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
             <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
             <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>
+            <td style="text-align: left;"><b>POS Charges: '.$result_pos["pos_charges"].'</b></td>
+
             
         </tr>
         <tr>';
                 $html.='
-                <td colspan ="3"></td>
-                <td colspan="3" style="text-align: left;"><b>Amount Deposited: '.$result["deposit_amount"].'</b></td>';
+                <td colspan ="4"></td>
+                <td colspan="4" style="text-align: left;"><b>Amount Deposited: '.intval($result["deposit_amount"])+intval($result_pos["pos_charges"]).'</b></td>';
              
         $html.='
         

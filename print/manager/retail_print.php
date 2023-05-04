@@ -132,24 +132,25 @@ if (isset($_SESSION["invoice"])){
         <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>';
          }else{
             $html.= '
-            <td></td>
             <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
-            <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
-            <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"]." (".$result_pos["pos_type"].")".'</b></td>';
+           <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
+           <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"]." (".$result_pos["pos_type"].")".'</b></td>
+           <td style="text-align: left;"><b>POS Charges: '.$result_pos["pos_charges"].'</b></td>';
          }
     $html.='
     
     </tr>
     <tr>';
-         if ($result["old_deposit"] == 0){
-            $html.='
-            <td colspan ="4"></td>
-            <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
-         }else{
-            $html.= '
-            <td colspan="4" style="text-align: left;"><b>Old Deposit: '.$result["old_deposit"].'</b></td>
-            <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
-         }
+    if ($result["old_deposit"] == 0){
+        $html.='
+        <td colspan="4" style="text-align: left;"><b>Total Payment: '.intval($result["deposit"])+intval($result_pos["pos_charges"]).'</b></td>
+        <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
+     }else{
+        $html.= '
+        <td colspan="2" style="text-align: left;"><b>Old Deposit: '.$result["old_deposit"].'</b></td>
+        <td colspan="2" style="text-align: left;"><b>Total Payment: '.intval($result["deposit"])+intval($result_pos["pos_charges"]).'</b></td>
+        <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
+     }
     $html.='
     
     </tr>

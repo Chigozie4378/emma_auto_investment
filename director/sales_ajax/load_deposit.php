@@ -5,6 +5,7 @@ $transfer = (int)$_GET["transfer"];
 $pos = (int)$_GET["pos"];
 $old_deposit = (int)$_GET["old_deposit"];
 $transport = (int)$_GET["transport"];
+$charges = (int)$_GET["charges"];
 $deposit = $cash + $transfer +$pos +$old_deposit;
 $balance = $total - $deposit +$transport;
 

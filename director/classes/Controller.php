@@ -685,6 +685,7 @@
                     $cash = $_POST["cash"];
                     $transfer = $_POST["transfer"];
                     $pos = $_POST["pos"];
+                    $pos_charges = $_POST["pos_charges"];
                     $deposit = $_POST["deposit"];
                     $balance = $_POST["balance"];
                     $total = $_POST["tot"];
@@ -765,7 +766,7 @@
                                 $bank_name = $_POST["bank"];
                                 $this->addBank($customer_name, $address, $invoice_no2, $customer_type, $transfer, $bank_name, $status, $staff, $date);
                             }
-                            $this->addPos($customer_name, $address, $invoice_no2, $pos_type);
+                            $this->addPos($customer_name, $address, $invoice_no2, $pos_type,$pos_charges);
                             $this->addSales($customer_name, $address, $invoice_no2, $bill_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
                             $row = mysqli_num_rows($this->checkDebit($customer_name, $address));
                             $history = mysqli_fetch_array($this->checkDebitHistories($customer_name, $address));
@@ -837,7 +838,7 @@
                                 $this->addBank($customer_name, $address, $invoice_no, $customer_type, $transfer, $bank_name, $status, $staff, $date);
                             }
                             $_SESSION["invoice"] = $invoice_no;
-                            $this->addPos($customer_name, $address, $invoice_no, $pos_type);
+                            $this->addPos($customer_name, $address, $invoice_no, $pos_type,$pos_charges);
                             $this->addSales($customer_name, $address, $invoice_no, $bill_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
                             $row = mysqli_num_rows($this->checkDebit($customer_name, $address));
                             $history = mysqli_fetch_array($this->checkDebitHistories($customer_name, $address));
@@ -1229,7 +1230,7 @@
             if (isset($_POST["update"])) {
                 $id = $_POST["id"];
                 $customer_name = $_POST["customer_name"];
-                $address = $_POST["address"];
+                $customer_address = $_POST["address"];
                 $date = $_POST["date"];;
                 $deposit = $_POST["deposit"];
                 $balance = $_POST["balance"];
@@ -1240,17 +1241,67 @@
                 $new_balance = $balance - $pay;
                 $staff = $_SESSION["directorfullname"];
                 $settled = "SETTLED";
+                $username = $_SESSION["directorusername"];
+                $remark = "Old Balance Payment";
+                $bill_type = "Cash (Old Balance)";
+                Session::name("customer_name",$customer_name);
+                Session::name("customer_address",$customer_address);
+                Session::name("date",$date);
+                Session::name("pay",$pay);
+                Session::name("new_balance",$new_balance);
                 $this->updateDebitHistories($settled);
                 $this->updateDebitinput($id, $pay, $staff, $date);
-                $this->addDebitsHistoryinput($customer_name, $address, $total, $pay, $total_paid, $new_balance, $new_balance, $staff, $date, $comment);
+                $this->addDebitsHistoryinput($customer_name, $customer_address, $total, $pay, $total_paid, $new_balance, $new_balance, $staff, $date, $comment);
                 $this->updateDebitHistories($settled);
                 $this->deleteDebit();
-                echo "<script>
+                $invoice_no = $_POST["invoice_no"];
+                if ($_POST["payment_type"] == "cash") {
+                    $fetch_last_invoice_no = $this->checkInvoice();
+                    $get  = mysqli_fetch_array($fetch_last_invoice_no);
+                    $invoice_no_db = $get["invoice_no"];
+                    $add_invoice_no = $invoice_no_db + 1;
+                    $invoice_no3 = ltrim($add_invoice_no, '0');
+                    if (strlen($invoice_no3) == 1) {
+                        $invoice_no2 =  "0000000" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 2) {
+                        $invoice_no2 =  "000000" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 3) {
+                        $invoice_no2 =  "00000" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 4) {
+                        $invoice_no2 =  "0000" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 5) {
+                        $invoice_no2 =  "000" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 6) {
+                        $invoice_no2 =  "00" . $add_invoice_no;
+                    } elseif (strlen($invoice_no3) == 7) {
+                        $invoice_no2 =  "0" . $add_invoice_no;
+                    } else {
+                        $invoice_no2 =  $add_invoice_no;
+                    }
+                    $transport = 0;
+                    $fetch = $this->checkInvoice_noExist($invoice_no);
+                    if (mysqli_num_rows($fetch) > 0) {
+                        $this->addSales($customer_name, $customer_address, $invoice_no2, $bill_type, $remark, $total, $pay, "Nill", "Nill", "Nill", $pay, "Nill",  $new_balance, $staff, $date, $username);
+                        $this->addSalesDetails($customer_name, $customer_address, $invoice_no2, $remark, "Old Balance Payment", "Nill", "Nill", "Nill", "Nill", $pay, $staff, $date);
+                    } else {
+                        $this->addSales($customer_name, $customer_address, $invoice_no, $bill_type, $remark, $total, $pay, "Nill", "Nill", "Nill", $pay, "Nill",  $new_balance, $staff, $date, $username);
+                        $this->addSalesDetails($customer_name, $customer_address, $invoice_no2, $remark, "Old Balance Payment", "Nill", "Nill", "Nill", "Nill", $pay, $staff, $date);
+                    }
+
+                    echo "<script>
+                    document.getElementById('update').style.display='block';
+                    setTimeout(function(){
+                        window.location = '../print/director/settle_debit.php'
+                     }, 1000);
+                        </script>";
+                } else {
+                    echo "<script>
                     document.getElementById('update').style.display='block';
                     setTimeout(function(){
                         window.location = 'settle_debit.php'
-                     }, 2000);
-            </script>";
+                     }, 1000);
+                        </script>";
+                }
             }
         }
         public function addingFromDebitBook()
@@ -1276,9 +1327,11 @@
                 if (mysqli_num_rows($select1) > 0) {
                     $this->updateFromDebitBook($total, $deposit, $balance, $customer_name, $address);
                     $this->addIntoDebitDetails($customer_name, $address, $total, $deposit, $total_deposit, $balance, $total_bal, $staff, $date, $comment);
+                    $this->deleteDebit();
                 } else {
                     $this->addDebits($customer_name, $address, $total, $deposit, $balance, $staff, $date);
                     $this->addIntoDebitDetails($customer_name, $address, $total, $deposit, $deposit2, $balance, $balance2, $staff, $date, $comment);
+                    $this->deleteDebit();
                 }
                 Session::unset("customer_name");
                 Session::unset("address");
@@ -1367,7 +1420,8 @@
                     $cash = $_POST["cash"];
                     $transfer = $_POST["transfer"];
                     $pos = $_POST["pos"];
-                    $deposit_amount = $_POST["deposit_amount"];
+                    $pos_charges = $_POST["pos_charges"];
+                    $deposit_amount = $_POST["deposit_amount"] - $pos_charges;
                     $date = date(" d-m-Y");
                     $remark = "deposit";
                     $status = "pending";
@@ -1382,6 +1436,8 @@
                     $username = $_SESSION['directorusername'];
                     $invoice_no = $_POST["invoice_no"];
                     $_SESSION["invoice_no_deposit"] = $invoice_no;
+                    $pos_type = $_POST["pos_type"];
+
 
 
                     if ($_POST["cash"] == 0 && $_POST["transfer"] != 0 && $_POST["pos"] == 0) {
@@ -1441,6 +1497,7 @@
                                 $this->depositAddDetails($customer_name, $customer_address, $invoice_no2, $product_name, $model_input, $manufacturer_input, $date, $staff);
                             }
                         }
+                        $this->addPos($customer_name, $customer_address, $invoice_no, $pos_type,$pos_charges);
                         $this->addSales($customer_name, $customer_address, $invoice_no2, $bill_type, $remark, $total, $cash, $transfer, $pos, $old_deposit, $deposit_amount, $transport,  $balance, $staff, $date, $username);
                         $this->depositAdd($customer_name, $customer_address, $invoice_no2, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
                         echo "<script> window.location = '../print/director/deposit.php' </script>";
@@ -1460,6 +1517,7 @@
                         }
                         $this->addSales($customer_name, $customer_address, $invoice_no, $bill_type, $remark, $total, $cash, $transfer, $pos, $old_deposit, $deposit_amount, $transport,  $balance, $staff, $date, $username);
                         $this->depositAdd($customer_name, $customer_address, $invoice_no, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                        $this->addPos($customer_name, $customer_address, $invoice_no, $pos_type,$pos_charges);
                         echo "<script> window.location = '../print/director/deposit.php' </script>";
                     }
                 } else {

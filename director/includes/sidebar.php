@@ -24,14 +24,15 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-            <li class="nav-item">
-              <a href="dashboard.php" class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/dashboard.php'){ echo "active"; } ?> ">
-                <i class="nav-icon fa fa-dashboard"></i>
+               <li class="nav-item">
+              <a href="dashboard.php" class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/manager/dashboard.php'){ echo "active"; } ?> ">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
                  <p>
                     Dashboard
                 </p>
              </a>
            </li>
+           
            
            <!-- <li class="nav-item has-treeview menu-open">
               <a href="#" class="nav-link  <?php if (($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/wholesale.php') OR ($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/retail.php') OR ($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/cartoon.php')){ echo "active"; } ?>">
@@ -213,7 +214,7 @@
            </li>
            <li class="nav-item">
               <a href="bulk_sms.php" class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/emma_auto_investment/director/bulk_sms.php'){ echo "active"; } ?>">
-              <i class="nav-icon fa fa-envelopes-bulk"></i>
+              <i class="nav-icon fa fa-envelope"></i>
                  <p>
                  Send Bulk SMS
                 </p>

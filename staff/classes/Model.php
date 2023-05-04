@@ -192,9 +192,9 @@ class Model extends DB
     {
         mysqli_query($this->connect(), "INSERT INTO sales VALUES(null,'$customer_name', '$address', '$invoice_no', '$bill_type','$customer_type', '$total','$cash','$transfer','$pos','$old_deposit','$deposit', '$transport', '$balance','$staff', '$date', '$username','')");
     }
-    public function addPos($customer_name, $address, $invoice_no2, $pos_type)
+    public function addPos($customer_name, $address, $invoice_no2, $pos_type,$pos_charges)
     {
-        mysqli_query($this->connect(), "INSERT INTO pos VALUES(null,'$customer_name', '$address', '$invoice_no2', '$pos_type')");
+        mysqli_query($this->connect(), "INSERT INTO pos VALUES(null,'$customer_name', '$address', '$invoice_no2', '$pos_type','$pos_charges')");
     }
     public function addSalesDetails($customer_name, $address, $invoice_no, $customer_type, $productname_session, $model_session, $manufacturer_session, $quantity_session, $price_session, $amount, $staff, $date)
     {
@@ -538,6 +538,11 @@ class Model extends DB
     public function showUser()
     {
         $select = mysqli_query($this->connect(), "SELECT * FROM registered");
+        return $select;
+    }
+    public function showUserSupply()
+    {
+        $select = mysqli_query($this->connect(), "SELECT * FROM registered where role='others'");
         return $select;
     }
 }

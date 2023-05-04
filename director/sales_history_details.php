@@ -138,14 +138,20 @@ $show_result = mysqli_fetch_array($show);
                         <td style="font-weight: bold;">Old Deposit: # <?php $ctr->viewSalesDetail("old_deposit"); ?></td>
                    <?php }
                     ?>
-                    
+                    <?php 
+                        if($ctr->viewSalesReceipt("deposit") > $ctr->viewSalesReceipt("total")){?>
+                        <td style="font-weight: bold;">Transport Charges: # <?php $ctr->viewSalesDetail("transport") ?></td>
+
+                       <?php }
+                    ?>
                     
                     <td style="font-weight: bold;">Cash: # <?php $ctr->viewSalesDetail("cash"); ?></td>
-                    <td style="font-weight: bold;">POS:# <?php $ctr->viewSalesDetail("pos"); if ($ctr->viewSalesReceipt("pos") !=0){ echo " (".$ctr->viewPosType("pos_type").")";}  ?></td>
+                    <td style="font-weight: bold;">POS:# <?php $ctr->viewSalesDetail("pos"); if ($ctr->viewSalesReceipt("pos") !=0){ echo " (".$ctr->viewPosType("pos_type").")";?></td>
+                        <td style="font-weight: bold;">POS Charges :# <?php echo $ctr->viewPosType("pos_charges");
+                     }  ?>
+                     </td>
                     <td style="font-weight: bold;">Transfer:# <?php $ctr->viewSalesDetail("transfer"); ?></td>
-
-                    <td style="font-weight: bold;">Total Paid:</td>
-                    <td style="font-weight: bold;"># <?php $ctr->viewSalesDetail("deposit"); ?></td>
+                    <td style="font-weight: bold;">Total Paid: # <?php $deposit = $ctr->viewSalesReceipt("deposit"); $pos_charges =  $ctr->viewPosType("pos_charges"); $total_paid = intval($deposit)+intval($pos_charges); echo ($total_paid); ?></td>
                     <td class="d-print-none"></td>
                 </tr>
                 <?php
@@ -153,7 +159,7 @@ $show_result = mysqli_fetch_array($show);
                 if (mysqli_num_rows($show) > 0) { ?>
                     <tr>
                         <td colspan="2"></td>
-                        <td style="font-weight: bold;">Transport #  <?php $ctr->viewSalesDetail("transport"); ?></td>
+                        <td style="font-weight: bold;">Transport Charges: #  <?php $ctr->viewSalesDetail("transport"); ?></td>
                         <td style="font-weight: bold;">Old Balance: </td>
                         <td style="font-weight: bold;"># <?php $old_bal = $show_result["balance"] - $ctr->viewSalesReceipt("balance");
                                                             echo number_format($old_bal, 2); ?></td>
@@ -196,7 +202,7 @@ $show_result = mysqli_fetch_array($show);
 
             <div class="form-inline" style="float: right;">
                 <label for="pwd">Supplied By:</label>
-                <input type="text" class="form-control" id="pwd" value="MR/MISS <?php echo $ctr->supplyCheck('supplied_by')?>" readonly>
+                <input type="text" class="form-control" id="pwd" value=" <?php echo $ctr->supplyCheck('supplied_by')?>" readonly>
 
             </div>
         </div>
@@ -206,7 +212,7 @@ $show_result = mysqli_fetch_array($show);
 
             <div class="form-inline" style="float: right;">
                 <label for="pwd">Checked By:</label>
-                <input type="text" class="form-control" id="pwd" value="MR/MISS <?php echo $ctr->supplyCheck('checked_by')?>" readonly>
+                <input type="text" class="form-control" id="pwd" value=" <?php echo $ctr->supplyCheck('checked_by')?>" readonly>
 
             </div>
         </div>
@@ -217,7 +223,7 @@ $show_result = mysqli_fetch_array($show);
                 <input name="print" type="submit" class="btn btn-primary d-print-none" value="print" onclick="printpage()">
                 <a href="../print/director/index_s.php?invoice_no=<?php $ctr->viewSalesDetail("invoice_no"); ?>" class="btn btn-success d-print-none">Print Retail</a>
                 <a href="sales_history_details.php?invoice_no1=<?php $ctr->viewSalesDetail("invoice_no") ?>" class="btn btn-danger d-print-none">Return All Goods</a>
-                <a href="sales_history.php" class="btn btn-info d-print-none">Go Back</a>
+                <a href="<?php echo $_SERVER['HTTP_REFERER'];?>" class="btn btn-info d-print-none">Go Back</a>
 
             </form>
             <p></p>

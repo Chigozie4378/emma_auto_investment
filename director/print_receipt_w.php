@@ -93,18 +93,22 @@ include "includes/sales/header.php";
                 <?php } ?>
                 <tr>
                     <td colspan="5"></td>
-                    <td style="font-weight: bold;">Total Amount:</td>
-                    <td style="font-weight: bold;"># <?php echo number_format($result["total"], 2); ?></td>
+                    <td style="font-weight: bold;">Total Payment: <?php echo number_format($result["deposit"]+$select_pos["pos_charges"], 2); ?></td>
                 </tr>
                 <?php
 
                 ?>
                 <tr>
-                    <td colspan="1"></td>
                     <?php
                     if ($result["old_deposit"] != 0) { ?>
                         <td style="font-weight: bold;">Old Deposit:# <?php echo number_format($result["old_deposit"], 2); ?></td>
                     <?php }
+                    ?>
+                    <?php 
+                        if($result["deposit"] > $result["total"]){?>
+                        <td style="font-weight: bold;">Transport Charges: # <?php echo number_format($result["transport"], 2); ?></td>
+
+                       <?php }
                     ?>
 
                     <td style="font-weight: bold;">Cash:# <?php echo number_format($result["cash"], 2); ?></td>
@@ -112,18 +116,22 @@ include "includes/sales/header.php";
                     <td style="font-weight: bold;">POS:# <?php echo number_format($result["pos"], 2); 
                     if ($result["pos"] !=0){
                         $select_pos = mysqli_fetch_array($mod->showPos($_SESSION["customer_name"], $_SESSION["address"],$_SESSION["invoice"]));
-                        echo " (".$select_pos["pos_type"].")";
+                        echo " (".$select_pos["pos_type"].")";?>
+                    </td>
+                    <td style="font-weight: bold;">POS Charges:# <?php echo number_format($select_pos["pos_charges"], 2); 
+                  
                     }
-                    ?></td>
+                    ?>
+                    </td>
                     <td style="font-weight: bold;">Total Payment:</td>
-                    <td style="font-weight: bold;"><?php echo number_format($result["deposit"], 2); ?></td>
+                    <td style="font-weight: bold;"><?php echo number_format((int)$result["deposit"]+(int)$select_pos["pos_charges"], 2); ?></td>
                 </tr>
                 <?php
 
                 if ($result["balance"] != 0 or mysqli_num_rows($show) > 0) { ?>
                     <tr>
                         <td colspan="2"></td>
-                        <td style="font-weight: bold;">Transport # <?php echo number_format($result["transport"], 2); ?></td>
+                        <td style="font-weight: bold;">Transport Charges: # <?php echo number_format($result["transport"], 2); ?></td>
                         <td style="font-weight: bold;">Old Balance: </td>
                         <td style="font-weight: bold;"># <?php echo number_format($show_result["balance"] - $result["balance"], 2); ?></td>
                         <td style="font-weight: bold;">Total Balance:</td>
@@ -163,10 +171,10 @@ include "includes/sales/header.php";
                 <select class="form-control" name="supplied_by" style="width:210px" onchange="selectProduct(this.value)" >
                     <option value=""></option>
                     <?php
-                    $select = $mod->showUser();
+                    $select = $mod->showUserSupply();
                     while ($row = mysqli_fetch_array($select)) { ?>
                       <option value="<?php echo $row['lastname'] ?>">
-                        <?php echo 'MR/MISS '. $row['lastname'] ?>
+                        <?php echo  $row['lastname'] ?>
                       </option>
                     <?php
                     }

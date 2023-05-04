@@ -99,6 +99,7 @@ class Controller extends Model
                 $cash = $_POST["cash"];
                 $transfer = $_POST["transfer"];
                 $pos = $_POST["pos"];
+                $pos_charges=$_POST["pos_charges"];
                 $deposit = $_POST["deposit"];
                 $balance = $_POST["balance"];
                 $total = $_POST["tot"];
@@ -106,6 +107,7 @@ class Controller extends Model
                 $username = $_SESSION["staffusername"];
                 $old_deposit = $_POST['old_deposit'];
                 $transport = $_POST["transport"];
+                
                 $status = "pending";
                 if ($_POST["cash"] == 0 && $_POST["transfer"] == 0 && $_POST["pos"] == 0 && $_POST["balance"] != 0) {
                     $bill_type = "Debit";
@@ -180,7 +182,7 @@ class Controller extends Model
                             $this->addBank($customer_name, $address, $invoice_no2, $customer_type, $transfer, $bank_name, $status, $staff, $date);
                         }
                         $_SESSION["invoice"] = $invoice_no2;
-                        $this->addPos($customer_name, $address, $invoice_no2, $pos_type);
+                        $this->addPos($customer_name, $address, $invoice_no2, $pos_type,$pos_charges);
                         $this->addSales($customer_name, $address, $invoice_no2, $bill_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
                         $row = mysqli_num_rows($this->checkDebit($customer_name, $address));
                         $history = mysqli_fetch_array($this->checkDebitHistories($customer_name, $address));
@@ -252,7 +254,7 @@ class Controller extends Model
                             $this->addBank($customer_name, $address, $invoice_no, $customer_type, $transfer, $bank_name, $status, $staff, $date);
                         }
                         $_SESSION["invoice"] = $invoice_no;
-                        $this->addPos($customer_name, $address, $invoice_no, $pos_type);
+                        $this->addPos($customer_name, $address, $invoice_no, $pos_type,$pos_charges);
                         $this->addSales($customer_name, $address, $invoice_no, $bill_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
                         $row = mysqli_num_rows($this->checkDebit($customer_name, $address));
                         $history = mysqli_fetch_array($this->checkDebitHistories($customer_name, $address));
@@ -576,7 +578,8 @@ class Controller extends Model
                 $cash = $_POST["cash"];
                 $transfer = $_POST["transfer"];
                 $pos = $_POST["pos"];
-                $deposit_amount = $_POST["deposit_amount"];
+                $pos_charges = $_POST["pos_charges"];
+                $deposit_amount = $_POST["deposit_amount"] - $pos_charges;
                 $date = date(" d-m-Y");
                 $remark = "deposit";
                 $status = "pending";
@@ -591,6 +594,8 @@ class Controller extends Model
                 $username = $_SESSION['staffusername'];
                 $invoice_no = $_POST["invoice_no"];
                 $_SESSION["invoice_no_deposit"] = $invoice_no;
+                $pos_type = $_POST["pos_type"];
+                    
 
 
                 if ($_POST["cash"] == 0 && $_POST["transfer"] != 0 && $_POST["pos"] == 0) {
@@ -651,6 +656,7 @@ class Controller extends Model
                     }
                     $this->addSales($customer_name, $customer_address, $invoice_no2, $bill_type, $remark, $total, $cash, $transfer, $pos, $old_deposit, $deposit_amount, $transport, $balance, $staff, $date, $username);
                     $this->depositAdd($customer_name, $customer_address, $invoice_no2, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                    $this->addPos($customer_name, $customer_address, $invoice_no, $pos_type,$pos_charges);
                     echo "<script> window.location = '../print/staff/deposit.php' </script>";
                 } else {
                     $this->addBank($customer_name, $customer_address, $invoice_no, $remark, $transfer, $bank_name, $status, $staff, $date);
@@ -668,6 +674,7 @@ class Controller extends Model
                     }
                     $this->addSales($customer_name, $customer_address, $invoice_no, $bill_type, $remark, $total, $cash, $transfer, $pos, $old_deposit, $deposit_amount, $transport, $balance, $staff, $date, $username);
                     $this->depositAdd($customer_name, $customer_address, $invoice_no, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                    $this->addPos($customer_name, $customer_address, $invoice_no, $pos_type,$pos_charges);
                     echo "<script> window.location = '../print/staff/deposit.php' </script>";
                 }
             } else {

@@ -1,5 +1,5 @@
 <?php session_start();
-    require_once __DIR__ . '../vendor/autoload.php';
+    require_once __DIR__ . '/vendor/autoload.php';
 
     include "../../staff/core/init.php";
     $mod = new Model;
@@ -68,7 +68,7 @@
     <body>
         <h6 style="text-align: center;">EMMA AUTO AND MULTI-SERVICES COMPANY</h6>
         <p style="text-align: center;font-size:8px;font-weight:bold;">Distributor for Chanlin, Shiroro, Unigo, Jeely, Jieng, Endurance, Tako, Donaten, Sinosat, Sunrain Motorcycle spare parts of all brands of Motorcycles and Tricycle parts all Genuine parts, such as Honda, Bajaj, TVS, Hero and all brands of Motorcycles Engine and Tricycles.  <br>
-        <span>Address: No. 37A, Opposite Jesus Life Church, Asubiaro Hospital Junction, Osogbo, Osun State.</span></br> 
+        <span>Address: No. 37A, Opposite Jesus Life Church, Asubiaro Hospital Junction, Osogbo, Osun State.</span></br>   
         <b>Tel: 08062063060, 08119222292, 07063684266</b> </p>
         <div style="text-align:center;border-radius: 50%;"><span
                 style="font-size:13px;border: 1px solid;text-align:center; padding: 5px;background-color:rgb(0, 0, 0); color: white;">Invoice</span>
@@ -93,71 +93,71 @@
             </tr>
             <tr>
             <th style="text-align: left;">Sold By: </th>
-
             <td>Mr/Miss '.$staff[1].'</td>
-            
         </tr>
         </table>
         <br/>
         <table class="table">
-        <tr>
-            <th class="qty">Qty</th>
-            <th class="goods" colspan="4">Description of Goods</th>
-            <th class="rate">Rate</th>
-            <th class="amount">Amount</th>
-        </tr>';
-        $select = $mod->showInvoiceSalesDetails($_GET["invoice_no"]);
-                    while($row = mysqli_fetch_array($select)){
+            <tr>
+                <th class="qty">Qty</th>
+                <th class="goods" colspan="4">Description of Goods</th>
+                <th class="rate">Rate</th>
+                <th class="amount">Amount</th>
+            </tr>';
+            $select = $mod->showInvoiceSalesDetails($_GET["invoice_no"]);
+                        while($row = mysqli_fetch_array($select)){
+                            
+                     
+                        $html.=
                         
-                 
-                    $html.=
-                    
-            '<tr>
-            <td class="qty">'.$row['quantity'].'</td>
-            <td class="goods"  colspan="4">'.$row['product_name']." ".$row['model']." ".$row['manufacturer'].'</td>
-            <td class="rate">'.$row['price'].'</td>
-            <td class="amount">'.$row['amount'].'</td>
-        </tr>';
-         }             
-         $html.='<tr>
-            <td colspan="5" style="text-align: right;"><b>Total Amount: </b></td>
-            <td colspan="2">'.$result["total"].'</td>
-        </tr>
-       
-        <tr>';
-        $select_pos = $mod->showPosInvoice($_GET["invoice_no"]);
-            $result_pos = mysqli_fetch_array($select_pos);
-        if ($result["pos"] == 0){
-            
-           $html.='
-           <td></td>
-       <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
-       <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
-       <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>';
-        }else{
-           $html.= '
-           <td></td>
+                '<tr>
+                <td class="qty">'.$row['quantity'].'</td>
+                <td class="goods"  colspan="4">'.$row['product_name']." ".$row['model']." ".$row['manufacturer'].'</td>
+                <td class="rate">'.$row['price'].'</td>
+                <td class="amount">'.$row['amount'].'</td>
+            </tr>';
+             }             
+             $html.='<tr>
+                <td colspan="5" style="text-align: right;"><b>Total Amount: </b></td>
+                <td colspan="2">'.$result["total"].'</td>
+            </tr>
+           
+            <tr>';
+            $select_pos = $mod->showPosInvoice($_GET["invoice_no"]);
+                $result_pos = mysqli_fetch_array($select_pos);
+            if ($result["pos"] == 0){
+                
+               $html.='
+               <td></td>
            <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
            <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
-           <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"]." (".$result_pos["pos_type"].")".'</b></td>';
-        }
-   $html.='
-   
-   </tr>
-    <tr>';
-         if ($result["old_deposit"] == 0){
-            $html.='
-            <td colspan ="4"></td>
-            <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
-         }else{
-            $html.= '
-            <td colspan="4" style="text-align: left;"><b>Old Deposit: '.$result["old_deposit"].'</b></td>
-            <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
-         }
-    $html.='
-    
-    </tr>
-    </table>
+           <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>';
+            }else{
+                $html.= '
+                <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
+               <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
+               <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"]." (".$result_pos["pos_type"].")".'</b></td>
+               <td style="text-align: left;"><b>POS Charges: '.$result_pos["pos_charges"].'</b></td>';
+             }
+       $html.='
+       
+       </tr>
+        <tr>';
+             if ($result["old_deposit"] == 0){
+                $html.='
+                <td colspan="4" style="text-align: left;"><b>Total Payment: '.intval($result["deposit"])+intval($result_pos["pos_charges"]).'</b></td>
+                <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
+             }else{
+                $html.= '
+                <td colspan="2" style="text-align: left;"><b>Old Deposit: '.$result["old_deposit"].'</b></td>
+        <td colspan="2" style="text-align: left;"><b>Total Payment: '.intval($result["deposit"])+intval($result_pos["pos_charges"]).'</b></td>
+
+                <td colspan="4" style="text-align: left;"><b>Balance: '.$result["balance"].'</b></td>';
+             }
+        $html.='
+        
+        </tr>
+        </table>
         <br/>
         <span style="font-size:10px;font-weight:bold;">Customer Sign. ____________&nbsp;&nbsp;Cashier Sign. ____________ </span>
         <p style="text-align:center;font-size:10px;font-weight:bold;">You Must Be Born Again!</p>
@@ -169,7 +169,4 @@
     $mpdf->showImageErrors = false;
     $mpdf->WriteHTML($html);
     $mpdf->Output();
-
-
-
 ?>
