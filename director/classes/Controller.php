@@ -1255,6 +1255,7 @@
                 $this->updateDebitHistories($settled);
                 $this->deleteDebit();
                 $invoice_no = $_POST["invoice_no"];
+                Session::name("invoice_no",$invoice_no);
                 if ($_POST["payment_type"] == "cash") {
                     $fetch_last_invoice_no = $this->checkInvoice();
                     $get  = mysqli_fetch_array($fetch_last_invoice_no);
@@ -1278,6 +1279,7 @@
                     } else {
                         $invoice_no2 =  $add_invoice_no;
                     }
+                    Session::name("invoice_no",$invoice_no2);
                     $transport = 0;
                     $fetch = $this->checkInvoice_noExist($invoice_no);
                     if (mysqli_num_rows($fetch) > 0) {

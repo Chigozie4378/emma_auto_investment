@@ -83,6 +83,14 @@ if (isset($_SESSION["new_balance"])) {
                 <td>' . $_SESSION["customer_address"] . '</td>
             </tr>
             <tr>
+                <th style="text-align: left;">Invoice No.: </th>
+                <td>' . $_SESSION["invoice_no"] . '</td>
+            </tr>
+            <tr>
+                <th style="text-align: left;">Customer Address: </th>
+                <td>' . $_SESSION["customer_address"] . '</td>
+            </tr>
+            <tr>
                 <th style="text-align: left;">Date: </th>
                 <td>' . $_SESSION["date"] . '</td>
             </tr>

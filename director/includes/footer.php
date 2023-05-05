@@ -1,5 +1,4 @@
-</div>
-<!-- /.content-wrapper -->
+
 <div class="card">
   <div class="card-body">
     <footer class="main-footer d-print-none text-center">

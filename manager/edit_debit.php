@@ -75,7 +75,7 @@ $ctr = new Controller();
                             <div class="form-group">
                                 <label class="control-label">Date :</label>
                                 <div class="controls">
-                                    <input type="text" class="form-control" name="date" value="<?php echo date('d-m-Y') ?>" readonly />
+                                    <input type="date" class="form-control" name="date" required/>
                                 </div>
                             </div>
                             <input type="hidden" class="form-control" name="comment" id="" value="Deposit Made">
