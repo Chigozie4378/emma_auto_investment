@@ -786,6 +786,11 @@ class Model extends DB
         $select = mysqli_query($this->connect(), "SELECT * FROM return_each_goods");
         return $select;
     }
+    public function showInvoiceReturnEach($invoice)
+    {
+        $select = mysqli_query($this->connect(), "SELECT * FROM return_each_goods WHERE invoice_no ='$invoice'");
+        return $select;
+    }
     public function showInvoiceReturn($invoice)
     {
         $select = mysqli_query($this->connect(), "SELECT * FROM return_goods WHERE invoice_no ='$invoice'");

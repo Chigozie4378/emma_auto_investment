@@ -1155,6 +1155,18 @@
             </script>";
             }
         }
+
+        public function viewReturnEachDetail($tablename)
+        {
+            if (isset($_GET['invoice'])) {
+                $invoice = $_GET['invoice'];
+                if ($_GET['invoice']) {
+                    $row = mysqli_fetch_array($this->showInvoiceReturnEach($invoice));
+                    echo $row["$tablename"];
+                }
+            }
+        }
+
         public function viewReturnDetail($tablename)
         {
             if (isset($_GET['invoice'])) {
