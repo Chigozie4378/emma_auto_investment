@@ -71,6 +71,7 @@ class Controller extends Model
     {
         if (isset($_POST["generate_bill"])) {
             if (isset($_SESSION["cart"])) {
+                $this->invoiceLock();
                 $customer_type = $_POST["customer_type"];
 
                 if (empty($_POST["title"])) {
@@ -322,6 +323,7 @@ class Controller extends Model
                         }
                     }
                 }
+                $this->unlockInvoice();
             }
         }
     }

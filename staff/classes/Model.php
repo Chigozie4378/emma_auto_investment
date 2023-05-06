@@ -184,6 +184,13 @@ class Model extends DB
     //     $select = mysqli_query($this->connect(),"SELECT * FROM sales ORDER BY id DESC LIMIT 1 WHERE invoice_no ='$page'");
     //     return $select;
     // }
+    public function invoiceLock(){
+        mysqli_query($this->connect(), "SELECT * FROM sales FOR UPDATE");
+    }
+    public function unlockInvoice(){
+        // release the lock on the sales table
+        mysqli_query($this->connect(), "UNLOCK TABLES");
+    }
     public function addBank($customer_name, $address, $invoice_no, $customer_type, $transfer, $bank_name, $status, $staff, $date)
     {
         mysqli_query($this->connect(), "INSERT INTO bank VALUES(null,'$customer_name', '$address', '$invoice_no','$customer_type','$transfer','$bank_name', '$status','$staff', '$date')");

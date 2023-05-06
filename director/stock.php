@@ -55,8 +55,46 @@ $ctr = new Controller();
                         </thead>
                         <tbody id="table">
                             <?php
+
+                            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                            $records_per_page = 50;
+                            $offset = ($page - 1) * $records_per_page;
+                            $select = $mod->showProductPagination($offset, $records_per_page);
+                            $total_records = $mod->countProduct();
+                            $total_pages = ceil($total_records / $records_per_page);
+
+                            // Determine the range of pages to display
+                            $range = 5;
+                            $start_page = max($page - $range, 1);
+                            $end_page = min($page + $range, $total_pages);
+                            // Display the pagination links
+                            echo '<ul class="pagination">';
+
+                            if ($page > 1) {
+                                $prev_page = $page - 1;
+                                echo '<li class="page-item"><a class="page-link" href="stock.php?page=1">1</a></li>';
+                                echo '<li class="page-item"><a class="page-link" href="stock.php?page=' . $prev_page . '">Prev</a></li>';
+                            }
+
+                            for ($i = $start_page; $i <= $end_page; $i++) {
+                                echo '<li class="page-item';
+                                if ($i == $page) {
+                                    echo ' active';
+                                }
+                                echo '"><a class="page-link" href="stock.php?page=' . $i . '">' . $i . '</a></li>';
+                            }
+
+                            if ($page < $total_pages) {
+                                $next_page = $page + 1;
+                                echo '<li class="page-item"><a class="page-link" href="stock.php?page=' . $next_page . '">Next</a></li>';
+                                echo '<li class="page-item"><a class="page-link" href="stock.php?page=' . $total_pages . '">' . $total_pages . '</a></li>';
+                            }
+
+                            echo '</ul>';
+
+
                             $id = 0;
-                            $select = $mod->showProduct();
+                            // $select = $mod->showProduct();
                             while ($row = mysqli_fetch_array($select)) { ?>
                                 <capital>
                                     <tr>
@@ -89,10 +127,42 @@ $ctr = new Controller();
                                     </tr>
                                 </capital>
                             <?php }
+                            
                             ?>
+                            
                         </tbody>
 
                     </table>
+                    <?php 
+                    // Determine the range of pages to display
+                    $range = 5;
+                    $start_page = max($page - $range, 1);
+                    $end_page = min($page + $range, $total_pages);
+                    // Display the pagination links
+                    echo '<ul class="pagination">';
+
+                    if ($page > 1) {
+                        $prev_page = $page - 1;
+                        echo '<li class="page-item"><a class="page-link" href="stock.php?page=1">1</a></li>';
+                        echo '<li class="page-item"><a class="page-link" href="stock.php?page=' . $prev_page . '">Prev</a></li>';
+                    }
+
+                    for ($i = $start_page; $i <= $end_page; $i++) {
+                        echo '<li class="page-item';
+                        if ($i == $page) {
+                            echo ' active';
+                        }
+                        echo '"><a class="page-link" href="stock.php?page=' . $i . '">' . $i . '</a></li>';
+                    }
+
+                    if ($page < $total_pages) {
+                        $next_page = $page + 1;
+                        echo '<li class="page-item"><a class="page-link" href="stock.php?page=' . $next_page . '">Next</a></li>';
+                        echo '<li class="page-item"><a class="page-link" href="stock.php?page=' . $total_pages . '">' . $total_pages . '</a></li>';
+                    }
+
+                    echo '</ul>';
+                    ?>
                 </div>
             </div>
         </div>

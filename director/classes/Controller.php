@@ -654,6 +654,8 @@
         {
             if (isset($_POST["generate_bill"])) {
                 if (isset($_SESSION["cart"])) {
+                    // obtain a lock on the sales table
+                    $this->invoiceLock();
 
                     $customer_type = $_POST["customer_type"];
                     if (empty($_POST["title"])) {
@@ -726,6 +728,9 @@
                     }
                     $comment = "New Goods Bought";
 
+                    
+                    
+                    
                     $fetch_last_invoice_no = $this->checkInvoice();
                     $get  = mysqli_fetch_array($fetch_last_invoice_no);
                     $invoice_no_db = $get["invoice_no"];
@@ -768,6 +773,9 @@
                             }
                             $this->addPos($customer_name, $address, $invoice_no2, $pos_type,$pos_charges);
                             $this->addSales($customer_name, $address, $invoice_no2, $bill_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
+                           
+                            
+                            
                             $row = mysqli_num_rows($this->checkDebit($customer_name, $address));
                             $history = mysqli_fetch_array($this->checkDebitHistories($customer_name, $address));
                             $balancedb = $history["total_balance"];
@@ -905,7 +913,9 @@
                                 echo "<script> window.location = 'print_receipt_w.php' </script>";
                             }
                         }
+                        
                     }
+                    $this->unlockInvoice();
                 }
             }
         }

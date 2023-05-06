@@ -240,6 +240,20 @@ class Model extends DB
         $select = mysqli_query($this->connect(), "SELECT * FROM product ORDER BY manufacturer ");
         return $select;
     }
+    public function showProductPagination($offset, $records_per_page)
+    {
+        $sql = "SELECT * FROM product LIMIT $records_per_page OFFSET $offset";
+        $result = $this->connect()->query($sql);
+        return $result;
+    }
+
+    public function countProduct()
+    {
+        $sql = "SELECT COUNT(*) FROM product";
+        $result = $this->connect()->query($sql);
+        $row = mysqli_fetch_array($result);
+        return $row[0];
+    }
     public function showProductInput()
     {
         $select = mysqli_query($this->connect(), "SELECT * FROM product GROUP BY name");
@@ -586,6 +600,15 @@ class Model extends DB
     //     $select = mysqli_query($this->connect(),"SELECT * FROM sales WHERE salesname = '$salesname'");
     //     return $select;
     // }
+
+    public function invoiceLock(){
+        mysqli_query($this->connect(), "SELECT * FROM sales FOR UPDATE");
+    }
+    public function unlockInvoice(){
+        // release the lock on the sales table
+        mysqli_query($this->connect(), "UNLOCK TABLES");
+    }
+
     public function addBank($customer_name, $address, $invoice_no, $customer_type, $transfer, $bank_name, $status, $staff, $date)
     {
         mysqli_query($this->connect(), "INSERT INTO bank VALUES(null,'$customer_name', '$address', '$invoice_no','$customer_type','$transfer','$bank_name', '$status','$staff', '$date')");

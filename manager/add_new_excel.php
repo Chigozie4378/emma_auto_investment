@@ -65,7 +65,7 @@ $ctr = new Controller();
                         <input type="file" name="excel" id="select_file" class="form-control">
                     </div>
                     <div class="card-footer">
-                        <input type="submit" value="Upload" name="upload" id="upload" class="btn btn-primary">
+                        <input  style="float: right;" type="submit" value="Upload" name="upload" id="upload" class="btn btn-primary">
                     </div>
 
             </form>
