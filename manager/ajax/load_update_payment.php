@@ -87,6 +87,8 @@ if (mysqli_num_rows($mod->checkBankExist($invoice_no)) > 0){
 
 
 $row = mysqli_num_rows($mod->checkDebitInvoice($invoice_no));
+$row2 = mysqli_num_rows($mod->checkDebit($customer_name, $address));
+
 $history = mysqli_fetch_array($mod->checkDebitInvoice($invoice_no));
 $depositdb = $history["deposit"];
 $prev_total_paid = $history["total_paid"];
@@ -100,13 +102,22 @@ $updated_total_balance = $total_balancedb-$new_payment;
 
 
 if ($row > 0) {
+		
 		$mod->updateDebitPayment($new_payment,$customer_name, $address);
+			
 		$mod->updateDebitHistoriesPayment($updated_deposit, $updated_total_deposit, $updated_balance,$updated_total_balance,$invoice_no);
 } else {
 		if ($new_balance != 0) {
-		$mod->addDebitsPayment($customer_name, $address, $total, $total_paid, $new_balance, $staff, $date);
-		$mod->deleteDebit();
-		$mod->addDebitHistoriesPayment($customer_name, $address,$total, $total_paid, $new_balance, $staff, $date, $comment,$invoice_no);
+			if ($row2 > 0){
+				$mod->updateDebitPayment($new_payment,$customer_name, $address);
+				$mod->addDebitHistoriesPayment($customer_name, $address,$total, $total_paid, $new_balance, $staff, $date, $comment,$invoice_no);
+				$mod->deleteDebit();
+			}else{
+				$mod->addDebitsPayment($customer_name, $address, $total, $total_paid, $new_balance, $staff, $date);
+				$mod->deleteDebit();
+				$mod->addDebitHistoriesPayment($customer_name, $address,$total, $total_paid, $new_balance, $staff, $date, $comment,$invoice_no);
+			}
+		
 		// $this->deleteDebitHistories();
 		}
 }

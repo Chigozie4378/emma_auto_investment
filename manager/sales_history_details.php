@@ -224,7 +224,7 @@ $show_result = mysqli_fetch_array($show);
                 <input name="print" type="submit" class="btn btn-primary d-print-none" value="print" onclick="printpage()">
                 <a href="../print/manager/index_s.php?invoice_no=<?php $ctr->viewSalesDetail("invoice_no"); ?>" class="btn btn-success d-print-none">Print Retail</a>
                 <a href="sales_history_details.php?invoice_no1=<?php $ctr->viewSalesDetail("invoice_no") ?>" class="btn btn-danger d-print-none">Return All Goods</a>
-                <a href="<?php echo $_SERVER['HTTP_REFERER'];?>" class="btn btn-info d-print-none">Go Back</a>
+                <a href="sales_history.php" class="btn btn-info d-print-none">Go Back</a>
 
             </form>
             <p></p>
