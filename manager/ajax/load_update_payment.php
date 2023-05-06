@@ -82,7 +82,11 @@ if (mysqli_num_rows($mod->checkBankExist($invoice_no)) > 0){
 	
 
 }else{
-	$mod->addBank($customer_name, $address, $invoice_no, $customer_type, $new_transfer, $bank_name, $status, $staff, $date);
+	if ($new_transfer == 0){
+		$mod->deleteTransfer($invoice_no);
+	}else{
+		$mod->addBank($customer_name, $address, $invoice_no, $customer_type, $new_transfer, $bank_name, $status, $staff, $date);
+	}
 }
 
 
@@ -106,6 +110,7 @@ if ($row > 0) {
 		$mod->updateDebitPayment($new_payment,$customer_name, $address);
 			
 		$mod->updateDebitHistoriesPayment($updated_deposit, $updated_total_deposit, $updated_balance,$updated_total_balance,$invoice_no);
+		$mod->deleteDebit();
 } else {
 		if ($new_balance != 0) {
 			if ($row2 > 0){
