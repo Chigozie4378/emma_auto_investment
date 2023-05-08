@@ -485,6 +485,10 @@ class Model extends DB
         mysqli_query($this->connect(), "INSERT INTO deposit (customer_name, customer_address,invoice_no,payment_type,cash,transfer,pos, deposit_amount,date,staff) VALUES ('$customer_name', '$customer_address','$invoice_no','$bill_type','$cash','$transfer','$pos','$deposit_amount','$date','$staff')");
 
     }
+    public function depositUpdate($customer_name, $customer_address,$invoice_no, $cash, $transfer, $pos, $deposit_amount, $date, $staff)
+    {
+        mysqli_query($this->connect(), "UPDATE deposit SET invoice_no = '$invoice_no', cash = cash+$cash, transfer = transfer+$transfer, pos = pos+$pos, deposit_amount = deposit_amount+$deposit_amount, date = '$date', staff = '$staff' WHERE customer_name='$customer_name' AND customer_address='$customer_address'");
+    }
     public function depositAddDetails($customer_name, $customer_address,$invoice_no,$product_name,$model_input,$manufacturer_input,$date, $staff){
         mysqli_query($this->connect(), "INSERT INTO deposit_details (customer_name, customer_address,invoice_no, product_name, model, manufacturer,date,staff) VALUES ('$customer_name', '$customer_address','$invoice_no','$product_name', '$model_input', '$manufacturer_input','$date','$staff')");
 
@@ -524,14 +528,14 @@ class Model extends DB
     public function deleteDepositDetails($customer_name,$address){
         return mysqli_query($this->connect(), "DELETE FROM deposit_details WHERE customer_name = '$customer_name' AND customer_address = '$address'");
     }
-    public function deleteSalesDeposit($invoice_no)
+    public function deleteSalesDeposit($customer_name, $address)
     {
-        $delete = mysqli_query($this->connect(), "DELETE FROM sales WHERE invoice_no = '$invoice_no'");
+        $delete = mysqli_query($this->connect(), "DELETE FROM sales WHERE customer_name = '$customer_name' AND address = '$address' AND customer_type = 'deposit'");
         return $delete;
     }
-    public function deleteSalesDepositDetails($invoice_no)
+    public function deleteSalesDepositDetails($customer_name, $address)
     {
-        $delete = mysqli_query($this->connect(), "DELETE FROM sales_details WHERE invoice_no = '$invoice_no'");
+        $delete = mysqli_query($this->connect(), "DELETE FROM sales_details WHERE customer_name = '$customer_name' AND address = '$address' AND customer_type = 'deposit'");
         return $delete;
     }
     public function checkSupply($customer_name,$address,$invoice_no,$supplied_by,$checked_by){

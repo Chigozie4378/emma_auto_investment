@@ -122,17 +122,17 @@ if (isset($_SESSION["invoice_no_deposit"])){
              }             
              $html.='
             <tr>
-            <td colspan="2" style="text-align: left;"><b>Cash: '.$result["cash"].'</b></td>
-            <td colspan="2" style="text-align: left;"><b>Transfer: '.$result["transfer"].'</b></td>
-            <td colspan="2" style="text-align: left;"><b>POS: '.$result["pos"].'</b></td>
-            <td style="text-align: left;"><b>POS Charges: '.$result_pos["pos_charges"].'</b></td>
+            <td colspan="2" style="text-align: left;"><b>Cash: '.$_SESSION["cash_deposit"].'</b></td>
+            <td colspan="2" style="text-align: left;"><b>Transfer: '.$_SESSION["transfer_deposit"].'</b></td>
+            <td colspan="2" style="text-align: left;"><b>POS: '.$_SESSION["pos_deposit"].'</b></td>
+            <td style="text-align: left;"><b>POS Charges: '.$_SESSION["pos_charges_deposit"].'</b></td>
 
             
         </tr>
         <tr>';
                 $html.='
                 <td colspan ="4"></td>
-                <td colspan="4" style="text-align: left;"><b>Amount Deposited: '.intval($result["deposit_amount"])+intval($result_pos["pos_charges"]).'</b></td>';
+                <td colspan="4" style="text-align: left;"><b>Amount Deposited: '.intval($_SESSION["deposit_amount_deposit"])+intval($_SESSION["pos_charges_deposit"]).'</b></td>';
              
         $html.='
         
@@ -149,6 +149,11 @@ if (isset($_SESSION["invoice_no_deposit"])){
     $mpdf->showImageErrors = false;
     $mpdf->WriteHTML($html);
     $mpdf->Output();
+    unset($_SESSION["cash_deposit"]);
+    unset($_SESSION["transfer_deposit"]);
+    unset($_SESSION["pos_deposit"]);
+    unset($_SESSION["pos_charges_deposit"]);
+    unset($_SESSION["deposit_amount_deposit"]);
     unset($_SESSION["invoice_no_deposit"]);
 }else{
     header("location:../../manager/retail.php");

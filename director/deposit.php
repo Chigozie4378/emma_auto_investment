@@ -62,8 +62,8 @@ $ctr->addDeposit();
 
             </div>
 
-            <div class="deposit-section float-right" style="display: none;">
-            <input class="form-control" style="width:100%;box-sizing:border-box; display:none;" name="pos_charges" id="pos_charges" value="0" required>
+            <div class="deposit-section float-right pb-4" style="display: none;">
+                <input class="form-control" style="width:100%;box-sizing:border-box; display:none;" name="pos_charges" id="pos_charges" value="0" required>
                 <label for="cash">Cash</label>
                 <input class="form-control" style="width:100%;box-sizing:border-box" onkeyup="cashCalc(this.value,document.getElementById('pos').value,document.getElementById('transfer').value,document.getElementById('pos_charges').value)" onclick="this.select()" type="number" name="cash" id="cash" value="0" required>
                 <p></p>
@@ -76,7 +76,7 @@ $ctr->addDeposit();
                 <span id="select_pos"></span>
                 <p></p>
                 <label for="amount">Deposit Amount</label>
-                <div id="deposit">
+                <div id="deposit" class="mb-2">
                     <input type="number" name="deposit_amount" id="deposit_amount" class="form-control" readonly>
                 </div>
                 <input type="submit" class="btn btn-primary" value="Make Deposit">
@@ -139,7 +139,7 @@ $ctr->addDeposit();
 
             }
         };
-        xhttp.open("GET", "sales_ajax/load_deposit2.php?pos_charges="+pos_charges + "&pos=" + pos + "&cash=" + cash + "&transfer=" + transfer, true);
+        xhttp.open("GET", "sales_ajax/load_deposit2.php?pos_charges=" + pos_charges + "&pos=" + pos + "&cash=" + cash + "&transfer=" + transfer, true);
         xhttp.send();
 
     }
@@ -368,42 +368,3 @@ $ctr->addDeposit();
 <?php
 include "includes/sales/footer.php";
 ?>
-<?php
-// session_start();
-
-// // Establish database connection
-// $host = "localhost";
-// $user = "username";
-// $pass = "password";
-// $dbname = "database_name";
-// $conn = mysqli_connect($host, $user, $pass, $dbname);
-
-// if (isset($_POST['item'])) {
-//     $items = $_POST['item'];
-//     // Insert the data into a table
-//     foreach ($items as $item) {
-//         $escaped_item = mysqli_real_escape_string($conn, $item);
-//         $sql = "INSERT INTO items (item_name) VALUES ('$escaped_item')";
-//         mysqli_query($conn, $sql);
-//     }
-//     $_SESSION['item'] = $items;
-//     // Redirect to another page to display the input values
-//     header("Location: display.php");
-// }
-
-// if (isset($_SESSION['item'])) {
-//     $items = $_SESSION['item'];
-// } else {
-//     $items = array();
-// }
-?>
-
-<!-- <form method="post">
-    <div id="input-container">
-        <?php foreach ($items as $item) { ?>
-            <input type="text" name="item[]" value="<?php echo htmlspecialchars($item); ?>">
-        <?php } ?>
-    </div>
-    <button type="button" id="add-input">Add Input</button>
-    <input type="submit" value="Save">
-</form> -->

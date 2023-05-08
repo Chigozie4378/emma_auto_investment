@@ -756,11 +756,8 @@
 
                     $fetch = $this->checkInvoice_noExist($invoice_no);
                     if ($_POST['old_deposit'] != 0) {
-                        $select = $this->showDeposit($customer_name, $address);
-                        $result = mysqli_fetch_array($select);
-                        $old_invoice = $result["invoice_no"];
-                        $this->deleteSalesDeposit($old_invoice);
-                        $this->deleteSalesDepositDetails($old_invoice);
+                        $this->deleteSalesDeposit($customer_name, $address);
+                        $this->deleteSalesDepositDetails($customer_name, $address);
                         $this->deleteDeposit($customer_name, $address);
                         $this->deleteDepositDetails($customer_name, $address);
                     }
@@ -1460,6 +1457,11 @@
                     $username = $_SESSION['directorusername'];
                     $invoice_no = $_POST["invoice_no"];
                     $_SESSION["invoice_no_deposit"] = $invoice_no;
+                    $_SESSION["cash_deposit"] = $cash;
+                    $_SESSION["transfer_deposit"] = $transfer;
+                    $_SESSION["pos_deposit"] = $pos;
+                    $_SESSION["pos_charges_deposit"] = $pos_charges;
+                    $_SESSION["deposit_amount_deposit"] = $deposit_amount;
                     $pos_type = $_POST["pos_type"];
 
 
@@ -1506,6 +1508,7 @@
                     }
 
                     $fetch = $this->checkInvoice_noExist($invoice_no);
+                    $check_deposit = $this->showDeposit($customer_name, $customer_address);
                     $transport = 0;
                     if (mysqli_num_rows($fetch) > 0) {
                         $this->addBank($customer_name, $customer_address, $invoice_no2, $remark, $transfer, $bank_name, $status, $staff, $date);
@@ -1523,7 +1526,13 @@
                         }
                         $this->addPos($customer_name, $customer_address, $invoice_no, $pos_type,$pos_charges);
                         $this->addSales($customer_name, $customer_address, $invoice_no2, $bill_type, $remark, $total, $cash, $transfer, $pos, $old_deposit, $deposit_amount, $transport,  $balance, $staff, $date, $username);
-                        $this->depositAdd($customer_name, $customer_address, $invoice_no2, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                        
+                        if (mysqli_fetch_row($check_deposit) > 0){
+                            $this->depositUpdate($customer_name, $customer_address,$invoice_no2, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                        }else{
+                            $this->depositAdd($customer_name, $customer_address, $invoice_no2, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                        }
+                        
                         echo "<script> window.location = '../print/director/deposit.php' </script>";
                     } else {
                         $this->addBank($customer_name, $customer_address, $invoice_no, $remark, $transfer, $bank_name, $status, $staff, $date);
@@ -1540,7 +1549,11 @@
                             }
                         }
                         $this->addSales($customer_name, $customer_address, $invoice_no, $bill_type, $remark, $total, $cash, $transfer, $pos, $old_deposit, $deposit_amount, $transport,  $balance, $staff, $date, $username);
-                        $this->depositAdd($customer_name, $customer_address, $invoice_no, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                        if (mysqli_fetch_row($check_deposit) > 0){
+                            $this->depositUpdate($customer_name, $customer_address,$invoice_no, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                        }else{
+                            $this->depositAdd($customer_name, $customer_address, $invoice_no, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                        }
                         $this->addPos($customer_name, $customer_address, $invoice_no, $pos_type,$pos_charges);
                         echo "<script> window.location = '../print/director/deposit.php' </script>";
                     }

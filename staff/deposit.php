@@ -59,8 +59,8 @@ $ctr->addDeposit();
 
 
             <div class="add-items-section"></div>
-            <div class="deposit-section float-right" style="display: none;">
-            <input class="form-control" style="width:100%;box-sizing:border-box; display:none;" name="pos_charges" id="pos_charges" value="0" required>
+            <div class="deposit-section float-right pb-4" style="display: none;">
+                <input class="form-control" style="width:100%;box-sizing:border-box; display:none;" name="pos_charges" id="pos_charges" value="0" required>
                 <label for="cash">Cash</label>
                 <input class="form-control" style="width:100%;box-sizing:border-box" onkeyup="cashCalc(this.value,document.getElementById('pos').value,document.getElementById('transfer').value,document.getElementById('pos_charges').value)" onclick="this.select()" type="number" name="cash" id="cash" value="0" required>
                 <p></p>
@@ -73,7 +73,7 @@ $ctr->addDeposit();
                 <span id="select_pos"></span>
                 <p></p>
                 <label for="amount">Deposit Amount</label>
-                <div id="deposit">
+                <div id="deposit" class="mb-2">
                     <input type="number" name="deposit_amount" id="deposit_amount" class="form-control" readonly>
                 </div>
                 <input type="submit" class="btn btn-primary" value="Make Deposit">
