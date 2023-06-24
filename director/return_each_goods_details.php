@@ -12,6 +12,11 @@ if (isset($_POST["print"])) {
 }
 
 ?>
+<?php
+$ctr->UndoReturnAllGoods();
+$select = $ctr->viewReturnTotal();
+$total_return = mysqli_fetch_array($select);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,7 +27,6 @@ if (isset($_POST["print"])) {
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
     <link rel="icon" href="../assets/images/logo.jpg" type="image/gif" sizes="20x20">
-
     <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="../assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
@@ -74,6 +78,7 @@ if (isset($_POST["print"])) {
         </div>
         <div class="row">
             <div class="col-sm-12 fixTableHead">
+                <h1 id='returnQty'></h1>
                 <table class="table table-striped table-light table-bordered">
                     <tr>
                         <th>S/N</th>
@@ -83,10 +88,11 @@ if (isset($_POST["print"])) {
                         <th>Manufacturer</th>
                         <th>Price</th>
                         <th>Amount</th>
+                        <th class="d-print-none">Undo Return</th>
 
                     </tr>
                     <?php
-                    $id = 0;
+
                     $result = $ctr->viewReturnDetails();
                     while ($row = mysqli_fetch_array($result)) { ?>
 
@@ -98,7 +104,10 @@ if (isset($_POST["print"])) {
                             <td><?php echo $row["manufacturer"] ?></td>
                             <td><?php echo $row["price"] ?></td>
                             <td><?php echo $row["amount"] ?></td>
+                            <td class="d-print-none">
+                                <input name="rQty" id="rQty<?php echo $row['id'] ?>" style="width:40px" type="text" placeholder="<?php echo $row["quantity"] ?>">&nbsp;&nbsp;&nbsp;&nbsp;<i type="submit" class="fas fa-undo text-success" onclick="returnEachGoods('<?php echo $row['quantity'] ?>','<?php echo $row['product_name'] ?>','<?php echo $row['model'] ?>','<?php echo $row['manufacturer'] ?>','<?php echo $row['price'] ?>','<?php echo $row['amount'] ?>','<?php $ctr->viewReturnEachDetail('invoice_no') ?>','<?php echo $total_return['total']; ?>',document.getElementById('rQty<?php echo $row['id'] ?>').value,'<?php echo $ctr->viewReturnEachDetail('customer_name'); ?>','<?php echo $ctr->viewReturnEachDetail('address'); ?>','<?php echo $_SESSION['directorfullname']; ?>')"></i>
 
+                                
                         </tr>
                     <?php
                     }
@@ -106,10 +115,7 @@ if (isset($_POST["print"])) {
                     <tr>
                         <td colspan="5"></td>
                         <td style="font-weight: bold;">Total Amount:</td>
-                        <?php
-                        $select = $ctr->viewReturnTotal();
-                        $total_return = mysqli_fetch_array($select);
-                        ?>
+
                         <h3 class="text-white" </h3>
                             <td style="font-weight: bold;"># <?php echo number_format($total_return['total']) ?></td>
                     </tr>
@@ -140,7 +146,7 @@ if (isset($_POST["print"])) {
             <div class="col-12 text-center">
                 <form action="" method="post">
                     <input name="print" type="submit" class="toggle btn btn-primary d-print-none" value="print" onclick="printpage()">
-
+                    <a href="return_each_goods_details.php?invoice_no1=<?php $ctr->viewReturnEachDetail("invoice_no") ?>" class="btn btn-danger d-print-none">Undo All Goods Returned</a>
                     <a href="return_each_goods.php" class="btn btn-primary d-print-none">Go Back</a>
 
                 </form>
@@ -177,11 +183,49 @@ if (isset($_POST["print"])) {
 </body>
 
 </html>
+<script>
+    function returnEachGoods(value1, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12) {
+        $(document).ready(function() {
+            var quantity = value1;
+            var productname = value2;
+            var model = value3;
+            var manufacturer = value4;
+            var price = value5;
+            var amount = value6;
+            var invoice_no = value7;
+            var total_amount = value8;
+            var returnQty = value9;
+            var customer_name = value10;
+            var address = value11;
+            var staff = value12;
 
-<!--Action boxes-->
+            if (returnQty != "") {
+                $.ajax({
+                    url: "ajax/load_undo.php",
+                    method: 'POST',
+                    data: {
+                        quantity: quantity,
+                        productname: productname,
+                        model: model,
+                        manufacturer: manufacturer,
+                        price: price,
+                        amount: amount,
+                        invoice_no: invoice_no,
+                        total_amount: total_amount,
+                        returnQty: returnQty,
+                        customer_name: customer_name,
+                        address: address,
+                        staff: staff
 
+                    },
+                    success: function(data) {
+                        $('#returnQty').html(data);
+                    }
+                });
+            } else {
+                $('#qty').css('display', 'none');
+            }
+        });
 
-<!--end-main-container-part-->
-<?php
-
-?>
+    }
+</script>

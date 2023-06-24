@@ -129,38 +129,40 @@ $show_result = mysqli_fetch_array($show);
                     <form action="" method="post">
                         <td class="d-print-none" style="font-weight: bold;">Cash: <input onclick="this.select()" style="width:90px" type="text" id="cash1" required></td>
                         <td class="d-print-none" style="font-weight: bold;">Transfer: <input onclick="this.select()" onkeyup="selectBank()" style="width:90px" type="text" id="transfer1" required>
-                        <span id="select_bank"></span></td>
+                            <span id="select_bank"></span>
+                        </td>
                         <td class="d-print-none" style="font-weight: bold;">POS: <input onclick="this.select()" style="width:90px" type="text" id="pos1" required></td>
-                        <td> <button type="submit" onclick="updatePayment('<?php $ctr->viewSalesDetail('invoice_no'); ?>',getElementById('transfer1').value,getElementById('bank').value,'<?php $ctr->viewSalesDetail('deposit') ?>','<?php $ctr->viewSalesDetail('total') ?>','<?php echo $ctr->viewSalesDetail('customer_name'); ?>','<?php echo $ctr->viewSalesDetail('address'); ?>','<?php echo date('d-m-Y') ?>','<?php echo $_SESSION['directorfullname']; ?>',getElementById('cash1').value,'<?php echo $ctr->viewSalesDetail('customer_type'); ?>',getElementById('pos1').value)" type="submit" class=" btn btn-sm btn-info d-print-none">Change Payment</button></td>
+                        <td> <button type="submit" onclick="updatePayment('<?php $ctr->viewSalesDetail('invoice_no'); ?>',getElementById('transfer1').value,getElementById('bank').value,'<?php $ctr->viewSalesDetail('deposit') ?>','<?php $ctr->viewSalesDetail('total') ?>','<?php echo $ctr->viewSalesDetail('customer_name'); ?>','<?php echo $ctr->viewSalesDetail('address'); ?>','<?php echo date('d-m-Y') ?>','<?php echo $_SESSION['managerfullname']; ?>',getElementById('cash1').value,'<?php echo $ctr->viewSalesDetail('customer_type'); ?>',getElementById('pos1').value)"  class=" btn btn-sm btn-info d-print-none">Change Payment</button></td>
                     </form>
-                    <?php 
-                    if ($ctr->viewSalesReceipt("old_deposit")!=0){?>
-                        <td style="font-weight: bold;">Old Deposit: # <?php $ctr->viewSalesDetail("old_deposit"); ?></td>
-                   <?php }
-                    ?>
-                     <?php 
-                        if($ctr->viewSalesReceipt("deposit") > $ctr->viewSalesReceipt("total")){?>
-                        <td style="font-weight: bold;">Transport Charges: # <?php $ctr->viewSalesDetail("transport") ?></td>
 
-                       <?php }
-                    ?>
                     <td style="font-weight: bold;">Cash: # <?php $ctr->viewSalesDetail("cash"); ?></td>
-                    <td style="font-weight: bold;">POS:# <?php $ctr->viewSalesDetail("pos"); if ($ctr->viewSalesReceipt("pos") !=0){ echo " (".$ctr->viewPosType("pos_type").")";?></td>
-                        <td style="font-weight: bold;">POS Charges :# <?php echo $ctr->viewPosType("pos_charges");
-                     }  ?>
-                     </td>
+                    <td style="font-weight: bold;">POS:# <?php $ctr->viewSalesDetail("pos");
+                                                            if ($ctr->viewSalesReceipt("pos") != 0) {
+                                                                echo " (" . $ctr->viewPosType("pos_type") . ")";
+                                                            } ?></td>
+                    <td style="font-weight: bold;">POS Charges :# <?php echo $ctr->viewPosType("pos_charges");  ?></td>
                     <td style="font-weight: bold;">Transfer:# <?php $ctr->viewSalesDetail("transfer"); ?></td>
+                    <td style="font-weight: bold;">Transport Charges: # <?php $ctr->viewSalesDetail("transport"); ?></td>
 
-                    
-                    <td style="font-weight: bold;">Total Paid: # <?php $deposit = $ctr->viewSalesReceipt("deposit"); $pos_charges =  $ctr->viewPosType("pos_charges"); $total_paid = intval($deposit)+intval($pos_charges); echo ($total_paid); ?></td>
+                    <td style="font-weight: bold;">Total Paid: # <?php $deposit = $ctr->viewSalesReceipt("deposit");
+                                                                    $pos_charges =  $ctr->viewPosType("pos_charges");
+                                                                    $total_paid = intval($deposit) + intval($pos_charges);
+                                                                    echo ($total_paid); ?>
+                    </td>
+
                     <td class="d-print-none"></td>
                 </tr>
                 <?php
 
-                if (mysqli_num_rows($show)>0) { ?>
-                  <tr>
+                if (mysqli_num_rows($show) > 0) { ?>
+                    <tr>
                         <td colspan="2"></td>
-                        <td style="font-weight: bold;">Transport Charges: #  <?php $ctr->viewSalesDetail("transport"); ?></td>
+
+                        <?php
+                        if ($ctr->viewSalesReceipt("old_deposit") != 0) { ?>
+                            <td style="font-weight: bold;">Old Deposit: # <?php $ctr->viewSalesDetail("old_deposit"); ?></td>
+                        <?php }
+                        ?>
                         <td style="font-weight: bold;">Old Balance: </td>
                         <td style="font-weight: bold;"># <?php $old_bal = $show_result["balance"] - $ctr->viewSalesReceipt("balance");
                                                             echo number_format($old_bal, 2); ?></td>

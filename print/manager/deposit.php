@@ -117,7 +117,7 @@ if (isset($_SESSION["invoice_no_deposit"])){
                         $html.=
                         
                 '<tr>
-                <td class="goods"  colspan="7">Deposit of '.$row['product_name']." ".$row['model']." ".$row['manufacturer'].'</td>
+                <td class="goods"  colspan="7">Deposit Made: '.$row['product_name']." ".$row['model']." ".$row['manufacturer'].'</td>
             </tr>';
              }             
              $html.='

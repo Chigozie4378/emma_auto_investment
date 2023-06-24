@@ -10,7 +10,7 @@ if (isset($_POST["print"])){
     
     header("location:sales_history.php");
 }
-
+$ctr->UndoReturnAllGoods();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -139,7 +139,7 @@ $total_return= mysqli_fetch_array($select);
             <div class="col-12 text-center">
                 <form action="" method="post">
                     <input name="print" type="submit" class="toggle btn btn-primary d-print-none" value="print" onclick="printpage()">
-                    
+                    <a href="return_goods_details.php?invoice_no1=<?php $ctr->viewReturnDetail("invoice_no") ?>" class="btn btn-danger d-print-none">Undo All Goods Returned</a>
                     <a href="return_each_goods.php" class="btn btn-primary d-print-none">Go Back</a>
 
                 </form>

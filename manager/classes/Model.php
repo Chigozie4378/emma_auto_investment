@@ -675,9 +675,19 @@ class Model extends DB
         $update = mysqli_query($this->connect(), "UPDATE sales SET total = '$new_total', balance = '$new_balance' WHERE invoice_no = '$invoice_no'");
         return $update;
     }
+    public function updateSalesUndo($return_amount, $invoice_no)
+    {
+        $update = mysqli_query($this->connect(), "UPDATE sales SET total = total+$return_amount, balance = balance+$return_amount WHERE invoice_no = '$invoice_no'");
+        return $update;
+    }
     public function updateSalesDetails($rem_qty, $new_amount, $productname, $model, $manufacturer, $invoice_no)
     {
         $update = mysqli_query($this->connect(), "UPDATE sales_details SET quantity = '$rem_qty', amount = '$new_amount' WHERE product_name = '$productname' AND model='$model' AND manufacturer = '$manufacturer' AND invoice_no = '$invoice_no'");
+        return $update;
+    }
+    public function updateSalesDetailsUndo($return_qty, $return_amount, $productname, $model, $manufacturer, $invoice_no)
+    {
+        $update = mysqli_query($this->connect(), "UPDATE sales_details SET quantity = quantity+$return_qty, amount = amount+$return_amount WHERE product_name = '$productname' AND model='$model' AND manufacturer = '$manufacturer' AND invoice_no = '$invoice_no'");
         return $update;
     }
     public function updateStockAfterEachReturn($return_qty, $productname, $model, $manufacturer)
@@ -685,14 +695,29 @@ class Model extends DB
         $update = mysqli_query($this->connect(), "UPDATE product SET quantity = quantity+$return_qty WHERE name = '$productname' AND model='$model' AND manufacturer = '$manufacturer'");
         return $update;
     }
+    public function updateStockUndoEachQty($return_qty, $productname, $model, $manufacturer)
+    {
+        $update = mysqli_query($this->connect(), "UPDATE product SET quantity = quantity-$return_qty WHERE name = '$productname' AND model='$model' AND manufacturer = '$manufacturer'");
+        return $update;
+    }
     public function updateEachReturn($invoice_no, $return_amount, $staff_name, $date)
     {
         $update = mysqli_query($this->connect(), "UPDATE return_each_goods SET total = total+$return_amount, staff_name = '$staff_name', date= '$date'  WHERE invoice_no = '$invoice_no'");
         return $update;
     }
+    public function updateEachUndo($invoice_no, $return_amount, $staff_name, $date)
+    {
+        $update = mysqli_query($this->connect(), "UPDATE return_each_goods SET total = total-$return_amount, staff_name = '$staff_name', date= '$date'  WHERE invoice_no = '$invoice_no'");
+        return $update;
+    }
     public function updateEachReturnDetails($invoice_no, $productname, $model, $manufacturer, $return_qty, $return_amount, $staff_name, $date)
     {
         $update = mysqli_query($this->connect(), "UPDATE return_goods_details SET quantity = quantity+$return_qty, amount = amount+$return_amount,staff_name = '$staff_name',date='$date' WHERE product_name = '$productname' AND model='$model' AND manufacturer = '$manufacturer' AND invoice_no = '$invoice_no'");
+        return $update;
+    }
+    public function updateEachUndoDetails($invoice_no, $productname, $model, $manufacturer, $return_qty, $return_amount, $staff_name, $date)
+    {
+        $update = mysqli_query($this->connect(), "UPDATE return_goods_details SET quantity = quantity-$return_qty, amount = amount-$return_amount,staff_name = '$staff_name',date='$date' WHERE product_name = '$productname' AND model='$model' AND manufacturer = '$manufacturer' AND invoice_no = '$invoice_no'");
         return $update;
     }
 
@@ -728,6 +753,22 @@ class Model extends DB
         $delete = mysqli_query($this->connect(), "DELETE FROM sales WHERE total =0 AND invoice_no = '$invoice_no'");
         return $delete;
     }
+    public function deleteReturnDetailsUndo($invoice_no)
+    {
+        $delete = mysqli_query($this->connect(), "DELETE FROM return_goods_details WHERE quantity =0 AND invoice_no = '$invoice_no'");
+        return $delete;
+    }
+
+    public function deleteReturnUndoEach($invoice_no)
+    {
+        $delete = mysqli_query($this->connect(), "DELETE FROM return_each_goods WHERE total =0 AND invoice_no = '$invoice_no'");
+        return $delete;
+    }
+    public function deleteReturnUndo($invoice_no)
+    {
+        $delete = mysqli_query($this->connect(), "DELETE FROM return_goods WHERE total =0 AND invoice_no = '$invoice_no'");
+        return $delete;
+    }
     public function showReturnEach($invoice_no)
     {
         $select = mysqli_query($this->connect(), "SELECT * FROM return_each_goods where invoice_no = '$invoice_no' ");
@@ -739,9 +780,9 @@ class Model extends DB
         return $select;
     }
 
-    public function insertAllReturn($customer_name, $address, $invoice_no, $payment_type, $total, $cash, $transfer, $deposit, $balance, $staff, $date)
+    public function insertAllReturn($customer_name, $address, $invoice_no, $bill_type, $customer_type, $total, $cash, $transfer,$pos,$old_deposit, $deposit, $transport, $balance, $staff, $date, $username, $bank)
     {
-        mysqli_query($this->connect(), "INSERT INTO return_goods VALUES(null,'$customer_name', '$address', '$invoice_no', '$payment_type', '$total','$cash','$transfer','$deposit', '$balance', '$staff',  '$date')");
+        mysqli_query($this->connect(), "INSERT INTO return_goods VALUES(null,'$customer_name', '$address', '$invoice_no', '$bill_type','$customer_type', '$total','$cash','$transfer','$pos','$old_deposit','$deposit', '$transport', '$balance','$staff', '$date', '$username','$bank')");
     }
 
     public function insertAllReturnDetails($customer_name1, $address1, $invoice_no1, $productname, $model, $manufacturer, $quantity, $price, $amount, $staff1, $date1)
@@ -782,6 +823,7 @@ class Model extends DB
         $select = mysqli_query($this->connect(), "SELECT sum(amount) as total FROM return_goods_details  WHERE invoice_no = '$invoice'");
         return $select;
     }
+    
     public function showInvoiceReturnDetails($invoice)
     {
         $select = mysqli_query($this->connect(), "SELECT * FROM return_goods_details WHERE invoice_no = '$invoice'");
@@ -1087,5 +1129,25 @@ class Model extends DB
     public function showCode($code)
     {
         return mysqli_query($this->connect(), "SELECT * FROM code WHERE code = '$code'");
+    }
+     public function updateUndoDebits($new_deposit, $new_balance, $customer_name, $address)
+    {
+        $update = mysqli_query($this->connect(), "UPDATE debit SET  deposit = $new_deposit, balance = $new_balance WHERE customer_name = '$customer_name' AND address='$address'");
+        return $update;
+    }
+    public function deleteAllGoodsReturned($invoice)
+    {
+        $delete = mysqli_query($this->connect(), "DELETE FROM return_goods WHERE invoice_no =$invoice");
+        return $delete;
+    }
+    public function deleteAllGoodsReturnedDetails($invoice)
+    {
+        $delete = mysqli_query($this->connect(), "DELETE FROM return_goods_details WHERE invoice_no =$invoice");
+        return $delete;
+    }
+    public function deleteEachGoodsReturned($invoice)
+    {
+        $delete = mysqli_query($this->connect(), "DELETE FROM return_each_goods WHERE invoice_no =$invoice");
+        return $delete;
     }
 }

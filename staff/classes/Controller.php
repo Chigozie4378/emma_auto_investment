@@ -84,13 +84,13 @@ class Controller extends Model
                     echo "<script>alert('You must Fill Customer Name') </script>";
                     $err = true;
                 } else {
-                    $customer_name = $title . " " . $_POST["customer_name"];
+                    $customer_name = $title . " " . trim($_POST["customer_name"]);
                 }
                 if (empty($_POST["address"])) {
                     echo "<script>alert('You must Fill Customer Address') </script>";
                     $err = true;
                 } else {
-                    $address = $_POST["address"];
+                    $address = trim($_POST["address"]);
                 }
                 $pos_type = $_POST['pos_type'];
                 $invoice_no = $_POST["invoice_no"];

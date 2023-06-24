@@ -34,6 +34,7 @@ $sum_debit = mysqli_fetch_array($select);
 
 <section class="content">
     <div class="container-fluid">
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -41,7 +42,7 @@ $sum_debit = mysqli_fetch_array($select);
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
-                                <h3>All Sales of Today (<?php echo date("d-m-Y") ?>) </h3>
+                                <h3>All Sales of Today (<?php echo date('d-m-Y') ?>) </h3>
 
                             </div>
                             <div class="col-md-8 d-print-none">

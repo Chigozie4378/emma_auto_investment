@@ -607,13 +607,13 @@
                         echo "<script>alert('You must Fill Customer Name') </script>";
                         $err = true;
                     } else {
-                        $customer_name = $title . " " . $_POST["customer_name"];
+                        $customer_name = $title . " " . trim($_POST["customer_name"]);
                     }
                     if (empty($_POST["address"])) {
                         echo "<script>alert('You must Fill Customer Address') </script>";
                         $err = true;
                     } else {
-                        $address = $_POST["address"];
+                        $address = trim($_POST["address"]);
                     }
                     $pos_type = $_POST["pos_type"];
                     $invoice_no = $_POST["invoice_no"];
@@ -946,6 +946,13 @@
                 $transfer = $row1["transfer"];
                 $deposit = $row1["deposit"];
                 $balance = $row1["balance"];
+
+                $pos = $row1["pos"];
+                $customer_type = $row1["customer_type"];
+                $old_deposit = $row1["old_deposit"];
+                $transport = $row1["transport"];
+                $username = $row1["username"];
+                $bank = $row1["bank"];
                 $date = date("d-m-Y");
                 $staff = $_SESSION['managerfullname'];
                 // $new_deposit = $total + $deposit;
@@ -965,7 +972,7 @@
                 if (mysqli_num_rows($show_debits) > 0) {
 
                     $comment = "All Goods Returned for " . $customer_name . " " . $address;
-                    $this->insertAllReturn($customer_name, $address, $invoice_no, $payment_type, $total, $cash, $transfer, $deposit, $balance, $staff, $date);
+                    $this->insertAllReturn($customer_name, $address, $invoice_no, $customer_type, $payment_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username, $bank);
                     $this->updateReturnDebits($total_deposit, $total_bal1, $customer_name, $address);
                     $this->insertReturnDebitsDetails($customer_name, $address, $debit_total, $total, $total_deposit, $total_bal1, $total_bal2, $staff, $date, $comment);
                     $this->deleteDebit();
@@ -990,7 +997,7 @@
                     }
                     header("location:sales_history.php");
                 } else {
-                    $this->insertAllReturn($customer_name, $address, $invoice_no, $payment_type, $total, $cash, $transfer, $deposit, $balance, $staff, $date);
+                    $this->insertAllReturn($customer_name, $address, $invoice_no, $customer_type, $payment_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username, $bank);
                     $this->deleteDebit();
                     $this->deletesales($invoice);
                     $select2 = $this->showInvoiceSalesDetails($invoice);
@@ -1098,7 +1105,7 @@
             if (isset($_GET['invoice'])) {
                 $invoice = $_GET['invoice'];
                 if ($_GET['invoice']) {
-                    $row = mysqli_fetch_array($this->showEachReturn($invoice));
+                    $row = mysqli_fetch_array($this->showInvoiceReturn($invoice));
                     echo $row["$tablename"];
                 }
             }
@@ -1150,7 +1157,9 @@
                 $id = $_POST["id"];
                 $customer_name = $_POST["customer_name"];
                 $customer_address = $_POST["address"];
-                $date = $_POST["date"];;
+                $date = $_POST["date"];
+                $timestamp = strtotime($date);
+                $date = date('d/m/Y', $timestamp);
                 $deposit = $_POST["deposit"];
                 $balance = $_POST["balance"];
                 $total = 0;
@@ -1175,7 +1184,7 @@
                 $this->updateDebitHistories($settled);
                 $this->deleteDebit();
                 $invoice_no = $_POST["invoice_no"];
-                Session::name("invoice_no",$invoice_no);
+                Session::name("invoice_no", $invoice_no);
                 if ($_POST["payment_type"] == "cash") {
                     $fetch_last_invoice_no = $this->checkInvoice();
                     $get  = mysqli_fetch_array($fetch_last_invoice_no);
@@ -1199,7 +1208,7 @@
                     } else {
                         $invoice_no2 =  $add_invoice_no;
                     }
-                    Session::name("invoice_no",$invoice_no2);
+                    Session::name("invoice_no", $invoice_no2);
                     $transport = 0;
                     $fetch = $this->checkInvoice_noExist($invoice_no);
                     if (mysqli_num_rows($fetch) > 0) {
@@ -1385,9 +1394,9 @@
                             }
                         }
                         $this->addSales($customer_name, $customer_address, $invoice_no2, $bill_type, $remark, $total, $cash, $transfer, $pos, $old_deposit, $deposit_amount, $transport, $balance, $staff, $date, $username);
-                        if (mysqli_fetch_row($check_deposit) > 0){
-                            $this->depositUpdate($customer_name, $customer_address,$invoice_no2, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
-                        }else{
+                        if (mysqli_fetch_row($check_deposit) > 0) {
+                            $this->depositUpdate($customer_name, $customer_address, $invoice_no2, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                        } else {
                             $this->depositAdd($customer_name, $customer_address, $invoice_no2, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
                         }
                         $this->addPos($customer_name, $customer_address, $invoice_no, $pos_type, $pos_charges);
@@ -1407,9 +1416,9 @@
                             }
                         }
                         $this->addSales($customer_name, $customer_address, $invoice_no, $bill_type, $remark, $total, $cash, $transfer, $pos, $old_deposit, $deposit_amount, $transport, $balance, $staff, $date, $username);
-                        if (mysqli_fetch_row($check_deposit) > 0){
-                            $this->depositUpdate($customer_name, $customer_address,$invoice_no, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
-                        }else{
+                        if (mysqli_fetch_row($check_deposit) > 0) {
+                            $this->depositUpdate($customer_name, $customer_address, $invoice_no, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
+                        } else {
                             $this->depositAdd($customer_name, $customer_address, $invoice_no, $bill_type, $cash, $transfer, $pos, $deposit_amount, $date, $staff);
                         }
                         $this->addPos($customer_name, $customer_address, $invoice_no, $pos_type, $pos_charges);
@@ -1439,6 +1448,270 @@
                 $select = $this->showDepositEach($invoice, $customer_name, $address);
                 $row = mysqli_fetch_array($select);
                 return $row["$table"];
+            }
+        }
+        public function UndoReturnAllGoods()
+        {
+            if (isset($_GET["invoice_no1"])) {
+                $invoice = $_GET["invoice_no1"];
+
+                if (mysqli_num_rows($this->showInvoiceReturn($invoice)) > 0) {
+                    $select1 = $this->showInvoiceReturn($invoice);
+                    $select_sales = $this->showInvoiceSales($invoice);
+                    $select_sales_history = $this->showInvoiceSalesDetails($invoice);
+                    $row1 = mysqli_fetch_array($select1);
+                    $customer_name = $row1["customer_name"];
+                    $address = $row1["address"];
+                    $invoice_no = $row1["invoice_no"];
+                    $payment_type = $row1["payment_type"];
+                    $customer_type = $row1["customer_type"];
+                    $payment_type = $row1["payment_type"];
+                    $total = $row1["total"];
+                    $cash = $row1["cash"];
+                    $transfer = $row1["transfer"];
+                    $pos = $row1["pos"];
+                    $old_deposit = $row1["old_deposit"];
+                    $transport = $row1["transport"];
+                    $deposit = $row1["deposit"];
+                    $balance = $row1["balance"];
+                    $username = $row1["username"];
+                    $date = date("d-m-Y");
+                    $staff = $row1["staff_name"];
+                    // $new_deposit = $total + $deposit;
+                    // $new_balance = $balance - $total;
+                    // $new_balance1 = $balance - $total;
+                    $debit_total = 0;
+
+                    $show_debits = $this->showDebitTotalPaidTotalBal($customer_name, $address);
+                    $row = mysqli_fetch_array($show_debits);
+                    $dbtotal_deposit = $row["deposit"];
+                    $dbtotal_bal = $row["balance"];
+                    $total_deposit = $dbtotal_deposit - $total;
+                    $total_bal1 = $dbtotal_bal + $total;
+                    $total_bal2 = $dbtotal_bal + $total;
+
+                    if (mysqli_num_rows($select_sales) > 0) {
+                        if (mysqli_num_rows($show_debits) > 0) {
+
+                            $comment = "Undid All Goods Returned for " . $customer_name . " " . $address;
+                            $this->updateUndoDebits($total_deposit, $total_bal1, $customer_name, $address);
+                            $this->insertReturnDebitsDetails($customer_name, $address, $debit_total, $total, $total_deposit, $total_bal1, $total_bal2, $staff, $date, $comment);
+
+                            $this->updateSalesUndo($total, $invoice_no);
+
+                            $select2 = $this->showInvoiceReturnDetails($invoice);
+                            while ($row2 = mysqli_fetch_array($select2)) {
+                                $invoice_no1 = $row2["invoice_no"];
+                                $productname = $row2["product_name"];
+                                $model = $row2["model"];
+                                $manufacturer = $row2["manufacturer"];
+                                $quantity = $row2["quantity"];
+                                $amount = $row2["amount"];
+                                $this->updateSalesDetailsUndo($quantity, $amount, $productname, $model, $manufacturer, $invoice_no1);
+
+                                $this->updateQty($quantity, $productname, $model, $manufacturer);
+                                $this->deleteAllGoodsReturnedDetails($invoice);
+                            }
+                            $this->deleteDebit();
+                            $this->deleteAllGoodsReturned($invoice);
+                        } else {
+                            $this->updateSalesUndo($total, $invoice_no);
+
+                            $select2 = $this->showInvoiceReturnDetails($invoice);
+                            while ($row2 = mysqli_fetch_array($select2)) {
+                                $invoice_no1 = $row2["invoice_no"];
+                                $productname = $row2["product_name"];
+                                $model = $row2["model"];
+                                $manufacturer = $row2["manufacturer"];
+                                $quantity = $row2["quantity"];
+                                $amount = $row2["amount"];
+                                $this->updateSalesDetailsUndo($quantity, $amount, $productname, $model, $manufacturer, $invoice_no1);
+
+                                $this->updateQty($quantity, $productname, $model, $manufacturer);
+                                $this->deleteAllGoodsReturnedDetails($invoice);
+                            }
+                            $this->deleteDebit();
+                            $this->deleteAllGoodsReturned($invoice);
+                        }
+                    } else {
+
+                        if (mysqli_num_rows($show_debits) > 0) {
+
+                            $comment = "Undid All Goods Returned for " . $customer_name . " " . $address;
+                            $this->addSales($customer_name, $address, $invoice_no, $payment_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
+                            $this->updateUndoDebits($total_deposit, $total_bal1, $customer_name, $address);
+                            $this->insertReturnDebitsDetails($customer_name, $address, $debit_total, $total, $total_deposit, $total_bal1, $total_bal2, $staff, $date, $comment);
+                            $this->deleteDebit();
+                            $this->deleteAllGoodsReturned($invoice);
+
+                            $select2 = $this->showInvoiceReturnDetails($invoice);
+                            while ($row2 = mysqli_fetch_array($select2)) {
+                                $invoice_no1 = $row2["invoice_no"];
+                                $customer_name1 = $row2["customer_name"];
+                                $address1 = $row2["address"];
+                                $productname = $row2["product_name"];
+                                $model = $row2["model"];
+                                $manufacturer = $row2["manufacturer"];
+                                $quantity = $row2["quantity"];
+                                $price = $row2["price"];
+                                $amount = $row2["amount"];
+                                $date1 = $row2["date"];
+                                $this->addSalesDetails($customer_name1, $address1, $invoice_no1, $customer_type, $productname, $model, $manufacturer, $quantity, $price, $amount, $staff, $date1);
+                                $this->updateQty($quantity, $productname, $model, $manufacturer);
+                                $this->deleteAllGoodsReturnedDetails($invoice);
+                            }
+                        } else {
+                            $this->addSales($customer_name, $address, $invoice_no, $payment_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
+                            $this->deleteAllGoodsReturned($invoice);
+                            $select2 = $this->showInvoiceReturnDetails($invoice);
+                            while ($row2 = mysqli_fetch_array($select2)) {
+                                $invoice_no1 = $row2["invoice_no"];
+                                $customer_name1 = $row2["customer_name"];
+                                $address1 = $row2["address"];
+                                $productname = $row2["product_name"];
+                                $model = $row2["model"];
+                                $manufacturer = $row2["manufacturer"];
+                                $quantity = $row2["quantity"];
+                                $price = $row2["price"];
+                                $amount = $row2["amount"];
+                                $date1 = $row2["date"];
+                                $this->addSalesDetails($customer_name1, $address1, $invoice_no1, $customer_type, $productname, $model, $manufacturer, $quantity, $price, $amount, $staff, $date1);
+                                $this->updateQty($quantity, $productname, $model, $manufacturer);
+                                $this->deleteAllGoodsReturnedDetails($invoice);
+                            }
+                        }
+                    }
+                    header("location:return_goods.php");
+                } else {
+                    $select1 = $this->showInvoiceReturnEach($invoice);
+                    $select_sales = $this->showInvoiceSales($invoice);
+                    $select_sales_history = $this->showInvoiceSalesDetails($invoice);
+                    $row1 = mysqli_fetch_array($select1);
+                    $customer_name = $row1["customer_name"];
+                    $address = $row1["address"];
+                    $invoice_no = $row1["invoice_no"];
+                    $payment_type = $row1["payment_type"];
+                    $customer_type = $row1["customer_type"];
+                    $payment_type = $row1["payment_type"];
+                    $total = $row1["total"];
+                    $cash = $row1["cash"];
+                    $transfer = $row1["transfer"];
+                    $pos = $row1["pos"];
+                    $old_deposit = $row1["old_deposit"];
+                    $transport = $row1["transport"];
+                    $deposit = $row1["deposit"];
+                    $balance = $row1["balance"];
+                    $username = $row1["username"];
+                    $date = date("d-m-Y");
+                    $staff = $row1["staff_name"];
+                    // $new_deposit = $total + $deposit;
+                    // $new_balance = $balance - $total;
+                    // $new_balance1 = $balance - $total;
+                    $debit_total = 0;
+
+                    $show_debits = $this->showDebitTotalPaidTotalBal($customer_name, $address);
+                    $row = mysqli_fetch_array($show_debits);
+                    $dbtotal_deposit = $row["deposit"];
+                    $dbtotal_bal = $row["balance"];
+                    $total_deposit = $dbtotal_deposit - $total;
+                    $total_bal1 = $dbtotal_bal + $total;
+                    $total_bal2 = $dbtotal_bal + $total;
+
+                    if (mysqli_num_rows($select_sales) > 0) {
+                        if (mysqli_num_rows($show_debits) > 0) {
+
+                            $comment = "Undid All Goods Returned for " . $customer_name . " " . $address;
+                            $this->updateUndoDebits($total_deposit, $total_bal1, $customer_name, $address);
+                            $this->insertReturnDebitsDetails($customer_name, $address, $debit_total, $total, $total_deposit, $total_bal1, $total_bal2, $staff, $date, $comment);
+
+                            $this->updateSalesUndo($total, $invoice_no);
+
+                            $select2 = $this->showInvoiceReturnDetails($invoice);
+                            while ($row2 = mysqli_fetch_array($select2)) {
+                                $invoice_no1 = $row2["invoice_no"];
+                                $productname = $row2["product_name"];
+                                $model = $row2["model"];
+                                $manufacturer = $row2["manufacturer"];
+                                $quantity = $row2["quantity"];
+                                $amount = $row2["amount"];
+                                $this->updateSalesDetailsUndo($quantity, $amount, $productname, $model, $manufacturer, $invoice_no1);
+
+                                $this->updateQty($quantity, $productname, $model, $manufacturer);
+                                $this->deleteAllGoodsReturnedDetails($invoice);
+                            }
+                            $this->deleteDebit();
+                            $this->deleteEachGoodsReturned($invoice);
+                        } else {
+                            $this->updateSalesUndo($total, $invoice_no);
+
+                            $select2 = $this->showInvoiceReturnDetails($invoice);
+                            while ($row2 = mysqli_fetch_array($select2)) {
+                                $invoice_no1 = $row2["invoice_no"];
+                                $productname = $row2["product_name"];
+                                $model = $row2["model"];
+                                $manufacturer = $row2["manufacturer"];
+                                $quantity = $row2["quantity"];
+                                $amount = $row2["amount"];
+                                $this->updateSalesDetailsUndo($quantity, $amount, $productname, $model, $manufacturer, $invoice_no1);
+
+                                $this->updateQty($quantity, $productname, $model, $manufacturer);
+                                $this->deleteAllGoodsReturnedDetails($invoice);
+                            }
+                            $this->deleteDebit();
+                            $this->deleteEachGoodsReturned($invoice);
+                        }
+                    } else {
+
+                        if (mysqli_num_rows($show_debits) > 0) {
+
+                            $comment = "Undid All Goods Returned for " . $customer_name . " " . $address;
+                            $this->addSales($customer_name, $address, $invoice_no, $payment_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
+                            $this->updateUndoDebits($total_deposit, $total_bal1, $customer_name, $address);
+                            $this->insertReturnDebitsDetails($customer_name, $address, $debit_total, $total, $total_deposit, $total_bal1, $total_bal2, $staff, $date, $comment);
+                            $this->deleteDebit();
+                            $this->deleteEachGoodsReturned($invoice);
+
+                            $select2 = $this->showInvoiceReturnDetails($invoice);
+                            while ($row2 = mysqli_fetch_array($select2)) {
+                                $invoice_no1 = $row2["invoice_no"];
+                                $customer_name1 = $row2["customer_name"];
+                                $address1 = $row2["address"];
+                                $productname = $row2["product_name"];
+                                $model = $row2["model"];
+                                $manufacturer = $row2["manufacturer"];
+                                $quantity = $row2["quantity"];
+                                $price = $row2["price"];
+                                $amount = $row2["amount"];
+                                $date1 = $row2["date"];
+                                $this->addSalesDetails($customer_name1, $address1, $invoice_no1, $customer_type, $productname, $model, $manufacturer, $quantity, $price, $amount, $staff, $date1);
+                                $this->updateQty($quantity, $productname, $model, $manufacturer);
+                                $this->deleteAllGoodsReturnedDetails($invoice);
+                            }
+                        } else {
+                            $this->addSales($customer_name, $address, $invoice_no, $payment_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
+                            
+                            $select2 = $this->showInvoiceReturnDetails($invoice);
+                            while ($row2 = mysqli_fetch_array($select2)) {
+                                $invoice_no1 = $row2["invoice_no"];
+                                $customer_name1 = $row2["customer_name"];
+                                $address1 = $row2["address"];
+                                $productname = $row2["product_name"];
+                                $model = $row2["model"];
+                                $manufacturer = $row2["manufacturer"];
+                                $quantity = $row2["quantity"];
+                                $price = $row2["price"];
+                                $amount = $row2["amount"];
+                                $date1 = $row2["date"];
+                                $this->addSalesDetails($customer_name1, $address1, $invoice_no1, $customer_type, $productname, $model, $manufacturer, $quantity, $price, $amount, $staff, $date1);
+                                $this->updateQty($quantity, $productname, $model, $manufacturer);
+                                $this->deleteAllGoodsReturnedDetails($invoice);
+                            }
+                            
+                            $this->deleteEachGoodsReturned($invoice);
+                        }
+                    }
+                    header("location:return_each_goods.php");
+                }
             }
         }
     }

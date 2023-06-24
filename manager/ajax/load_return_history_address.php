@@ -29,7 +29,7 @@ while ($row = mysqli_fetch_array($select)){?>
         <td style="text-transform:uppercase">
             <?php echo $row['date'] ?>
         </td>
-        <td class="text-center"><a href="return_goods_details.php?invoice=<?php echo $row['invoice_no'] ?>"><i class="fa fa-eye"></i></a></td>
+        <td class="text-center"><a href="return_each_goods_details.php?invoice=<?php echo $row['invoice_no'] ?>"><i class="fa fa-eye"></i></a></td>
      </tr>
  </capital> 
 <?php

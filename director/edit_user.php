@@ -30,13 +30,13 @@ $ctr = new Controller();
                             <div class="form-group">
                                 <label class="control-label">First Name :</label>
                                 <div class="controls">
-                                    <input type="text" class="form-control" name="firstname" value="<?php $ctr->userEdit('firstname') ?>"  />
+                                    <input type="text" class="form-control" name="firstname" value="<?php $ctr->userEdit('firstname') ?>" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Last Name :</label>
                                 <div class="controls">
-                                    <input type="text" class="form-control" name="lastname" value="<?php $ctr->userEdit('lastname') ?>"  />
+                                    <input type="text" class="form-control" name="lastname" value="<?php $ctr->userEdit('lastname') ?>" />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -94,6 +94,8 @@ $ctr = new Controller();
 
                 </div>
             </div>
+        </div>
+    </div>
 </section>
 <?php include "includes/footer.php"; ?>
 ?>

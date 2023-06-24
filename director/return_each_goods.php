@@ -10,20 +10,6 @@ include "includes/header.php";
 include "includes/navbar.php";
 include "includes/sidebar.php";
 ?>
-<!-- 
-
-<script>
-    function availableStock(sales){
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("table").innerHTML = this.responseText;
-            }
-        };
-        xhttp.open("GET", "ajax/load_sales.php?sales="+sales, true);
-        xhttp.send();
-    }
-</script> -->
 
 <section>
     <div class="container-fluid">
