@@ -19,7 +19,7 @@ $deposit = $_POST["deposit"];
 $balance = $_POST["balance"];
 $date = $_POST["date"];
 $staff_name = $_POST["staff"];
-$comment = "Returned Good(s)";
+$comment = "Some Good(s) Returned";
 $debit_total = 0;
 //
 $rem_qty = $quantity - $return_qty;

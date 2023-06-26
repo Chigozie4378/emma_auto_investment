@@ -1046,13 +1046,16 @@ class Model extends DB
     }
     public function checkInvoice()
     {
-        $select = mysqli_query($this->connect(), "SELECT * FROM sales ORDER BY id DESC LIMIT 1");
+        $select = mysqli_query($this->connect(), "SELECT * FROM invoice ORDER BY id DESC LIMIT 1");
         return $select;
     }
     public function checkInvoice_noExist($invoice_no)
     {
-        $select = mysqli_query($this->connect(), "SELECT * FROM sales WHERE invoice_no = '$invoice_no'");
+        $select = mysqli_query($this->connect(), "SELECT * FROM invoice WHERE invoice_no = '$invoice_no'");
         return $select; 
+    }
+    public function addInvoice($invoice_no){
+        mysqli_query($this->connect(), "INSERT INTO invoice VALUES(null, '$invoice_no')");
     }
     
     // Deposit Section

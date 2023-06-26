@@ -769,6 +769,7 @@
                                 $this->addBank($customer_name, $address, $invoice_no2, $customer_type, $transfer, $bank_name, $status, $staff, $date);
                             }
                             $this->addPos($customer_name, $address, $invoice_no2, $pos_type,$pos_charges);
+                            $this->addInvoice($invoice_no2);
                             $this->addSales($customer_name, $address, $invoice_no2, $bill_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
                            
                             
@@ -843,6 +844,7 @@
                                 $this->addBank($customer_name, $address, $invoice_no, $customer_type, $transfer, $bank_name, $status, $staff, $date);
                             }
                             $_SESSION["invoice"] = $invoice_no;
+                            $this->addInvoice($invoice_no);
                             $this->addPos($customer_name, $address, $invoice_no, $pos_type,$pos_charges);
                             $this->addSales($customer_name, $address, $invoice_no, $bill_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
                             $row = mysqli_num_rows($this->checkDebit($customer_name, $address));
@@ -1642,7 +1644,6 @@
                     $customer_name = $row1["customer_name"];
                     $address = $row1["address"];
                     $invoice_no = $row1["invoice_no"];
-                    $payment_type = $row1["payment_type"];
                     $customer_type = $row1["customer_type"];
                     $payment_type = $row1["payment_type"];
                     $total = $row1["total"];
@@ -1656,6 +1657,9 @@
                     $username = $row1["username"];
                     $date = date("d-m-Y");
                     $staff = $row1["staff_name"];
+                    // $new_deposit = $total + $deposit;
+                    // $new_balance = $balance - $total;
+                    // $new_balance1 = $balance - $total;
                     $debit_total = 0;
 
                     $show_debits = $this->showDebitTotalPaidTotalBal($customer_name, $address);
@@ -1665,11 +1669,11 @@
                     $total_deposit = $dbtotal_deposit - $total;
                     $total_bal1 = $dbtotal_bal + $total;
                     $total_bal2 = $dbtotal_bal + $total;
-
+                    $comment = "Undid All Goods Returned";
                     if (mysqli_num_rows($select_sales) > 0) {
                         if (mysqli_num_rows($show_debits) > 0) {
 
-                            $comment = "Undid All Goods Returned for " . $customer_name . " " . $address;
+
                             $this->updateUndoDebits($total_deposit, $total_bal1, $customer_name, $address);
                             $this->insertReturnDebitsDetails($customer_name, $address, $debit_total, $total, $total_deposit, $total_bal1, $total_bal2, $staff, $date, $comment);
 
@@ -1691,6 +1695,14 @@
                             $this->deleteDebit();
                             $this->deleteAllGoodsReturned($invoice);
                         } else {
+
+                            $searchString = 'debit';
+
+                            if (strpos(strtolower($payment_type), strtolower($searchString)) !== false) {
+                                $this->addDebits($customer_name, $address, $total, $deposit, $balance, $staff, $date);
+                                $this->deleteDebit();
+                                $this->addDebitsHistory($customer_name, $address, $total, $deposit, $deposit, $balance, $balance, $staff, $date, $comment, $invoice_no);
+                            }
                             $this->updateSalesUndo($total, $invoice_no);
 
                             $select2 = $this->showInvoiceReturnDetails($invoice);
@@ -1713,7 +1725,7 @@
 
                         if (mysqli_num_rows($show_debits) > 0) {
 
-                            $comment = "Undid Each Goods Returned for " . $customer_name . " " . $address;
+                            $comment = "Undid All Goods Returned for " . $customer_name . " " . $address;
                             $this->addSales($customer_name, $address, $invoice_no, $payment_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
                             $this->updateUndoDebits($total_deposit, $total_bal1, $customer_name, $address);
                             $this->insertReturnDebitsDetails($customer_name, $address, $debit_total, $total, $total_deposit, $total_bal1, $total_bal2, $staff, $date, $comment);
@@ -1737,6 +1749,13 @@
                                 $this->deleteAllGoodsReturnedDetails($invoice);
                             }
                         } else {
+                            $searchString = 'debit';
+
+                            if (strpos(strtolower($payment_type), strtolower($searchString)) !== false) {
+                                $this->addDebits($customer_name, $address, $total, $deposit, $balance, $staff, $date);
+                                $this->deleteDebit();
+                                $this->addDebitsHistory($customer_name, $address, $total, $deposit, $deposit, $balance, $balance, $staff, $date, $comment, $invoice_no);
+                            }
                             $this->addSales($customer_name, $address, $invoice_no, $payment_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
                             $this->deleteAllGoodsReturned($invoice);
                             $select2 = $this->showInvoiceReturnDetails($invoice);
@@ -1768,7 +1787,6 @@
                     $invoice_no = $row1["invoice_no"];
                     $payment_type = $row1["payment_type"];
                     $customer_type = $row1["customer_type"];
-                    $payment_type = $row1["payment_type"];
                     $total = $row1["total"];
                     $cash = $row1["cash"];
                     $transfer = $row1["transfer"];
@@ -1792,11 +1810,11 @@
                     $total_deposit = $dbtotal_deposit - $total;
                     $total_bal1 = $dbtotal_bal + $total;
                     $total_bal2 = $dbtotal_bal + $total;
-
+                    $comment = "Undid All Goods Returned";
                     if (mysqli_num_rows($select_sales) > 0) {
                         if (mysqli_num_rows($show_debits) > 0) {
 
-                            $comment = "Undid All Goods Returned for " . $customer_name . " " . $address;
+                            
                             $this->updateUndoDebits($total_deposit, $total_bal1, $customer_name, $address);
                             $this->insertReturnDebitsDetails($customer_name, $address, $debit_total, $total, $total_deposit, $total_bal1, $total_bal2, $staff, $date, $comment);
 
@@ -1818,6 +1836,13 @@
                             $this->deleteDebit();
                             $this->deleteEachGoodsReturned($invoice);
                         } else {
+                            $searchString = 'debit';
+
+                            if (strpos(strtolower($payment_type), strtolower($searchString)) !== false) {
+                                $this->addDebits($customer_name, $address, $total, $deposit, $balance, $staff, $date);
+                                $this->deleteDebit();
+                                $this->addDebitsHistory($customer_name, $address, $total, $deposit, $deposit, $balance, $balance, $staff, $date, $comment, $invoice_no);
+                            }
                             $this->updateSalesUndo($total, $invoice_no);
 
                             $select2 = $this->showInvoiceReturnDetails($invoice);
@@ -1864,8 +1889,15 @@
                                 $this->deleteAllGoodsReturnedDetails($invoice);
                             }
                         } else {
+                            $searchString = 'debit';
+
+                            if (strpos(strtolower($payment_type), strtolower($searchString)) !== false) {
+                                $this->addDebits($customer_name, $address, $total, $deposit, $balance, $staff, $date);
+                                $this->deleteDebit();
+                                $this->addDebitsHistory($customer_name, $address, $total, $deposit, $deposit, $balance, $balance, $staff, $date, $comment, $invoice_no);
+                            }
                             $this->addSales($customer_name, $address, $invoice_no, $payment_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
-                            
+
                             $select2 = $this->showInvoiceReturnDetails($invoice);
                             while ($row2 = mysqli_fetch_array($select2)) {
                                 $invoice_no1 = $row2["invoice_no"];
@@ -1882,7 +1914,7 @@
                                 $this->updateQty($quantity, $productname, $model, $manufacturer);
                                 $this->deleteAllGoodsReturnedDetails($invoice);
                             }
-                            
+
                             $this->deleteEachGoodsReturned($invoice);
                         }
                     }

@@ -180,6 +180,7 @@ class Controller extends Model
                             $this->addBank($customer_name, $address, $invoice_no2, $customer_type, $transfer, $bank_name, $status, $staff, $date);
                         }
                         $_SESSION["invoice"] = $invoice_no2;
+                        $this->addInvoice($invoice_no2);
                         $this->addPos($customer_name, $address, $invoice_no2, $pos_type,$pos_charges);
                         $this->addSales($customer_name, $address, $invoice_no2, $bill_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
                         $row = mysqli_num_rows($this->checkDebit($customer_name, $address));
@@ -252,6 +253,7 @@ class Controller extends Model
                             $this->addBank($customer_name, $address, $invoice_no, $customer_type, $transfer, $bank_name, $status, $staff, $date);
                         }
                         $_SESSION["invoice"] = $invoice_no;
+                        $this->addInvoice($invoice_no);
                         $this->addPos($customer_name, $address, $invoice_no, $pos_type,$pos_charges);
                         $this->addSales($customer_name, $address, $invoice_no, $bill_type, $customer_type, $total, $cash, $transfer, $pos, $old_deposit, $deposit, $transport, $balance, $staff, $date, $username);
                         $row = mysqli_num_rows($this->checkDebit($customer_name, $address));
