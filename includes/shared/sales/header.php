@@ -1,0 +1,48 @@
+<?php
+$basePath = dirname($_SERVER['SCRIPT_NAME']);
+$basePath = str_ends_with($basePath, '/helpers') ? './' : '../';
+
+
+
+$shared_ctr = new Shared();
+$role = $shared_ctr->getRole();
+$fullname = $shared_ctr->getFullname();
+$username = $shared_ctr->getUsername();
+
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>EMMA AUTO AND MULTI-SERVICES COMPANY</title>
+  <link rel="icon" href="<?= $basePath?>assets/images/logo.jpg" type="image/gif" sizes="20x20">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="<?= $basePath?>assets/plugins/fontawesome-free/css/all.min.css">
+
+  <link rel="stylesheet" href="<?= $basePath?>assets/dist/css/adminlte.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="<?= $basePath?>assets/plugins/jquery-ui/jquery-ui.min.css">
+  <link rel="stylesheet" href="<?= $basePath?>assets/plugins/chosen/chosen.css">
+  <link rel="stylesheet" href="<?= $basePath?>assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <link rel="stylesheet" href="<?= $basePath?>assets/css/watermark.css">
+
+<style>
+  .fixTableHead {
+      height: 75vh;
+    }
+    .fixTableHead thead th {
+      position: sticky;
+      top: 0;
+      background-color:white;
+    }
+</style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+  <div class="wrapper">
+
+    <!-- Navbar -->
